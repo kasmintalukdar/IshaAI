@@ -1,0 +1,46 @@
+<!-- <p>ishaa-assistant works!</p> -->
+
+
+
+<div class="ishaa-wrapper">
+  
+  <header class="ishaa-header">
+    <div class="avatar-glow">
+      <div class="avatar">✨</div>
+    </div>
+    <div class="header-info">
+      <h2>Ishaa V2 Assistant</h2>
+      <span class="status"><span class="dot"></span> Online</span>
+    </div>
+  </header>
+
+  <main class="chat-container" #chatContainer>
+    <div *ngFor="let msg of messages" 
+         [ngClass]="{'message-user': msg.role === 'user', 'message-ishaa': msg.role === 'ishaa'}" 
+         class="message-row">
+      
+      <div class="message-bubble">
+        <span *ngIf="!msg.isTyping">{{ msg.text }}</span>
+        
+        <div *ngIf="msg.isTyping" class="typing-indicator">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="input-area">
+    <input 
+      type="text" 
+      [(ngModel)]="userInput" 
+      (keyup.enter)="sendMessage()"
+      [disabled]="isProcessing"
+      placeholder="Ask a science question..." 
+      class="chat-input"
+    />
+    <button (click)="sendMessage()" [disabled]="isProcessing || !userInput.trim()" class="send-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    </button>
+  </footer>
+
+</div>

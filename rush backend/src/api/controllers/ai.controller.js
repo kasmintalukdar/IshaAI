@@ -824,3 +824,45 @@ async function calculateCommonMetrics(userId) {
         persona: accuracy_rate > 0.7 ? "Master" : "Learner"
     };
 }
+
+
+
+
+// ... existing Phase 1 controllers above ...
+
+// --- NEW: Phase 2 (Ishaa V2) Controller ---
+const getIshaaV2Response = async (req, res) => {
+    try {
+        // We capture the specific path requested by the frontend
+        // Example: If frontend hits /api/ai/v2/progress, endpointPath becomes '/progress'
+        const endpointPath = req.params[0] || ''; 
+        
+        const ishaaV2Url = `${process.env.ISHAA_V2_API_URL}/${endpointPath}`;
+
+        const response = await axios({
+            method: req.method,
+            url: ishaaV2Url,
+            data: req.body, // Forward the body
+            params: req.query, // Forward query params
+            headers: {
+                // If you need to pass tokens, add them here
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return res.status(response.status).json(response.data);
+    } catch (error) {
+        console.error("Error communicating with Ishaa V2:", error.message);
+        
+        // Forward the specific error from Python if it exists
+        if (error.response) {
+            return res.status(error.response.status).json(error.response.data);
+        }
+        return res.status(500).json({ error: "Failed to connect to AI Engine Phase 2" });
+    }
+};
+
+module.exports = {
+    
+    getIshaaV2Response
+};
