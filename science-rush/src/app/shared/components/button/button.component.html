@@ -1,0 +1,7 @@
+<button 
+  [class]="'btn-' + type"
+  [class.w-100]="fullWidth"
+  [disabled]="disabled"
+  (click)="onClick()">
+  {{ label }}
+</button>

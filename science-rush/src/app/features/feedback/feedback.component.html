@@ -1,0 +1,70 @@
+<div class="feedback-page fade-in">
+  
+    <div class="header">
+      <button class="btn-icon" (click)="goBack()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <h2>Give Feedback</h2>
+      <div class="spacer"></div> </div>
+  
+    <div class="content-wrapper" *ngIf="!submitted; else successView">
+      
+      <div class="mascot-section">
+        <img src="assets/images/mascots/thinking.svg" alt="Thinking Mascot" class="mascot-img">
+        <div class="bubble">
+          How is your experience so far?
+        </div>
+      </div>
+  
+      <div class="card">
+        <label>Rate your experience</label>
+        <div class="emoji-row">
+          <button 
+            *ngFor="let e of emojis" 
+            class="emoji-btn" 
+            [class.active]="rating === e.score"
+            (click)="setRating(e.score)">
+            <span class="emoji">{{ e.icon }}</span>
+            <span class="label">{{ e.label }}</span>
+          </button>
+        </div>
+      </div>
+  
+      <div class="card">
+        <label>What is this about?</label>
+        <div class="chips-row">
+          <button 
+            *ngFor="let cat of categories" 
+            class="chip" 
+            [class.selected]="selectedCategory === cat.id"
+            (click)="setCategory(cat.id)">
+            {{ cat.label }}
+          </button>
+        </div>
+  
+        <textarea 
+          [(ngModel)]="message" 
+          placeholder="Tell us what you think..." 
+          rows="5">
+        </textarea>
+      </div>
+  
+      <button class="btn-primary-3d" 
+              [disabled]="rating === 0 || !message || isSubmitting"
+              (click)="onSubmit()">
+        {{ isSubmitting ? 'Sending...' : 'Send Feedback' }}
+      </button>
+  
+    </div>
+  
+    <ng-template #successView>
+      <div class="success-container fade-slide-up">
+        <img src="assets/images/mascots/happy.svg" alt="Happy Mascot" class="mascot-success">
+        <h2>Thanks!</h2>
+        <p>Your feedback helps us make Science Rush better.</p>
+      </div>
+    </ng-template>
+  
+  </div>

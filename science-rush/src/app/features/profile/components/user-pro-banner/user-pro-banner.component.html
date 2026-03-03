@@ -1,0 +1,21 @@
+<div (click)="openModal()" style="cursor: pointer">
+  
+  <div class="upgrade-banner">
+    <div class="inner-1">
+      <div><span>👑</span></div>
+      <div><h4>Upgrade to Pro</h4></div>
+    </div>
+
+    <div class="inner-2">
+      <span>
+        Remove ads, infinite lives & AI predictions
+      </span>
+    </div>
+  </div>
+
+</div>
+
+<app-upgrade-modal 
+    *ngIf="showUpgradeModal" 
+    (close)="closeModal()">
+</app-upgrade-modal>

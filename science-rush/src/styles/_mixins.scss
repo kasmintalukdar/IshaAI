@@ -1,0 +1,109 @@
+@use "sass:color";
+@use './variables' as *;
+
+// Flexbox Helper
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// THE "JUICY" GAME BUTTON MIXIN
+@mixin game-button($base-color, $text-color: white) {
+  // 1. Structure
+  position: relative;
+  width: 100%;
+  height: 56px; // Taller for better touch target
+  border: none;
+  border-radius: 16px; // Smooth rounded corners
+  cursor: pointer;
+  overflow: hidden; // Keeps the "Shine" inside
+  
+  // 2. Typography
+  color: $text-color;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800; // Extra Bold
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15); // Embossed text effect
+  
+  // 3. The "Plastic" 3D Look (Gradient + Shadow)
+  background: linear-gradient(
+    to bottom, 
+    color.adjust($base-color, $lightness: 10%) 0%, 
+    $base-color 100%
+  );
+  
+  // The "floor" shadow (depth) + The "drop" shadow (float)
+  box-shadow: 
+    0 6px 0 color.adjust($base-color, $lightness: -15%), // The solid 3D side
+    0 12px 10px rgba(0, 0, 0, 0.2), // The soft shadow on the ground
+    inset 0 2px 0 rgba(255, 255, 255, 0.3); // Top shiny highlight edge
+
+  // 4. Transitions
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.2s;
+
+  // --- INTERACTION STATES ---
+  
+  // Hover: Brighter & slightly lifted
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 
+      0 8px 0 color.adjust($base-color, $lightness: -15%),
+      0 16px 20px rgba(0, 0, 0, 0.25),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  // Active (Click): Smash down
+  &:active:not(:disabled) {
+    transform: translateY(4px); // Move down physically
+    box-shadow: 
+      0 2px 0 color.adjust($base-color, $lightness: -15%), // Shadow shrinks
+      0 2px 2px rgba(0, 0, 0, 0.1),
+      inset 0 2px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  // Disabled State
+  &:disabled {
+    background: #e5e5e5;
+    color: #afafaf;
+    text-shadow: none;
+    box-shadow: 0 4px 0 #d4d4d4;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
+}
+
+@mixin card-style {
+  background: white;
+  border: 2px solid $grey-border;
+  border-radius: $border-radius-large;
+  padding: 1rem;
+  box-shadow: 0 4px 0 $grey-border;
+}
+
+
+@mixin glass-card {
+  background: var(--panel-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+}
+
+@mixin neon-text($color) {
+  color: $color;
+  text-shadow: 0 0 10px rgba($color, 0.5);
+}
+
+
+
+@mixin mobile {
+  @media (max-width: 768px) { @content; }
+}

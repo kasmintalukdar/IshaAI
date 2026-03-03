@@ -1,0 +1,74 @@
+<!-- <div class="node-wrapper" 
+     (click)="onClick()" 
+     [style.animation-delay]="index * 100 + 'ms'"> <div class="circle-container">
+    
+    <svg class="progress-ring" width="110" height="110">
+      <circle class="progress-ring__circle--track"
+        stroke="#e5e5e5" stroke-width="8" fill="transparent"
+        r="48" cx="55" cy="55" />
+      
+      <circle class="progress-ring__circle--fill"
+        [attr.stroke]="chapter.status === 'COMPLETED' ? '#ffc800' : '#58cc02'"
+        stroke-width="8" fill="transparent"
+        r="48" cx="55" cy="55" stroke-linecap="round"
+        [style.stroke-dasharray]="circumference"
+        [style.stroke-dashoffset]="dashOffset" />
+    </svg>
+
+    <div class="inner-icon-circle" 
+         [class.completed]="chapter.status === 'COMPLETED'"
+         [class.active-play]="chapter.progress > 0 && chapter.status !== 'COMPLETED'"
+         [class.unlocked]="true">
+
+      <img *ngIf="chapter.status === 'COMPLETED'" src="assets/images/ui/trophy.svg" class="node-icon">
+      
+      <span *ngIf="chapter.status !== 'COMPLETED'" 
+            class="level-num"
+            [class.has-progress]="chapter.progress > 0">
+        {{ index + 1 }}
+      </span>
+    </div>
+    
+    <div class="stars-row" *ngIf="chapter.stars > 0">
+      <span *ngFor="let s of [1,2,3]" class="star" [class.filled]="s <= chapter.stars">★</span>
+    </div>
+
+  </div>
+
+  <div class="node-label">{{ chapter.title }}</div>
+</div> -->
+
+<div class="node-wrapper" [ngClass]="{ 'locked': status === 'LOCKED', 'completed': progress >= 100 }">
+  
+  <div class="crown" *ngIf="progress >= 100">👑</div>
+
+  <div class="ring-container">
+    <svg width="120" height="120" viewBox="0 0 120 120">
+      <circle 
+        cx="60" cy="60" r="45" 
+        fill="none" 
+        stroke="#e5e5e5" 
+        stroke-width="12" 
+        stroke-linecap="round" />
+
+      <circle 
+        class="progress-arc"
+        cx="60" cy="60" r="45" 
+        fill="none" 
+        [attr.stroke]="status === 'LOCKED' ? '#ccc' : '#ffc800'" 
+        stroke-width="12" 
+        stroke-linecap="round"
+        [style.strokeDasharray]="circumference"
+        [style.strokeDashoffset]="strokeDashoffset" />
+    </svg>
+
+    <button class="node-btn" [disabled]="status === 'LOCKED'">
+      <img [src]="icon" alt="Topic Icon" class="icon-img">
+    </button>
+  </div>
+
+  <div class="node-label">
+    {{ title }}
+  </div>
+
+</div>

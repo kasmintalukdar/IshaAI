@@ -1,0 +1,256 @@
+.feedback-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
+}
+
+.header {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header h2 {
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  color: #afafaf;
+  font-weight: 800;
+  margin: 0;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.header .btn-icon {
+  background: none;
+  border: none;
+  color: #afafaf;
+  cursor: pointer;
+  padding: 8px;
+}
+.header .btn-icon:hover {
+  color: #1cb0f6;
+}
+.header .spacer {
+  width: 40px;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 500px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- Mascot Section --- */
+.mascot-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.mascot-section .mascot-img {
+  width: 80px;
+  height: 80px;
+}
+.mascot-section .bubble {
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  padding: 12px 20px;
+  border-radius: 16px;
+  font-weight: 700;
+  color: #3c3c3c;
+  position: relative;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+}
+.mascot-section .bubble::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 10px 10px 10px 0;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+}
+.mascot-section .bubble::before {
+  content: "";
+  position: absolute;
+  left: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 11px 11px 11px 0;
+  border-style: solid;
+  border-color: transparent #e5e5e5 transparent transparent;
+  z-index: -1;
+}
+
+/* --- Cards --- */
+.card {
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.card label {
+  font-weight: 800;
+  color: #3c3c3c;
+  font-size: 1.1rem;
+}
+
+/* --- Emoji Rating --- */
+.emoji-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.emoji-btn {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.emoji-btn .emoji {
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+.emoji-btn .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #afafaf;
+}
+.emoji-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+.emoji-btn.active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+.emoji-btn.active .label {
+  color: #1cb0f6;
+}
+
+/* --- Chips & Textarea --- */
+.chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  color: #afafaf;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  box-shadow: 0 2px 0 #e5e5e5;
+  transition: transform 0.1s;
+}
+.chip:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+.chip.selected {
+  background: rgb(224.2203389831, 244.2881355932, 253.7796610169);
+  border-color: #1cb0f6;
+  color: #1cb0f6;
+  box-shadow: 0 2px 0 #1480b3;
+}
+
+textarea {
+  width: 100%;
+  border: 2px solid #e5e5e5;
+  border-radius: 16px;
+  padding: 12px;
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  resize: none;
+  outline: none;
+  background: #f7f7f7;
+}
+textarea:focus {
+  border-color: #1cb0f6;
+  background: #fff;
+}
+
+/* --- Main Button --- */
+.btn-primary-3d {
+  width: 100%;
+  height: 50px;
+  background-color: #58cc02;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-family: "Nunito", "Segoe UI", sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #46a302;
+  transition: all 0.1s;
+  margin-top: 10px;
+}
+.btn-primary-3d:active {
+  box-shadow: 0 0 0;
+  transform: translateY(4px);
+}
+.btn-primary-3d:disabled {
+  background-color: #e5e5e5;
+  color: #afafaf;
+  box-shadow: none;
+  transform: translateY(4px);
+  cursor: not-allowed;
+}
+
+/* --- Success View --- */
+.success-container {
+  text-align: center;
+  margin-top: 100px;
+}
+.success-container .mascot-success {
+  width: 150px;
+  margin-bottom: 20px;
+}
+.success-container h2 {
+  color: #58cc02;
+  font-weight: 800;
+  font-size: 2rem;
+}
+.success-container p {
+  color: #afafaf;
+  font-weight: 600;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}/*# sourceMappingURL=feedback.component.css.map */

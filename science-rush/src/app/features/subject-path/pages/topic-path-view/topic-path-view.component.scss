@@ -1,0 +1,553 @@
+// .path-container {
+//   height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   background-color: #f0fdf4; // Light Green Background (Consistent with Subject Path)
+//   overflow: hidden; // Prevents double scrollbars
+// }
+
+// .path-header {
+//   padding: 1rem 1.5rem;
+//   background: white;
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
+//   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+//   z-index: 10;
+//   position: sticky;
+//   top: 0;
+  
+//   h1 { 
+//     margin: 0; 
+//     font-size: 1.25rem; 
+//     font-weight: 700;
+//     color: #1f2937;
+//     text-transform: capitalize;
+//   }
+
+//   .back-btn { 
+//     background: none; 
+//     border: none; 
+//     cursor: pointer; 
+//     padding: 0.5rem;
+//     border-radius: 50%;
+//     display: grid;
+//     place-items: center;
+//     color: #4b5563;
+//     transition: background 0.2s;
+
+//     &:hover {
+//       background: #f3f4f6;
+//       color: #111827;
+//     }
+//   }
+// }
+
+// .scroll-area {
+//   flex: 1;
+//   overflow-y: auto;
+//   padding: 3rem 1rem;
+//   display: flex;
+//   justify-content: center;
+  
+//   // Custom Scrollbar styling
+//   &::-webkit-scrollbar {
+//     width: 6px;
+//   }
+//   &::-webkit-scrollbar-track {
+//     background: transparent;
+//   }
+//   &::-webkit-scrollbar-thumb {
+//     background-color: rgba(0,0,0,0.1);
+//     border-radius: 4px;
+//   }
+// }
+
+// .nodes-wrapper {
+//   width: 100%;
+//   max-width: 400px; // Matches mobile design constraints
+//   display: flex;
+//   flex-direction: column;
+//   gap: 4rem; // Vertical spacing between Zig-Zag nodes
+//   position: relative;
+//   padding-bottom: 4rem; // Extra space at bottom
+// }
+
+// // --- ZIG-ZAG ALIGNMENT CLASSES ---
+// // These match the logic in getAlignment()
+// .node-row {
+//   display: flex;
+//   width: 100%;
+  
+//   &.center { 
+//     justify-content: center; 
+//   }
+  
+//   &.left { 
+//     justify-content: flex-start; 
+//     padding-left: 12%; // Shift node to the left side
+//   }
+  
+//   &.right { 
+//     justify-content: flex-end; 
+//     padding-right: 12%; // Shift node to the right side
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // --- VARIABLES ---
+// $row-height: 160px; // Consistent height
+// $path-width: 400px;
+// $theme-gradient: linear-gradient(135deg, #4b6cb7 0%, #182848 100%); // Darker Navy/Blue for contrast
+
+// // --- MAIN LAYOUT ---
+// .game-container {
+//   height: 100vh;
+//   width: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   position: relative;
+//   overflow: hidden;
+//   background: $theme-gradient;
+//   font-family: 'Nunito', sans-serif;
+//   color: white;
+// }
+
+// // --- ANIMATED BACKGROUND ---
+// .animated-bg {
+//   position: absolute;
+//   inset: 0;
+//   pointer-events: none;
+//   z-index: 0;
+
+//   .orb {
+//     position: absolute;
+//     border-radius: 50%;
+//     background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+//     &.orb-1 { width: 300px; height: 300px; top: -50px; left: -50px; }
+//     &.orb-2 { width: 200px; height: 200px; bottom: 10%; right: -50px; }
+//   }
+
+//   .grid-overlay {
+//     position: absolute;
+//     inset: 0;
+//     background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+//     background-size: 100% 40px;
+//   }
+// }
+
+// // --- HEADER ---
+// .game-header {
+//   flex: 0 0 70px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   padding: 0 1rem;
+//   z-index: 100;
+//   background: rgba(23, 23, 35, 0.4);
+//   backdrop-filter: blur(10px);
+//   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+//   .back-btn {
+//     width: 40px; height: 40px;
+//     background: rgba(255,255,255,0.1);
+//     border: none;
+//     border-radius: 12px;
+//     color: white;
+//     font-size: 1.2rem;
+//     cursor: pointer;
+//   }
+
+//   .header-content {
+//     text-align: center;
+//     .eyebrow { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; display: block; }
+//     h1 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+//   }
+//   .header-spacer { width: 40px; }
+// }
+
+// // --- SCROLL AREA ---
+// .scroll-viewport {
+//   flex: 1;
+//   overflow-y: auto;
+//   position: relative;
+//   z-index: 10;
+//   padding-bottom: 80px;
+// }
+
+// .path-layout {
+//   position: relative;
+//   max-width: $path-width;
+//   margin: 0 auto;
+//   padding-top: 40px;
+// }
+
+// // --- PERFECTLY ALIGNED SVG PATH ---
+// // Logic: 
+// // ViewBox width = 100 units.
+// // Right Node Center = 75 units (75%)
+// // Center Node Center = 50 units (50%)
+// // Left Node Center = 25 units (25%)
+// // Height per step = 20 units. Total cycle = 80 units (4 steps).
+// .winding-path-bg {
+//   position: absolute;
+//   top: 40px + ($row-height / 2); // Starts exactly at center of first node
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   width: 100%;
+  
+//   // SVG Path: M 75 0 (Start Right) -> Q 75 20 50 20 (Curve to Center) -> T 25 40 (Curve to Left) ...
+//   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80' viewBox='0 0 100 80'%3E%3Cpath d='M 75 0 Q 75 10 50 10 T 25 20 T 50 30 T 75 40 T 50 50 T 25 60 T 50 70 T 75 80' stroke='rgba(255,255,255,0.2)' stroke-width='2' fill='none' stroke-dasharray='4 4' stroke-linecap='round' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E");
+  
+//   background-repeat: repeat-y;
+//   background-position: center top;
+//   // Scale height to match CSS rows: 4 rows = 4 * $row-height
+//   background-size: 100% calc(#{$row-height} * 4);
+//   z-index: 0;
+// }
+
+// // --- NODES STACK ---
+// .nodes-stack {
+//   position: relative;
+//   z-index: 1;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .node-row {
+//   height: $row-height;
+//   display: flex;
+//   align-items: center;
+//   width: 100%;
+  
+//   // ALIGNMENT: match SVG percentages (25% / 50% / 75%)
+//   &.center { 
+//     justify-content: center; // 50%
+//   }
+  
+//   &.left { 
+//     justify-content: flex-start; 
+//     padding-left: 25%; // Node center aligns at 25% + half-width adjustment
+//     // To be precise: If width is 400px, 25% is 100px.
+//     // Node wrapper is ~120px. Centering it at 100px requires math, 
+//     // but standard padding-left 15-20% usually looks visually correct.
+//     padding-left: 12%; 
+//   }
+  
+//   &.right { 
+//     justify-content: flex-end; 
+//     padding-right: 12%; 
+//   }
+// }
+
+// .node-host {
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   transition: transform 0.2s;
+  
+//   &:hover { transform: scale(1.05); }
+
+//   // Custom Label Styling (High Visibility)
+//   .topic-label-container {
+//     margin-top: -15px; // Pull up over the bottom of the ring
+//     z-index: 5;
+//     text-align: center;
+//   }
+
+//   .topic-label {
+//     background: white;
+//     color: #182848; // Dark text
+//     padding: 6px 16px;
+//     border-radius: 20px;
+//     font-size: 0.85rem;
+//     font-weight: 800;
+//     box-shadow: 0 4px 0 rgba(0,0,0,0.2); // 3D effect
+//     white-space: nowrap;
+//     max-width: 140px;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     display: block;
+//     border: 2px solid #e5e7eb;
+//   }
+
+//   .level-indicator {
+//     position: absolute;
+//     top: 0; right: 0;
+//     background: #fbbf24; // Amber/Gold
+//     color: #000;
+//     font-weight: bold;
+//     width: 24px; height: 24px;
+//     border-radius: 50%;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     font-size: 0.8rem;
+//     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+//     z-index: 6;
+//   }
+// }
+
+// .path-end-marker {
+//   text-align: center;
+//   margin-top: 2rem;
+//   opacity: 0.6;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   .flag-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+//   span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+// }
+
+
+
+
+
+// --- VARIABLES ---
+$row-height: 160px; // Consistent height
+$path-width: 400px;
+$theme-gradient: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+
+// --- MAIN LAYOUT ---
+.game-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: $theme-gradient;
+  font-family: 'Nunito', sans-serif;
+  color: white;
+}
+
+// --- ANIMATED BACKGROUND ---
+.animated-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+    &.orb-1 { width: 300px; height: 300px; top: -50px; left: -50px; }
+    &.orb-2 { width: 200px; height: 200px; bottom: 10%; right: -50px; }
+  }
+
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 100% 40px;
+  }
+}
+
+// --- HEADER ---
+.game-header {
+  flex: 0 0 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 100;
+  background: rgba(23, 23, 35, 0.4);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .back-btn {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .header-content {
+    text-align: center;
+    .eyebrow { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; display: block; }
+    h1 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+  }
+  .header-spacer { width: 40px; }
+}
+
+// --- SCROLL AREA ---
+.scroll-viewport {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 10;
+  padding-bottom: 80px;
+}
+
+.path-layout {
+  position: relative;
+  max-width: $path-width;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+// --- PERFECTLY ALIGNED SVG PATH (FIXED) ---
+// .winding-path-bg {
+//   position: absolute;
+  
+//   // FIX 1: Extend container UP and DOWN to cover missing areas
+//   // Instead of starting at 40px + row-height/2, we start way above (-200px)
+//   top: -200px;
+//   bottom: -200px;
+  
+//   left: 0;
+//   right: 0;
+//   width: 100%;
+  
+//   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='80' viewBox='0 0 100 80'%3E%3Cpath d='M 75 0 Q 75 10 50 10 T 25 20 T 50 30 T 75 40 T 50 50 T 25 60 T 50 70 T 75 80' stroke='rgba(255,255,255,0.2)' stroke-width='2' fill='none' stroke-dasharray='4 4' stroke-linecap='round' vector-effect='non-scaling-stroke' /%3E%3C/svg%3E");
+  
+//   background-repeat: repeat-y;
+  
+//   // FIX 2: Re-align the image to match the nodes
+//   // Math: 200px (Top Offset) + 40px (Padding) + 80px (Half Row) = 320px.
+//   // This pushes the "Start" of the SVG (Right Peak) down to exactly the center of the first node.
+//   // Because the image repeats vertically, it fills the empty space above.
+//   background-position: center 320px;
+  
+//   background-size: 100% calc(#{$row-height} * 4);
+//   z-index: 0;
+// }
+
+// --- PERFECTLY CONTINUOUS JOURNEY PATH (SCSS SAFE) ---
+.winding-path-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* 🔑 KEY FIX */
+  height: 100%;
+  width: 120px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 640'%3E%3Cpath d='M75 0 Q75 40 50 40 T25 80 T50 120 T75 160 T50 200 T25 240 T50 280 T75 320 T50 360 T25 400 T50 440 T75 480 T50 520 T25 560 T50 600 T75 640' stroke='rgba(255,255,255,0.35)' stroke-width='2' fill='none' stroke-dasharray='4 4' stroke-linecap='round'/%3E%3C/svg%3E");
+
+  background-repeat: repeat-y;
+  background-size: 100% 640px;
+  background-position: center top;
+
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+
+
+// --- NODES STACK ---
+.nodes-stack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.node-row {
+  height: $row-height;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  // ALIGNMENT: match SVG percentages (25% / 50% / 75%)
+  &.center { 
+    justify-content: center; // 50%
+  }
+  
+  &.left { 
+    justify-content: flex-start; 
+    padding-left: 12%; 
+  }
+  
+  &.right { 
+    justify-content: flex-end; 
+    padding-right: 12%; 
+  }
+}
+
+.node-host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+  
+  &:hover { transform: scale(1.05); }
+
+  // Custom Label Styling
+  .topic-label-container {
+    margin-top: -15px;
+    z-index: 5;
+    text-align: center;
+  }
+
+  .topic-label {
+    background: white;
+    color: #182848;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    white-space: nowrap;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    border: 2px solid #e5e7eb;
+  }
+
+  .level-indicator {
+    position: absolute;
+    top: 0; right: 0;
+    background: #fbbf24; // Amber/Gold
+    color: #000;
+    font-weight: bold;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 6;
+  }
+}
+
+.path-end-marker {
+  text-align: center;
+  margin-top: 2rem;
+  opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .flag-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+}

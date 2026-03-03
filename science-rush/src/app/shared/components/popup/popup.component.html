@@ -1,0 +1,15 @@
+<div class="popup-overlay" *ngIf="isVisible" (click)="onClose()">
+  <div class="popup-card" [class]="type" (click)="$event.stopPropagation()">
+    
+    <div class="icon-wrapper">
+      <span *ngIf="type === 'success'">🎉</span>
+      <span *ngIf="type === 'error'">⚠️</span>
+      <span *ngIf="type === 'info'">ℹ️</span>
+    </div>
+
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+
+    <button (click)="onClose()">{{ actionLabel }}</button>
+  </div>
+</div>

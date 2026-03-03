@@ -1,0 +1,48 @@
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5); // Dimmed background
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.popup-card {
+  background: white;
+  width: 90%;
+  max-width: 350px;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transform: scale(0.9);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+  // Type-specific borders
+  &.success { border-top: 6px solid #58cc02; }
+  &.error { border-top: 6px solid #ff4b4b; }
+  &.info { border-top: 6px solid #1cb0f6; }
+
+  h3 { margin: 1rem 0 0.5rem; font-size: 1.5rem; color: #333; }
+  p { color: #666; margin-bottom: 1.5rem; line-height: 1.5; }
+
+  button {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+    &:active { transform: scale(0.95); }
+  }
+}
+
+.icon-wrapper { font-size: 3rem; margin-bottom: -10px; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn { to { transform: scale(1); } }

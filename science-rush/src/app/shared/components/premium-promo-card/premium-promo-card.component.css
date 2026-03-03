@@ -1,0 +1,142 @@
+.promo-card {
+  background: white;
+  border-radius: 24px; /* Big rounded corners */
+  overflow: hidden; /* Clips the header gradient */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 380px; /* Standard mobile/modal width */
+  font-family: "Nunito", sans-serif; /* Assuming you use this font */
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* --- 1. The Orange/Yellow Header --- */
+.header {
+  /* The Gradient from the image */
+  background: linear-gradient(180deg, #FFC837 0%, #FF8008 100%);
+  padding: 30px 20px;
+  color: white;
+}
+
+.icon-wrapper svg {
+  color: white;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 5px 0 0;
+  opacity: 0.95;
+}
+
+/* --- 2. Body Content --- */
+.body {
+  padding: 30px 24px;
+}
+
+.trigger-msg {
+  color: #2D3748;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.feature-context {
+  color: #718096;
+  font-size: 15px;
+  margin: 0 0 25px;
+}
+
+/* --- Features List --- */
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+  text-align: left;
+}
+
+.benefits-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: #4A5568;
+  font-size: 15px;
+}
+
+.check-icon {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #48BB78; /* Green Border */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.check-icon svg {
+  width: 14px;
+  height: 14px;
+  color: #48BB78; /* Green Check */
+}
+
+strong {
+  color: #2D3748;
+  font-weight: 800;
+}
+
+/* --- Upgrade Button --- */
+.upgrade-btn {
+  width: 100%;
+  border: none;
+  /* The Purple Gradient from the image */
+  background: linear-gradient(90deg, #667EEA 0%, #764BA2 100%);
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+}
+
+.upgrade-btn:active {
+  transform: scale(0.98);
+}
+
+.sparkle-icon {
+  font-size: 18px;
+}
+
+/* --- Dismiss Link --- */
+.dismiss-btn {
+  background: none;
+  border: none;
+  margin-top: 16px;
+  color: #A0AEC0;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dismiss-btn:hover {
+  color: #718096;
+}/*# sourceMappingURL=premium-promo-card.component.css.map */

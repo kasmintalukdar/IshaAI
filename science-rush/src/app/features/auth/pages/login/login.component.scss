@@ -1,0 +1,199 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+@use 'styles/animations';
+
+// --- BACKGROUND & LAYOUT ---
+.auth-layout {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  
+  // Science-themed Background Pattern (Dots)
+  background-color: #f0f4f8;
+  background-image: radial-gradient($grey-border 15%, transparent 16%),
+                    radial-gradient($grey-border 15%, transparent 16%);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  
+  // Floating Animation for the whole background feel
+  animation: fadeIn 0.5s ease-out;
+}
+
+// --- THE LOGIN CARD ---
+.auth-card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  border-radius: 24px; // Extra rounded
+  
+  // 3D Shadow Effect
+  box-shadow: 0 8px 0 rgba(0,0,0,0.05), 
+              0 20px 40px rgba(0,0,0,0.1);
+  
+  border: 2px solid white;
+  text-align: center;
+  position: relative;
+  
+  // Entrance Animation
+  animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+// --- MASCOT & HEADER ---
+.mascot-wrapper {
+  margin-top: -60px; // Pull mascot partially out of the card
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  &:hover {
+    transform: scale(1.1) rotate(5deg);
+    cursor: grab;
+  }
+}
+
+.auth-mascot {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+h1 {
+  font-size: 2rem;
+  color: $text-color;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: $grey-text;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+// --- INPUT FIELDS (Game Style) ---
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.input-wrapper {
+  position: relative;
+  transition: transform 0.2s;
+
+  &:focus-within {
+    transform: translateY(-2px);
+  }
+}
+
+.game-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: $text-color;
+  background-color: $grey-light;
+  
+  border: 2px solid transparent; // Hidden border by default
+  border-bottom: 4px solid $grey-border; // 3D depth
+  border-radius: 16px;
+  
+  outline: none;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: lighten($grey-text, 10%);
+    font-weight: 500;
+  }
+
+  // Focus State (The "Active Slot" look)
+  &:focus {
+    background-color: white;
+    border-color: $primary-blue;
+    border-bottom-color: $primary-blue-dark;
+    box-shadow: 0 4px 12px rgba($primary-blue, 0.15);
+  }
+
+  // Filled State (Optional visual cue)
+  &:not(:placeholder-shown) {
+    background-color: white;
+    border-color: $grey-border;
+  }
+}
+
+// --- FOOTER & LINKS ---
+.footer {
+  margin-top: 2rem;
+  font-weight: 700;
+  color: $grey-text;
+  font-size: 1rem;
+  
+  a {
+    color: $primary-blue;
+    text-decoration: none;
+    margin-left: 5px;
+    position: relative;
+    
+    // Underline animation
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: $primary-blue;
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.25s ease-out;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+  }
+}
+
+// --- ANIMATIONS ---
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+// --- MOBILE RESPONSIVENESS ---
+@include mobile {
+  .auth-card {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: none; // Flatter look on mobile
+    background: rgba(255,255,255,0.95); // Slightly transparent
+  }
+  
+  .mascot-wrapper {
+    margin-top: -20px; // Less overlap on mobile
+    transform: scale(0.9);
+  }
+
+  h1 { font-size: 1.75rem; }
+  
+  .game-input {
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
+}

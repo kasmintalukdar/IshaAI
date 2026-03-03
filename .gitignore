@@ -1,0 +1,50 @@
+# =========================
+# General
+# =========================
+.DS_Store
+Thumbs.db
+*.log
+.env
+
+# =========================
+# Node / JavaScript
+# =========================
+node_modules/
+dist/
+build/
+out/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# (KEEP package-lock.json committed)
+
+# =========================
+# Python / AI Engine
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+*.egg-info/
+.pytest_cache/
+*.pkl        # ML model files
+*.joblib
+
+# =========================
+# Databases / Binaries
+# =========================
+*.exe
+*.pdb
+*.dll
+*.rdb
+dump.rdb
+
+# =========================
+# IDEs / Editors
+# =========================
+.vscode/
+.idea/

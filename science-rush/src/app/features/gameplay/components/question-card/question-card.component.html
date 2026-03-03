@@ -1,0 +1,58 @@
+
+
+
+<div class="question-container anim-slide-up">
+
+  <div class="question-card">
+
+  
+  <div class="q-meta-header">
+    <span class="meta-tag year" *ngIf="question?.year">
+      {{ question.year }}
+    </span>
+
+    <span class="meta-tag marks" *ngIf="question?.marks">
+      {{ question.marks }} Marks
+    </span>
+  </div>
+
+  <div class="question-image-wrapper" *ngIf="question?.image_url">
+    <img
+      [src]="question.image_url"
+      alt="Question Image"
+      class="question-image"
+      loading="lazy"
+    />
+  </div>
+
+ 
+  <h2 class="question-text">
+    {{ question?.text }}
+  </h2>
+
+</div>
+
+  
+  <div class="options-grid">
+    <div 
+  class="option-card"
+  *ngFor="let opt of question.options; let i = index"
+  [class.selected]="selectedOptionId === opt.id && !showResult"
+  [class.correct]="isCorrect(opt.id)"
+  [class.wrong]="isWrong(opt.id)"
+  [class.dimmed]="isDimmed(opt.id)"
+  [class.disabled]="disabled || showResult"
+  (click)="selectOption(opt.id)">
+  
+  <span class="option-prefix">
+    {{ ['A','B','C','D'][i] }}
+  </span>
+
+  <span class="option-text">
+    {{ opt.text }}
+  </span>
+</div>
+
+  </div>
+
+</div>

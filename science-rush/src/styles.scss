@@ -1,0 +1,38 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+@use 'styles/animations';
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0; padding: 0;
+  font-family: 'Nunito', sans-serif;
+  background-color: $bg-color;
+  color: $text-color;
+  -webkit-font-smoothing: antialiased;
+  background-color: $page-bg; // Uses the new color
+  color: $neutral-10;
+}
+
+// html, body {
+//   height: 100%; /* CRITICAL for full screen apps */
+//   margin: 0;
+//   padding: 0;
+//   font-family: 'Nunito', sans-serif;
+//   background-color: #ffffff; /* Fallback color */
+// }
+
+h1, h2, h3 { margin: 0; font-weight: 800; color: $text-color; }
+
+.container {
+  max-width: 480px; /* Mobile focused width */
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Scrollbar Hide */
+::-webkit-scrollbar { width: 0px; background: transparent; }

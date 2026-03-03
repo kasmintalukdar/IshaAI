@@ -1,0 +1,234 @@
+// @use 'styles/variables' as *;
+
+// // --- CONTAINER ---
+// .node-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   cursor: pointer;
+//   width: 120px;
+//   position: relative;
+  
+//   // 1. Entrance Animation (Pop In)
+//   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+  
+//   // 2. Hover Effect (Scale Up)
+//   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+//   &:hover {
+//     transform: scale(1.1);
+//     z-index: 10; // Bring to front
+    
+//     .node-label {
+//       background-color: $primary-blue;
+//       color: white;
+//       border-color: $primary-blue;
+//     }
+//   }
+
+//   // Click Press Effect
+//   &:active { transform: scale(0.9); }
+// }
+
+// // --- CIRCLE LAYOUT ---
+// .circle-container {
+//   position: relative;
+//   width: 110px;
+//   height: 110px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   margin-bottom: 0.5rem;
+// }
+
+// // --- SVG RING ---
+// .progress-ring {
+//   position: absolute;
+//   top: 0; left: 0;
+//   transform: rotate(-90deg);
+//   z-index: 1;
+//   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+// }
+
+// .progress-ring__circle--track {
+//   opacity: 0.3;
+// }
+
+// .progress-ring__circle--fill {
+//   transition: stroke-dashoffset 1s ease-out; // Smooth fill on load
+// }
+
+// // --- INNER ICON BUBBLE ---
+// .inner-icon-circle {
+//   width: 80px;
+//   height: 80px;
+//   border-radius: 50%;
+//   background: white;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 2;
+//   border: 4px solid white;
+//   box-shadow: inset 0 -4px 0 rgba(0,0,0,0.1); // 3D inner bevel
+  
+//   // 3. Floating Animation for Unlocked Nodes
+//   &.unlocked {
+//     animation: float 3s ease-in-out infinite;
+//   }
+
+//   // 4. Completed State (Gold Gradient)
+//   &.completed {
+//     background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+//     border-color: #fff8d1;
+    
+//     .level-num { color: white; text-shadow: 0 2px 0 rgba(0,0,0,0.2); }
+//   }
+
+//   // 5. Active State (Pulse) - The one to play!
+//   &.active-play {
+//     border-color: $primary-green;
+//     box-shadow: 0 0 0 4px rgba($primary-green, 0.3);
+//     animation: pulse-ring 2s infinite;
+//   }
+// }
+
+// // --- TEXT & ICONS ---
+// .level-num {
+//   font-size: 2rem;
+//   font-weight: 900;
+//   color: $grey-text; // Default grey for unlocked but empty
+  
+//   &.has-progress { color: $primary-blue; }
+// }
+
+// .node-icon {
+//   width: 40px; height: 40px;
+//   filter: drop-shadow(0 2px 0 rgba(0,0,0,0.2));
+// }
+
+// .node-label {
+//   font-size: 0.8rem;
+//   font-weight: 800;
+//   text-transform: uppercase;
+//   color: $text-color;
+//   background: white;
+//   padding: 6px 12px;
+//   border-radius: 20px;
+//   border: 2px solid $grey-border;
+//   box-shadow: 0 4px 0 $grey-border;
+//   transition: all 0.2s;
+//   max-width: 140px;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
+
+// .stars-row {
+//   position: absolute;
+//   top: -10px; right: -5px;
+//   background: white;
+//   padding: 2px 6px;
+//   border-radius: 10px;
+//   border: 2px solid $grey-border;
+//   display: flex;
+//   gap: 2px;
+//   animation: float 4s ease-in-out infinite reverse; // Float opposite to circle
+  
+//   .star { font-size: 12px; color: #ddd; &.filled { color: $primary-yellow; } }
+// }
+
+// // --- KEYFRAMES ---
+
+// @keyframes popIn {
+//   0% { transform: scale(0); opacity: 0; }
+//   100% { transform: scale(1); opacity: 1; }
+// }
+
+// @keyframes float {
+//   0%, 100% { transform: translateY(0); }
+//   50% { transform: translateY(-8px); }
+// }
+
+// @keyframes pulse-ring {
+//   0% { box-shadow: 0 0 0 0 rgba($primary-green, 0.7); }
+//   70% { box-shadow: 0 0 0 15px rgba($primary-green, 0); }
+//   100% { box-shadow: 0 0 0 0 rgba($primary-green, 0); }
+// }
+
+
+
+
+.node-wrapper {
+  position: relative;
+  width: 120px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+
+  &:active { transform: scale(0.95); }
+  &.locked { opacity: 0.6; filter: grayscale(1); cursor: not-allowed; }
+}
+
+.ring-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+svg {
+  transform: rotate(-90deg); /* Start from top */
+  overflow: visible;
+  
+  .progress-arc {
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Inner Button (Floats inside the ring) */
+.node-btn {
+  position: absolute;
+  top: 18px; left: 18px; /* (120 - 84)/2 */
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 4px 0 #e5e5e5; /* 3D Depth */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+
+  .icon-img {
+    width: 100%;
+    height: 90%;
+    border-radius: 50%;
+  }
+}
+
+.node-label {
+  margin-top: -10px; /* Pull closer to ring */
+  background: #fff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 3;
+}
+
+.crown {
+  position: absolute;
+  top: -10px; right: 10px;
+  font-size: 2rem;
+  z-index: 4;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}

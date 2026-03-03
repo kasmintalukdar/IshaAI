@@ -1,0 +1,95 @@
+<!-- <div class="path-container">
+  
+  <header class="path-header">
+    <button class="back-btn" (click)="goBack()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <h1>{{ chapterName }}</h1>
+  </header>
+
+  <div class="scroll-area">
+    <div class="nodes-wrapper">
+      
+      <div *ngFor="let topic of topics; let i = index" 
+           class="node-row"
+           [ngClass]="getAlignment(topic.orderIndex)">
+        
+        <app-path-node
+          [title]="topic.title"
+          [progress]="topic.progress"
+          [status]="topic.status"
+          [position]="topic.position"
+          (click)="onTopicClick(topic.id)">
+        </app-path-node>
+
+      </div>
+
+    </div>
+  </div>
+
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="game-container topic-view">
+  
+  <header class="game-header">
+    <button class="back-btn" (click)="goBack()">❮</button>
+    <div class="header-content">
+      <span class="eyebrow">Chapter</span>
+      <h1>{{ chapterName }}</h1>
+    </div>
+    <div class="header-spacer"></div>
+  </header>
+
+  <div class="scroll-viewport">
+    <div class="path-layout">
+      
+      <div class="winding-path-bg"></div>
+
+      <div class="nodes-stack">
+        <div *ngFor="let topic of topics; let i = index" 
+             class="node-row"
+             [ngClass]="getAlignment(topic.orderIndex)"> <div class="node-host">
+            
+            <app-path-node
+              [progress]="topic.progress"
+              [status]="topic.status"
+              [position]="topic.position"
+              (click)="onTopicClick(topic.id)"
+              [icon]="topic.image || defaultIcon"
+              >
+            </app-path-node>
+            
+            <div class="topic-label-container">
+              <span class="topic-label">{{ topic.title }}</span>
+            </div>
+
+            <div class="level-indicator">{{ i + 1 }}</div>
+          </div>
+        </div>
+
+        <div class="path-end-marker">
+          <div class="flag-icon">🏁</div>
+          <span>Chapter Complete</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mascot-container">
+    <img src="assets/images/mascots/thinking.svg" alt="Thinking Mascot" class="mascot-img">
+  </div>
+</div>

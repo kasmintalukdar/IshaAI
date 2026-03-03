@@ -1,0 +1,49 @@
+<div class="section-header">Statistics</div>
+
+<div class="stats-grid" *ngIf="stats$ | async as stats">
+  
+  <div class="stat-card">
+    <div class="stat-icon fire">🔥</div>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.streak || 0 }}</span>
+      <span class="stat-label">Day Streak</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon bolt">⚡</div>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.total_xp | number }}</span>
+      <span class="stat-label">Total XP</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon shield">🛡️</div>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.current_league }}</span>
+      <span class="stat-label">League</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon target">🎯</div>
+    <div class="stat-info">
+      <span class="stat-value">{{ stats.top_accuracy }}%</span>
+      <span class="stat-label">Accuracy</span>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #loading>
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let i of [1,2,3,4]">
+      <div class="stat-icon" style="background: #f1f5f9;"></div>
+      <div class="stat-info">
+        <div style="height: 20px; width: 40px; background: #f1f5f9; margin-bottom: 4px; border-radius: 4px;"></div>
+        <div style="height: 12px; width: 60px; background: #f1f5f9; border-radius: 4px;"></div>
+      </div>
+    </div>
+  </div>
+</ng-template>

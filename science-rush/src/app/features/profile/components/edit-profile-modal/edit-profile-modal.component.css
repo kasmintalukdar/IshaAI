@@ -1,0 +1,205 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease-out;
+}
+.modal-overlay.closing {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+.modal-overlay.closing .modal-container {
+  animation: slideDown 0.3s ease-in forwards;
+}
+
+.modal-container {
+  background: #f8fafc;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 24px 24px 0 0;
+  padding: 24px;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+@media (min-width: 768px) {
+  .modal-container {
+    align-self: center;
+    border-radius: 24px;
+    margin: 20px;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #3c3c3c;
+}
+.modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #afafaf;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.image-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+.image-upload-wrapper .image-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  background: #f7f7f7;
+}
+.image-upload-wrapper .image-preview img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.image-upload-wrapper .camera-btn {
+  position: absolute;
+  bottom: 0;
+  right: 35%;
+  transform: translateX(20px);
+  background: #1cb0f6;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+.image-upload-wrapper .camera-btn:active {
+  transform: translateX(20px) scale(0.9);
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  color: #afafaf;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.form-group .input-wrapper {
+  position: relative;
+}
+.form-group .input-wrapper input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #e5e5e5;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3c3c3c;
+  background: #f7f7f7;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-group .input-wrapper input:focus {
+  border-color: #1cb0f6;
+  background: white;
+}
+.form-group .input-wrapper .icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #afafaf;
+  pointer-events: none;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 16px;
+}
+.modal-footer button {
+  flex: 1;
+  padding: 16px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+}
+.modal-footer button.btn-cancel {
+  background: #f7f7f7;
+  color: #3c3c3c;
+}
+.modal-footer button.btn-save {
+  background: #58cc02;
+  color: white;
+  box-shadow: 0 4px 0 #46a302;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.modal-footer button.btn-save:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+.modal-footer button.btn-save:disabled {
+  background: #e5e5e5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}/*# sourceMappingURL=edit-profile-modal.component.css.map */

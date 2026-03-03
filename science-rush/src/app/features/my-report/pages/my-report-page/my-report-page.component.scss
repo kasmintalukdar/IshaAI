@@ -1,0 +1,910 @@
+
+
+// // // // // /* --- 🎨 Game Color Palette --- */
+// // // // // $c-bg: #e5e5e5; /* Light Grey Background like Apps */
+
+// // // // // $c-trend-bg: #e8f0fe; 
+// // // // // $c-trend-border: #4285f4; 
+
+// // // // // $c-skill-bg: #e6f4ea;
+// // // // // $c-skill-border: #34a853;
+
+// // // // // $c-retention-bg: #fef7e0;
+// // // // // $c-retention-border: #fbbc04;
+
+// // // // // $c-rca-bg: #fce8e6;
+// // // // // $c-rca-border: #ea4335;
+
+// // // // // $c-topic-bg: #e8f0fe;
+// // // // // $c-topic-border: #3f51b5;
+
+// // // // // :host {
+// // // // //   display: block;
+// // // // //   background-color: $c-bg;
+// // // // //   min-height: 100vh;
+// // // // //   padding-bottom: 40px;
+// // // // //   font-family: 'Varela Round', 'Nunito', sans-serif; /* Use rounded font if available */
+// // // // // }
+
+// // // // // .gamified-container {
+// // // // //   max-width: 1000px; /* App-like narrow width */
+// // // // //   margin: 0 auto;
+// // // // //   padding: 20px;
+
+// // // // //   @media (max-width: 600px) {
+// // // // //     padding: 12px;
+// // // // //   }
+// // // // // }
+
+// // // // // /* --- 🏆 Header Section --- */
+// // // // // .game-header {
+// // // // //   display: flex;
+// // // // //   justify-content: space-between;
+// // // // //   align-items: center;
+// // // // //   background: white;
+// // // // //   border-radius: 20px;
+// // // // //   padding: 24px;
+// // // // //   margin-bottom: 30px;
+// // // // //   border: 2px solid #e0e0e0;
+// // // // //   border-bottom: 5px solid #d0d0d0; /* 3D Effect */
+// // // // //   position: relative;
+// // // // //   overflow: hidden;
+
+// // // // //   .header-text {
+// // // // //     z-index: 2;
+// // // // //   }
+
+// // // // //   .badge-pill {
+// // // // //     display: inline-block;
+// // // // //     background: #ffecb3;
+// // // // //     color: #ff6f00;
+// // // // //     font-weight: 800;
+// // // // //     font-size: 0.8rem;
+// // // // //     padding: 4px 12px;
+// // // // //     border-radius: 12px;
+// // // // //     text-transform: uppercase;
+// // // // //     margin-bottom: 8px;
+// // // // //     letter-spacing: 0.5px;
+// // // // //   }
+
+// // // // //   h1 {
+// // // // //     font-size: 1.8rem;
+// // // // //     color: #3c4043;
+// // // // //     margin: 0;
+// // // // //     font-weight: 800;
+// // // // //   }
+
+// // // // //   p {
+// // // // //     color: #5f6368;
+// // // // //     margin: 4px 0 0 0;
+// // // // //     font-size: 0.95rem;
+// // // // //   }
+
+// // // // //   .header-mascot {
+// // // // //     height: 100px;
+// // // // //     width: 100px;
+// // // // //     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    
+// // // // //     @media (max-width: 600px) {
+// // // // //       height: 70px;
+// // // // //       width: 70px;
+// // // // //     }
+// // // // //   }
+// // // // // }
+
+// // // // // /* --- 🎮 Grid Layout --- */
+// // // // // .game-grid {
+// // // // //   display: grid;
+// // // // //   grid-template-columns: repeat(2, 1fr);
+// // // // //   gap: 20px;
+// // // // //   align-items: start;
+
+// // // // //   /* Mobile Stack */
+// // // // //   @media (max-width: 900px) {
+// // // // //     grid-template-columns: 100%;
+// // // // //   }
+// // // // // }
+
+// // // // // /* --- 🃏 The "Game Card" Base --- */
+// // // // // .game-card {
+// // // // //   background: white;
+// // // // //   border-radius: 24px;
+// // // // //   overflow: hidden;
+// // // // //   border: 2px solid #e0e0e0;
+// // // // //   border-bottom: 5px solid #d0d0d0; /* 3D Effect */
+// // // // //   transition: transform 0.2s, border-bottom-width 0.2s;
+
+// // // // //   &:hover {
+// // // // //     transform: translateY(-2px);
+// // // // //     border-bottom-width: 7px;
+// // // // //   }
+
+// // // // //   &.full-width {
+// // // // //     grid-column: 1 / -1;
+// // // // //   }
+// // // // // }
+
+// // // // // /* --- 🌈 Card Headers (Specific Colors) --- */
+// // // // // .card-header {
+// // // // //   display: flex;
+// // // // //   align-items: center;
+// // // // //   gap: 15px;
+// // // // //   padding: 16px 20px;
+// // // // //   border-bottom: 2px solid rgba(0,0,0,0.05);
+
+// // // // //   .header-icon {
+// // // // //     width: 50px;
+// // // // //     height: 50px;
+// // // // //     background: white;
+// // // // //     border-radius: 50%;
+// // // // //     display: flex;
+// // // // //     align-items: center;
+// // // // //     justify-content: center;
+// // // // //     box-shadow: 0 4px 0 rgba(0,0,0,0.1); /* Mini 3D */
+// // // // //     border: 2px solid rgba(0,0,0,0.05);
+    
+// // // // //     img {
+// // // // //       width: 32px;
+// // // // //       height: 32px;
+// // // // //     }
+// // // // //   }
+
+// // // // //   .header-info {
+// // // // //     h3 {
+// // // // //       margin: 0;
+// // // // //       font-size: 1.1rem;
+// // // // //       font-weight: 800;
+// // // // //       color: #3c4043;
+// // // // //     }
+// // // // //     span {
+// // // // //       font-size: 0.8rem;
+// // // // //       font-weight: 600;
+// // // // //       color: rgba(0,0,0,0.5);
+// // // // //       text-transform: uppercase;
+// // // // //     }
+// // // // //   }
+// // // // // }
+
+// // // // // .card-body {
+// // // // //   padding: 20px;
+  
+// // // // //   &.center-content {
+// // // // //     display: flex;
+// // // // //     justify-content: center;
+// // // // //   }
+// // // // // }
+
+// // // // // /* --- 🎨 Theme Specifics --- */
+
+// // // // // /* 1. Trend (Blue/Purple) */
+// // // // // .trend-card {
+// // // // //   border-color: $c-trend-border;
+// // // // //   .card-header { background: $c-trend-bg; }
+// // // // //   .header-icon { border-color: $c-trend-border; }
+// // // // //   .header-info h3 { color: darken($c-trend-border, 20%); }
+// // // // // }
+
+// // // // // /* 2. Skills (Green) */
+// // // // // .skills-card {
+// // // // //   border-color: $c-skill-border;
+// // // // //   .card-header { background: $c-skill-bg; }
+// // // // //   .header-icon { border-color: $c-skill-border; }
+// // // // //   .header-info h3 { color: darken($c-skill-border, 20%); }
+// // // // // }
+
+// // // // // /* 3. Retention (Yellow) */
+// // // // // .retention-card {
+// // // // //   border-color: $c-retention-border;
+// // // // //   .card-header { background: $c-retention-bg; }
+// // // // //   .header-icon { border-color: $c-retention-border; }
+// // // // //   .header-info h3 { color: darken($c-retention-border, 30%); }
+// // // // // }
+
+// // // // // /* 4. Root Cause (Red) */
+// // // // // .rca-card {
+// // // // //   border-color: $c-rca-border;
+// // // // //   .card-header { background: $c-rca-bg; }
+// // // // //   .header-icon { border-color: $c-rca-border; }
+// // // // //   .header-info h3 { color: darken($c-rca-border, 20%); }
+// // // // // }
+
+// // // // // /* 5. Topics (Indigo) */
+// // // // // .topics-card {
+// // // // //   border-color: $c-topic-border;
+// // // // //   .card-header { background: $c-topic-bg; }
+// // // // //   .header-icon { border-color: $c-topic-border; }
+// // // // //   .header-info h3 { color: darken($c-topic-border, 20%); }
+// // // // // }
+
+// // // // // /* --- Animations --- */
+// // // // // .floating-anim {
+// // // // //   animation: float 3s ease-in-out infinite;
+// // // // // }
+
+// // // // // @keyframes float {
+// // // // //   0% { transform: translateY(0px); }
+// // // // //   50% { transform: translateY(-10px); }
+// // // // //   100% { transform: translateY(0px); }
+// // // // // }
+
+// // // // // .fade-in {
+// // // // //   animation: fadeIn 0.5s ease-out;
+// // // // // }
+// // // // // @keyframes fadeIn {
+// // // // //   from { opacity: 0; transform: translateY(20px); }
+// // // // //   to { opacity: 1; transform: translateY(0); }
+// // // // // }
+
+// // // // @use 'styles/variables' as *;
+// // // // @use 'styles/mixins' as *;
+
+
+
+// // // // /* --- 🎨 Game Color Palette --- */
+// // // // $c-bg: #f0f2f5; /* Slightly richer grey for page bg */
+
+// // // // /* Define Themes (Border, Header BG, Body BG Start, Body BG End) */
+// // // // $theme-trend:     (border: #4285f4, header: #e8f0fe, body-start: #f1f6ff, body-end: #ffffff);
+// // // // $theme-skill:     (border: #34a853, header: #e6f4ea, body-start: #f1fdf4, body-end: #ffffff);
+// // // // $theme-retention: (border: #fbbc04, header: #fef7e0, body-start: #fffbe8, body-end: #ffffff);
+// // // // $theme-rca:       (border: #ea4335, header: #fce8e6, body-start: #fef2f1, body-end: #ffffff);
+// // // // $theme-topic:     (border: #3f51b5, header: #e8eaf6, body-start: #eff1fa, body-end: #ffffff);
+
+// // // // :host {
+// // // //   display: block;
+// // // //   background-color: $page-bg;
+// // // //   min-height: 100vh;
+// // // //   padding-bottom: 60px;
+// // // //   font-family: 'Varela Round', 'Nunito', sans-serif; 
+// // // // }
+
+// // // // .gamified-container {
+// // // //   max-width: 1000px;
+// // // //   margin: 0 auto;
+// // // //   padding: 20px;
+
+// // // //   @media (max-width: 600px) {
+// // // //     padding: 12px;
+// // // //   }
+// // // // }
+
+// // // // /* --- 🏆 Header --- */
+// // // // .game-header {
+// // // //   display: flex;
+// // // //   justify-content: space-between;
+// // // //   align-items: center;
+// // // //   background: white;
+// // // //   border-radius: 24px;
+// // // //   padding: 24px 32px;
+// // // //   margin-bottom: 30px;
+// // // //   box-shadow: 0 8px 0 #e0e0e0, 0 4px 12px rgba(0,0,0,0.05); /* Deep 3D Shadow */
+// // // //   position: relative;
+// // // //   border: 2px solid white;
+
+// // // //   .header-text { z-index: 2; }
+
+// // // //   .badge-pill {
+// // // //     display: inline-block;
+// // // //     background: #fff8e1;
+// // // //     color: #ff8f00;
+// // // //     font-weight: 800;
+// // // //     font-size: 0.75rem;
+// // // //     padding: 6px 14px;
+// // // //     border-radius: 20px;
+// // // //     text-transform: uppercase;
+// // // //     margin-bottom: 8px;
+// // // //     letter-spacing: 1px;
+// // // //     box-shadow: 0 2px 0 #ffe082;
+// // // //   }
+
+// // // //   h1 {
+// // // //     font-size: 2rem;
+// // // //     color: #202124;
+// // // //     margin: 0;
+// // // //     font-weight: 800;
+// // // //     letter-spacing: -0.5px;
+// // // //   }
+
+// // // //   p {
+// // // //     color: #5f6368;
+// // // //     margin: 6px 0 0 0;
+// // // //     font-weight: 500;
+// // // //   }
+
+// // // //   .header-mascot {
+// // // //     height: 110px;
+// // // //     width: 110px;
+// // // //     filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1));
+// // // //   }
+// // // // }
+
+// // // // /* --- 🎮 Grid --- */
+// // // // .game-grid {
+// // // //   display: grid;
+// // // //   grid-template-columns: repeat(2, 1fr);
+// // // //   gap: 24px;
+// // // //   align-items: start;
+
+// // // //   @media (max-width: 900px) {
+// // // //     grid-template-columns: 100%;
+// // // //   }
+// // // // }
+
+// // // // /* --- 🃏 Game Card Base --- */
+// // // // .game-card {
+// // // //   border-radius: 24px;
+// // // //   overflow: hidden;
+// // // //   /* Remove basic border, use box-shadow for 3D effect */
+// // // //   border: 2px solid transparent; 
+// // // //   box-shadow: 0 6px 0 rgba(0,0,0,0.1); /* The "Button" thickness */
+// // // //   transition: transform 0.2s, box-shadow 0.2s;
+// // // //   background: white; /* Fallback */
+
+// // // //   &:hover {
+// // // //     transform: translateY(-4px);
+// // // //     box-shadow: 0 10px 0 rgba(0,0,0,0.1);
+// // // //   }
+
+// // // //   &.full-width {
+// // // //     grid-column: 1 / -1;
+// // // //   }
+// // // // }
+
+// // // // /* --- Headers & Bodies --- */
+// // // // .card-header {
+// // // //   display: flex;
+// // // //   align-items: center;
+// // // //   gap: 16px;
+// // // //   padding: 18px 24px;
+// // // //   border-bottom: 1px solid rgba(0,0,0,0.05);
+
+// // // //   .header-icon {
+// // // //     width: 48px;
+// // // //     height: 48px;
+// // // //     background: white;
+// // // //     border-radius: 16px; /* Squircle */
+// // // //     display: flex;
+// // // //     align-items: center;
+// // // //     justify-content: center;
+// // // //     box-shadow: 0 4px 0 rgba(0,0,0,0.08); 
+    
+// // // //     img { width: 28px; height: 28px; }
+// // // //   }
+
+// // // //   .header-info {
+// // // //     h3 {
+// // // //       margin: 0;
+// // // //       font-size: 1.15rem;
+// // // //       font-weight: 800;
+// // // //       color: #3c4043;
+// // // //     }
+// // // //     span {
+// // // //       font-size: 0.75rem;
+// // // //       font-weight: 700;
+// // // //       opacity: 0.7;
+// // // //       text-transform: uppercase;
+// // // //       letter-spacing: 0.5px;
+// // // //     }
+// // // //   }
+// // // // }
+
+// // // // .card-body {
+// // // //   padding: 24px;
+// // // //   min-height: 200px;
+  
+// // // //   /* Flex settings for content alignment */
+// // // //   &.center-content {
+// // // //     display: flex;
+// // // //     justify-content: center;
+// // // //     align-items: center;
+// // // //   }
+// // // // }
+
+// // // // /* --- 🌈 Apply Themes (The Magic Part) --- */
+
+// // // // /* Mixin to generate theme styles */
+// // // // @mixin apply-theme($map) {
+// // // //   border-color: map-get($map, border);
+  
+// // // //   .card-header {
+// // // //     background-color: map-get($map, header);
+    
+// // // //     .header-icon {
+// // // //       border: 2px solid map-get($map, header); // subtle match
+// // // //     }
+    
+// // // //     .header-info h3 {
+// // // //       color: darken(map-get($map, border), 15%);
+// // // //     }
+// // // //     .header-info span {
+// // // //       color: darken(map-get($map, border), 10%);
+// // // //     }
+// // // //   }
+
+// // // //   .card-body {
+// // // //     /* Gradient from Tint -> White */
+// // // //     background: linear-gradient(180deg, map-get($map, body-start) 0%, map-get($map, body-end) 100%);
+// // // //   }
+// // // // }
+
+// // // // .trend-card { @include apply-theme($theme-trend); }
+// // // // .skills-card { @include apply-theme($theme-skill); }
+// // // // .retention-card { @include apply-theme($theme-retention); }
+// // // // .rca-card { @include apply-theme($theme-rca); }
+// // // // .topics-card { @include apply-theme($theme-topic); }
+
+// // // // /* --- Animations --- */
+// // // // .floating-anim { animation: float 3s ease-in-out infinite; }
+// // // // @keyframes float {
+// // // //   0% { transform: translateY(0px); }
+// // // //   50% { transform: translateY(-8px); }
+// // // //   100% { transform: translateY(0px); }
+// // // // }
+
+// // // // .fade-in { animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+// // // // @keyframes fadeIn {
+// // // //   from { opacity: 0; transform: translateY(30px); }
+// // // //   to { opacity: 1; transform: translateY(0); }
+// // // // }
+
+
+
+
+
+
+
+
+// // // // Variables (Adjust to match your specific theme file if widely used)
+// // // $primary-color: #4f46e5; // Example Indigo
+// // // $text-dark: #1f2937;
+// // // $text-muted: #6b7280;
+// // // $bg-color: #f3f4f6;
+// // // $card-bg: #ffffff;
+// // // $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+// // // $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+// // // $radius-lg: 16px;
+
+// // // :host {
+// // //   display: block;
+// // //   background-color: $bg-color;
+// // //   min-height: 100vh;
+// // //   font-family: 'Inter', system-ui, sans-serif; // Ensure a clean font
+// // // }
+
+// // // .dashboard-container {
+// // //   max-width: 1400px; // Wide enough for charts
+// // //   margin: 0 auto;
+// // //   padding: 2rem;
+
+// // //   @media (max-width: 768px) {
+// // //     padding: 1rem;
+// // //   }
+// // // }
+
+// // // // Header Styling
+// // // .dashboard-header {
+// // //   display: flex;
+// // //   justify-content: space-between;
+// // //   align-items: flex-end;
+// // //   margin-bottom: 2rem;
+// // //   flex-wrap: wrap;
+// // //   gap: 1rem;
+
+// // //   .header-content {
+// // //     .title {
+// // //       font-size: 1.875rem;
+// // //       font-weight: 700;
+// // //       color: $text-dark;
+// // //       margin: 0;
+// // //       margin-bottom: 0.5rem;
+// // //     }
+// // //     .subtitle {
+// // //       color: $text-muted;
+// // //       margin: 0;
+// // //       font-size: 1rem;
+// // //     }
+// // //   }
+
+// // //   .btn-primary-outline {
+// // //     background: transparent;
+// // //     border: 1px solid #d1d5db;
+// // //     padding: 0.5rem 1rem;
+// // //     border-radius: 8px;
+// // //     font-weight: 500;
+// // //     color: $text-dark;
+// // //     cursor: pointer;
+// // //     background: white;
+// // //     transition: all 0.2s;
+
+// // //     &:hover {
+// // //       border-color: $primary-color;
+// // //       color: $primary-color;
+// // //       box-shadow: $shadow-sm;
+// // //     }
+// // //   }
+// // // }
+
+// // // // Grid Layout
+// // // .dashboard-grid {
+// // //   display: grid;
+// // //   grid-template-columns: repeat(12, 1fr); // 12 Column Grid
+// // //   gap: 1.5rem;
+  
+// // //   // Responsive: Stack on mobile
+// // //   @media (max-width: 1024px) {
+// // //     display: flex;
+// // //     flex-direction: column;
+// // //   }
+// // // }
+
+// // // // Card Styling
+// // // .dashboard-card {
+// // //   background: $card-bg;
+// // //   border-radius: $radius-lg;
+// // //   box-shadow: $shadow-md;
+// // //   padding: 1.5rem;
+// // //   display: flex;
+// // //   flex-direction: column;
+// // //   transition: transform 0.2s ease;
+// // //   overflow: hidden;
+
+// // //   // Layout Utility Classes
+// // //   &.full-width {
+// // //     grid-column: span 12;
+// // //   }
+  
+// // //   &.half-width {
+// // //     grid-column: span 6;
+// // //   }
+
+// // //   &.main-trend-card {
+// // //     min-height: 350px; // Ensure charts have space
+// // //   }
+
+// // //   // Card Header
+// // //   .card-header {
+// // //     display: flex;
+// // //     justify-content: space-between;
+// // //     align-items: center;
+// // //     margin-bottom: 1.5rem;
+
+// // //     h3 {
+// // //       font-size: 1.25rem;
+// // //       font-weight: 600;
+// // //       color: $text-dark;
+// // //       margin: 0;
+// // //     }
+
+// // //     .badge {
+// // //       font-size: 0.75rem;
+// // //       background: #e0e7ff; // Light Indigo
+// // //       color: $primary-color;
+// // //       padding: 0.25rem 0.75rem;
+// // //       border-radius: 9999px;
+// // //       font-weight: 600;
+// // //     }
+    
+// // //     .status-indicator.good {
+// // //         color: #10b981;
+// // //         font-weight: 600;
+// // //         font-size: 0.875rem;
+// // //         display: flex;
+// // //         align-items: center;
+// // //         gap: 0.25rem;
+        
+// // //         &::before {
+// // //             content: '';
+// // //             display: block;
+// // //             width: 8px;
+// // //             height: 8px;
+// // //             background-color: #10b981;
+// // //             border-radius: 50%;
+// // //         }
+// // //     }
+
+// // //     .btn-icon {
+// // //         background: none;
+// // //         border: none;
+// // //         color: $text-muted;
+// // //         cursor: pointer;
+// // //         font-size: 1rem;
+// // //         &:hover { color: $primary-color; }
+// // //     }
+// // //   }
+
+// // //   .card-body {
+// // //     flex: 1;
+// // //     position: relative;
+    
+// // //     &.scrollable-y {
+// // //         overflow-y: auto;
+// // //         max-height: 400px;
+// // //     }
+// // //   }
+// // // }
+
+// // // // Animation
+// // // .fade-in {
+// // //   animation: fadeIn 0.5s ease-in;
+// // // }
+
+// // // @keyframes fadeIn {
+// // //   from { opacity: 0; transform: translateY(10px); }
+// // //   to { opacity: 1; transform: translateY(0); }
+// // // }
+
+
+
+
+
+
+
+
+
+
+// // // Variables to match your theme
+// // $bg-dark: #0b0f19;
+// // $card-bg: #151b2b; // Slightly lighter than background for contrast
+// // $text-main: #ffffff;
+// // $text-muted: #a0a0a0;
+// // $gap: 24px;
+
+// // .report-dashboard {
+// //   max-width: 1200px;
+// //   margin: 0 auto;
+// //   padding: 24px;
+// //   background-color: $bg-dark;
+// //   min-height: 100vh;
+// //   color: $text-main;
+// //   font-family: 'Segoe UI', sans-serif;
+// // }
+
+// // // Titles for sections
+// // h2 {
+// //   font-size: 1.25rem;
+// //   margin-bottom: 16px;
+// //   color: $text-main;
+// //   border-left: 4px solid #3498db; // Blue accent line
+// //   padding-left: 12px;
+// // }
+
+// // // Standard Section Styling
+// // .dashboard-section {
+// //   margin-bottom: $gap;
+// // }
+
+// // // Grid for the middle section (Cognitive + Retention)
+// // .insights-grid {
+// //   display: grid;
+// //   grid-template-columns: 1fr 1fr; // Two equal columns
+// //   gap: $gap;
+// //   margin-bottom: $gap;
+
+// //   // Mobile responsiveness: Stack them on small screens
+// //   @media (max-width: 768px) {
+// //     grid-template-columns: 1fr;
+// //   }
+// // }
+
+// // // Wrapper to ensure child components fit nicely
+// // .dashboard-card {
+// //   background: transparent; 
+// //   // If your child components already have a background color (like cognitive-skills),
+// //   // we leave this transparent. If they are transparent, add 'background-color: $card-bg;' here.
+  
+// //   height: 100%;
+// // }
+
+
+
+
+// // --- Variables ---
+// $bg-dark: #0b0f19;
+// $text-main: #ffffff;
+// $accent-color: #3498db;
+// $gap-desktop: 24px;
+// $gap-mobile: 16px;
+
+// :host {
+//   display: block;
+//   background-color: $bg-dark;
+//   min-height: 100vh;
+// }
+
+// .report-dashboard {
+//   // Center the content on large screens
+//   max-width: 1400px; 
+//   margin: 0 auto;
+  
+//   // Padding adjusts based on device
+//   padding: 24px;
+//   @media (max-width: 768px) {
+//     padding: 16px;
+//   }
+//   @media (max-width: 480px) {
+//     padding: 12px;
+//   }
+
+//   font-family: 'Segoe UI', sans-serif;
+//   color: $text-main;
+// }
+
+// // --- Section Styling ---
+// .dashboard-section {
+//   margin-bottom: $gap-desktop;
+//   width: 100%;
+
+//   @media (max-width: 768px) {
+//     margin-bottom: $gap-mobile;
+//   }
+// }
+
+// h2 {
+//   font-size: 1.25rem;
+//   margin: 0 0 16px 0;
+//   color: $text-main;
+//   font-weight: 600;
+//   border-left: 4px solid $accent-color;
+//   padding-left: 12px;
+
+//   @media (max-width: 480px) {
+//     font-size: 1.1rem; // Smaller title on mobile
+//     margin-bottom: 12px;
+//   }
+// }
+
+// // --- Middle Grid (Cognitive + Retention) ---
+// .insights-grid {
+//   display: grid;
+//   // Desktop/Laptop: Two equal columns
+//   grid-template-columns: 1fr 1fr; 
+//   gap: $gap-desktop;
+//   margin-bottom: $gap-desktop;
+//   align-items: start;
+
+//   // Tablet (Portrait) & Mobile: Stack vertically
+//   @media (max-width: 992px) {
+//     grid-template-columns: 1fr; // Force single column
+//     gap: $gap-mobile;
+//     margin-bottom: $gap-mobile;
+//   }
+// }
+
+// // --- Component Wrapper ---
+// // This ensures child components don't overflow or break layout
+// .dashboard-card {
+//   width: 100%;
+//   min-width: 0; // CRITICAL: Prevents grid blowouts with charts
+  
+//   // Optional: Add background if your child components are transparent
+//   // background-color: #151b2b;
+//   // border-radius: 12px;
+//   // padding: 16px;
+// }
+
+// // --- Specific Fixes for Charts ---
+// // Ensures charts resize correctly inside the grid
+// ::ng-deep app-board-probability-trend,
+// ::ng-deep app-cognitive-skills,
+// ::ng-deep app-retention-health,
+// ::ng-deep app-chapter-wise-analysis {
+//   display: block;
+//   width: 100%;
+//   max-width: 100%;
+// }
+
+
+
+
+
+
+// --- Variables ---
+$bg-dark: #0b0f19;
+$text-main: #ffffff;
+$text-muted: #a0a0a0;
+$accent-color: #3498db;
+$warning-color: #f1c40f; 
+$gap-desktop: 24px;
+$gap-mobile: 16px;
+
+:host {
+  display: block;
+  background-color: $bg-dark;
+  min-height: 100vh;
+}
+
+.report-dashboard {
+  max-width: 1400px; 
+  margin: 0 auto;
+  padding: 24px;
+
+  @media (max-width: 768px) { padding: 16px; }
+  font-family: 'Segoe UI', sans-serif;
+  color: $text-main;
+}
+
+// --- 1. Page Header Styles ---
+.page-header {
+  margin-bottom: 30px;
+  
+  h1 {
+    font-size: 1.8rem;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    color: $text-muted;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+// --- Section & Card Styles ---
+.dashboard-section {
+  margin-bottom: $gap-desktop;
+  width: 100%;
+}
+
+.dashboard-card {
+  width: 100%;
+  min-width: 0;
+  
+  // Card Titles (h3)
+  h3 {
+    font-size: 1.1rem;
+    margin: 0 0 12px 0;
+    color: $text-main;
+    font-weight: 600;
+    border-left: 3px solid $accent-color;
+    padding-left: 10px;
+  }
+}
+
+// --- 2. Description Text Styles ---
+.chart-description {
+  font-size: 0.9rem;
+  color: $text-muted;
+  margin-bottom: 16px;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.05); // Subtle box
+  padding: 10px;
+  border-radius: 6px;
+
+  .highlight {
+    color: $warning-color; // Make the advice stand out (Yellow)
+    font-weight: 600;
+  }
+}
+
+// --- Layout Grid ---
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: $gap-desktop;
+  margin-bottom: $gap-desktop;
+  align-items: start;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr; 
+    gap: $gap-mobile;
+  }
+}
+
+// --- Global Header (h2) ---
+h2 {
+  font-size: 1.4rem;
+  margin: 0 0 16px 0;
+  color: $text-main;
+  border-left: 4px solid $accent-color;
+  padding-left: 12px;
+}
+
+// Fix chart widths
+::ng-deep app-board-probability-trend,
+::ng-deep app-cognitive-skills,
+::ng-deep app-retention-health,
+::ng-deep app-chapter-wise-analysis {
+  display: block;
+  width: 100%;
+}

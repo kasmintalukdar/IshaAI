@@ -1,0 +1,55 @@
+<div class="wizard-container">
+  <h1>✨ Create New Chapter</h1>
+
+  <div class="step" *ngIf="step === 1">
+    <h3>Step 1: Chapter Details</h3>
+    <form [formGroup]="chapterForm">
+      <div class="grid">
+        <select formControlName="stream">
+          <option value="" disabled>Select Stream</option>
+          <option *ngFor="let s of streams" [value]="s">{{ s }}</option>
+        </select>
+        
+        <select formControlName="subject">
+          <option value="" disabled>Select Subject</option>
+          <option *ngFor="let s of subjects" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <input type="text" placeholder="Chapter Name (e.g. Electrostatics)" formControlName="name">
+      
+      <div class="grid">
+        <input type="number" placeholder="Path Position (e.g. 1)" formControlName="orderIndex">
+        <select formControlName="type">
+          <option value="NORMAL">Normal Chapter</option>
+          <option value="MIXED">Mixed (Review)</option>
+          <option value="FINAL">Final Boss</option>
+        </select>
+      </div>
+
+      <button class="btn-next" [disabled]="chapterForm.invalid" (click)="nextStep()">
+        Next: Upload Questions →
+      </button>
+    </form>
+  </div>
+
+  <div class="step" *ngIf="step === 2">
+    <h3>Step 2: Upload Content</h3>
+    <app-json-validator (fileValid)="onJsonValid($event)"></app-json-validator>
+  </div>
+
+  <div class="step" *ngIf="step === 3">
+    <h3>Step 3: Review & Publish</h3>
+    
+    <div class="summary-card">
+      <p><strong>Subject:</strong> {{ chapterForm.get('subject')?.value }}</p>
+      <p><strong>Chapter:</strong> {{ chapterForm.get('name')?.value }}</p>
+      <p><strong>Questions:</strong> {{ uploadedQuestions.length }}</p>
+      <p><strong>Path Position:</strong> Node #{{ chapterForm.get('orderIndex')?.value }}</p>
+    </div>
+
+    <button class="btn-publish" (click)="submitChapter()">
+      🚀 Publish Chapter Live
+    </button>
+  </div>
+</div>

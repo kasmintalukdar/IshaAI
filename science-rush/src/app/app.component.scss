@@ -1,0 +1,15 @@
+.main-content {
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+ 
+    
+    /* Transition for smooth hiding/showing of navbar space */
+    // transition: padding-bottom 0.3s ease;
+  
+    /* 🟢 THE FIX: Only add padding when nav is visible */
+    &.with-nav {
+      /* 70px (Nav Height) + 20px (Breathing Room) + iPhone Safe Area */
+      padding-bottom: calc(70px + 20px + env(safe-area-inset-bottom));
+    }
+  }

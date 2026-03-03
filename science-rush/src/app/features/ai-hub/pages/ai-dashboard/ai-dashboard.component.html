@@ -1,0 +1,195 @@
+<div class="ai-hub-canvas">
+  <div *ngIf="loading" class="loader-overlay">
+    <app-loader message="Synchronizing Neural Cores..."></app-loader>
+  </div>
+
+  <div class="content-wrapper" *ngIf="!loading">
+    <header class="system-console-header">
+      <div class="console-left">
+        <div class="status-indicator">
+          <span class="pulse-ring"></span>
+          <span class="status-text">SYSTEM: OPERATIONAL</span>
+        </div>
+        <div class="breadcrumb">
+          <span class="root">USER_DEEP_LINK</span>
+          <span class="separator">/</span>
+          <span class="node">NEURAL_HUB_V3.0</span>
+        </div>
+      </div>
+
+      <div class="console-center">
+        <h1 class="main-title">AI COGNITIVE HUB</h1>
+      </div>
+
+      <div class="console-right">
+        <div class="data-stream">
+          <span class="label">SYNC_RATE:</span>
+          <span class="value">{{ (masteryScore * 0.85).toFixed(1) }}%</span>
+        </div>
+        <div class="data-stream">
+          <span class="label">LATENCY:</span>
+          <span class="value">24ms</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="cards-grid">
+      
+      <div class="ui-card profiler-card">
+        <div class="card-header-simple"><span class="brain-icon">🧠</span></div>
+        <div class="card-content-centered">
+          <div class="mascot-container">
+            <div class="mascot-glow"></div>
+            <img [src]="getMascotImage(persona)" class="mascot-img" alt="Mascot">
+          </div>
+          <h2 class="persona-title">{{ persona | titlecase }}</h2>
+          <div class="divider"></div>
+          <p class="time-stats">
+            Avg Time: <strong>{{ avgTimePerQuestion }}s</strong> 
+            <span class="optimum-label">(Optimum: 45s)</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="ui-card mastery-card">
+        <div class="card-header">
+          <span class="icon-ribbon">🎗️</span>
+          <h3>True Mastery</h3>
+          <span class="info-icon" title="Difficulty Weighted Mastery Score">ⓘ</span>
+        </div>
+        <div class="card-content">
+          <div class="radial-container">
+            <svg viewBox="0 0 100 100" class="radial-svg">
+              <circle class="rail" cx="50" cy="50" r="45"></circle>
+              <circle class="fill" cx="50" cy="50" r="45" 
+                      [style.stroke-dashoffset]="283 - (283 * masteryScore / 100)"></circle>
+            </svg>
+            <div class="score-overlay">
+              <span class="current">{{ masteryScore }}</span>
+              <span class="total">/100</span>
+            </div>
+          </div>
+          <div class="details">
+            <h2>{{ masteryLevel }} Rank</h2>
+            <p class="source">Based on <span class="code">difficulty_weighted_score</span></p>
+            <p class="trend-down" *ngIf="masteryScore < 50">↓ High Difficulty Fails</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-card projector-card">
+        <div class="card-header">
+          <span class="icon-stats">📈</span>
+          <h3>Exam Projector</h3>
+          <span class="info-icon" title="Based on Syllabus & Current Retention">ⓘ</span>
+        </div>
+        <div class="card-content">
+          <div class="main-stats">
+            <span class="pts">{{ predictedScore }} Pts</span>
+            <span class="grade">(Grade {{ grade }})</span>
+          </div>
+          <div class="step-chart">
+            <div *ngFor="let i of [0, 1, 2, 3, 4]" 
+                 class="step-bar" 
+                 [class.active]="i < (predictedScore / 20)"
+                 [class.glow]="i === Math.floor(predictedScore / 20)"
+                 [style.height.px]="20 + (i * 12)">
+            </div>
+          </div>
+          <div class="insight-pill" *ngIf="currentInsight">
+            <div class="insight-content">
+              <p (click)="jumpToChapter(currentInsight.chapterId)" class="clickable-p">
+                <strong>Insight:</strong> Completing "{{ currentInsight.chapterName }}" increases prediction by <span>+{{ currentInsight.pointLift }} Pts</span>.
+              </p>
+              <button class="arrow-btn" (click)="nextInsight($event)">>→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-card burnout-card">
+        <div class="card-header">
+          <h3>MENTAL LOAD</h3>
+          <span class="bolt-icon">⚡</span>
+        </div>
+        <div class="card-content">
+          <div class="risk-display">
+            <h2 class="risk-value">{{ riskLevel }}</h2>
+            <span class="risk-label">Risk</span>
+          </div>
+          <div class="risk-bar-container">
+            <div *ngFor="let i of [0, 1, 2, 3]" 
+                 class="risk-segment" 
+                 [class.active]="i < (burnoutStatus?.stress_level * 4)"
+                 [style.background-color]="i < 2 ? '#f59e0b' : (i < 3 ? '#b45309' : '#1e293b')">
+            </div>
+          </div>
+          <p class="warning-text" [class.danger]="burnoutStatus?.is_burned_out">
+            {{ burnoutStatus?.is_burned_out ? 'Accuracy dropping. Take a break.' : 'Mental energy is stable. Keep going!' }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="pro-neural-report" *ngIf="aiSummary?.deepInsights">
+      <div class="report-terminal-header">
+        <div class="system-meta">
+          <div class="badge-glow">NEURAL PRO ACTIVE</div>
+          <div class="sync-status">
+            <span class="pulse-dot"></span> Core Synchronized
+          </div>
+        </div>
+        <h2 class="glitch-text">NEURAL OPTIMIZATION REPORT</h2>
+        <p class="subtitle">Advanced behavioral synthesis from activity logs</p>
+      </div>
+
+      <div class="report-grid">
+        <div class="report-strip" *ngFor="let item of aiSummary.deepInsights">
+          <div class="strip-side" [attr.data-ai]="item.id.split(':')[0]">
+            <span class="vertical-text">{{ item.id.split(':')[0] }}</span>
+          </div>
+          
+          <div class="strip-content">
+            <div class="strip-header">
+              <div class="title-group">
+                <span class="id-breadcrumb">{{ item.id }}</span>
+                <h3>{{ item.title }}</h3>
+              </div>
+              <div class="status-box">
+                <span class="label">CURRENT STATE</span>
+                <span class="value">{{ item.currentStatus }}</span>
+              </div>
+            </div>
+
+            <div class="data-matrix">
+              <div class="info-pane diagnosis">
+                <label><span class="icon">🔍</span> AI BEHAVIORAL DIAGNOSIS</label>
+                <div class="text-content">
+                  <p>{{ item.diagnosis }}</p>
+                </div>
+              </div>
+              
+              <div class="info-pane roadmap">
+                <label><span class="icon">🚀</span> STRATEGIC OPTIMIZATION PATH</label>
+                <div class="action-card">
+                  <p>{{ item.roadmap }}</p>
+                  <div class="impact-meter">
+                    <span class="meter-label">Impact Probability</span>
+                    <div class="meter-track"><div class="meter-fill" style="width: 88%"></div></div>
+                    <span class="impact-tag">+12% Efficiency</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="hub-footer">
+      <button class="nav-btn" routerLink="/dashboard">
+        Return to Mission Control
+      </button>
+    </footer>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<!-- <div class="promo-card" *ngIf="plan">
+  
+    <div class="header">
+      <div class="icon-wrapper">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+        </svg>
+      </div>
+      <h2 class="title">{{plan.name}}</h2>
+      <p class="subtitle">Unlock Your Dream Rank</p>
+    </div>
+  
+    <div class="body">
+      
+      <h3 class="trigger-msg">You hit a Premium Feature!</h3>
+      <p class="feature-context">"AI Forecast" is available for Pro users.</p>
+  
+      <ul class="benefits-list">
+        <li>
+          <div class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Teacher's <strong>Predicted Questions</strong></span>
+        </li>
+        <li>
+          <div class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span><strong>Infinite Lives</strong> & 5000 Coins</span>
+        </li>
+        <li>
+          <div class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Deep <strong>AI Forecast</strong></span>
+        </li>
+      </ul>
+  
+      <button class="upgrade-btn">
+        <span class="sparkle-icon">✨</span>
+        Upgrade Now - ₹99/mo
+      </button>
+  
+      <button class="dismiss-btn">No thanks, I'll study harder alone</button>
+  
+    </div>
+  
+  </div> -->
+
+
+  <div class="promo-card" *ngIf="plan">
+  
+    <div class="header" [style.background]="plan.style.gradient || '#333'">
+      <div class="icon-wrapper">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+        </svg>
+      </div>
+      
+      <h2 class="title">{{ plan.name }}</h2>
+      <p class="subtitle">{{ plan.subtitle }}</p>
+    </div>
+  
+    <div class="body">
+      
+      <h3 class="trigger-msg">{{ plan.description || 'Unlock Premium' }}</h3>
+      
+      <p class="feature-context">Premium features available for Pro users.</p>
+  
+      <ul class="benefits-list">
+        <li *ngFor="let feature of plan.features">
+          <div class="check-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span [innerHTML]="feature"></span>
+        </li>
+      </ul>
+  
+      <button class="upgrade-btn" (click)="onUpgrade.emit()">
+        <span class="sparkle-icon">✨</span>
+        Upgrade Now - ₹{{ plan.price }}/{{ plan.duration_days > 30 ? 'yr' : 'mo' }}
+      </button>
+  
+      <button class="dismiss-btn">No thanks, I'll study harder alone</button>
+  
+    </div>
+  
+</div>

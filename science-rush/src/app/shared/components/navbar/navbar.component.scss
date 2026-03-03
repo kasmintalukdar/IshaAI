@@ -1,0 +1,116 @@
+/* --- Variables --- */
+$primary-color: #ff7f50; /* App Theme Color */
+$text-inactive: #94a3b8;
+$white: #ffffff;
+$bg-color: #ffffff;
+
+:host {
+  display: block;
+  /* Ensure it doesn't overlap content */
+
+}
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: $white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  /* Native App Shadow */
+  box-shadow: 0 -1px 20px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(0,0,0,0.03);
+  
+  /* Safe Area for iPhone X+ (Home indicator) */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* --- Navigation Items --- */
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: $text-inactive;
+  font-size: 11px;
+  font-weight: 600;
+  width: 60px; /* Hit area */
+  transition: color 0.2s ease, transform 0.1s;
+  cursor: pointer;
+
+  .icon {
+    margin-bottom: 4px;
+    transition: transform 0.2s;
+  }
+
+  /* Active State (Selected Tab) */
+  &.active {
+    color: $primary-color;
+
+    .icon {
+      transform: translateY(-2px);
+      
+      /* Fill icon on active (Optional, looks premium) */
+      svg {
+        stroke-width: 2.5px;
+      }
+    }
+  }
+
+  /* Touch Feedback */
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* --- Floating Action Button (Middle Button) --- */
+.floating-action-wrapper {
+  position: relative;
+  top: -20px; /* Moves it up to float */
+}
+
+.floating-btn {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(255, 127, 80, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+
+  /* Pulse Animation */
+  animation: pulse-soft 3s infinite;
+
+  &:active {
+    transform: scale(0.9);
+    box-shadow: 0 4px 10px rgba(255, 127, 80, 0.4);
+  }
+}
+
+@keyframes pulse-soft {
+  0% { box-shadow: 0 0 0 0 rgba(255, 127, 80, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 127, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 127, 80, 0); }
+}
+
+/* --- Desktop Tweaks (Optional) --- */
+/* Since this is mobile-first, we limit width on big screens so it doesn't look stretched */
+@media (min-width: 768px) {
+  .mobile-bottom-nav {
+    max-width: 500px; /* Tablet/Phone width */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px 20px 0 0; /* Rounded top corners */
+    bottom: 20px; /* Float slightly */
+    border-radius: 50px; /* Floating pill look on desktop */
+    width: 90%;
+  }
+}

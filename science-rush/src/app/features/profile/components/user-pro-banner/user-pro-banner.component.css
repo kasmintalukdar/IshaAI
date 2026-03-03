@@ -1,0 +1,82 @@
+.upgrade-banner {
+  /* Match the Topper Pro gradient */
+  background: linear-gradient(135deg, #FFC837 0%, #FF8008 100%);
+  border-radius: 20px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 20px rgba(255, 128, 8, 0.2); /* Orange glow */
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+/* Subtle pattern overlay (optional) */
+.upgrade-banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 40%);
+  pointer-events: none;
+}
+
+.inner-1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1;
+}
+
+.inner-1 div span {
+  font-size: 32px;
+  /* Add a white circle behind the crown */
+  background: rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner-1 div h4 {
+  color: white;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inner-2 {
+  display: none; /* Hide the text on mobile for a cleaner banner, or keep if you prefer */
+}
+
+/* Create a "View" button look inside the banner */
+.action-btn {
+  background: white;
+  color: #FF8008;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+/* If you really want the text description (inner-2) back, use this: */
+@media (min-width: 500px) {
+  .inner-2 {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 200px;
+    text-align: right;
+  }
+}/*# sourceMappingURL=user-pro-banner.component.css.map */

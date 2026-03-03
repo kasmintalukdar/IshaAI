@@ -1,0 +1,156 @@
+@use '../../../../../../styles/variables' as *; // Adjust path to point to src/styles/variables
+@use '../../../../../../styles/mixins' as *;
+
+.wizard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  animation: fadeIn 0.4s ease-out;
+
+  h1 {
+    font-size: 1.8rem;
+    color: #1e293b;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 1rem;
+  }
+}
+
+// --- STEP INDICATOR (Optional visual guide) ---
+// You can add a progress bar here if you like
+
+// --- FORM LAYOUT ---
+.step {
+  animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  h3 {
+    color: #475569;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// --- INPUTS & GRID ---
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+input, select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #334155;
+  background: #f8fafc;
+  transition: all 0.2s;
+  outline: none;
+
+  &:focus {
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+}
+
+// --- SUMMARY CARD (Step 3) ---
+.summary-card {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  p {
+    margin-bottom: 0.75rem;
+    color: #334155;
+    font-size: 1.05rem;
+    
+    strong {
+      color: #0369a1;
+      width: 120px;
+      display: inline-block;
+    }
+
+    &:last-child { margin-bottom: 0; }
+  }
+}
+
+// --- BUTTONS ---
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  width: 100%;
+  margin-top: 1rem;
+
+  // Next Button
+  &.btn-next {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+
+    &:hover:not(:disabled) {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: #cbd5e1;
+      color: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+
+  // Publish Button (Success Green)
+  &.btn-publish {
+    background: #22c55e;
+    color: white;
+    box-shadow: 0 4px 6px rgba(34, 197, 94, 0.25);
+
+    &:hover {
+      background: #16a34a;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(34, 197, 94, 0.3);
+    }
+  }
+}
+
+// --- ANIMATIONS ---
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}

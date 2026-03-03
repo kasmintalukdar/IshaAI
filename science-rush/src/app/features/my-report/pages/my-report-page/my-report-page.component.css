@@ -1,0 +1,280 @@
+@charset "UTF-8";
+/* --- 🎨 Game Color Palette --- */
+/* Slightly richer grey for page bg */
+/* Define Themes (Border, Header BG, Body BG Start, Body BG End) */
+:host {
+  display: block;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  font-family: "Varela Round", "Nunito", sans-serif;
+}
+
+.gamified-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+@media (max-width: 600px) {
+  .gamified-container {
+    padding: 12px;
+  }
+}
+
+/* --- 🏆 Header --- */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 24px;
+  padding: 24px 32px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 0 #e0e0e0, 0 4px 12px rgba(0, 0, 0, 0.05); /* Deep 3D Shadow */
+  position: relative;
+  border: 2px solid white;
+}
+.game-header .header-text {
+  z-index: 2;
+}
+.game-header .badge-pill {
+  display: inline-block;
+  background: #fff8e1;
+  color: #ff8f00;
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 0 #ffe082;
+}
+.game-header h1 {
+  font-size: 2rem;
+  color: #202124;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.game-header p {
+  color: #5f6368;
+  margin: 6px 0 0 0;
+  font-weight: 500;
+}
+.game-header .header-mascot {
+  height: 110px;
+  width: 110px;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
+}
+
+/* --- 🎮 Grid --- */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .game-grid {
+    grid-template-columns: 100%;
+  }
+}
+
+/* --- 🃏 Game Card Base --- */
+.game-card {
+  border-radius: 24px;
+  overflow: hidden;
+  /* Remove basic border, use box-shadow for 3D effect */
+  border: 2px solid transparent;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1); /* The "Button" thickness */
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: white; /* Fallback */
+}
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+.game-card.full-width {
+  grid-column: 1/-1;
+}
+
+/* --- Headers & Bodies --- */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.card-header .header-icon {
+  width: 48px;
+  height: 48px;
+  background: white;
+  border-radius: 16px; /* Squircle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
+}
+.card-header .header-icon img {
+  width: 28px;
+  height: 28px;
+}
+.card-header .header-info h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #3c4043;
+}
+.card-header .header-info span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-body {
+  padding: 24px;
+  min-height: 200px;
+  /* Flex settings for content alignment */
+}
+.card-body.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- 🌈 Apply Themes (The Magic Part) --- */
+/* Mixin to generate theme styles */
+.trend-card {
+  border-color: #4285f4;
+}
+.trend-card .card-header {
+  background-color: #e8f0fe;
+}
+.trend-card .card-header .header-icon {
+  border: 2px solid #e8f0fe;
+}
+.trend-card .card-header .header-info h3 {
+  color: rgb(12.8425, 91.065, 220.6575);
+}
+.trend-card .card-header .header-info span {
+  color: rgb(17.805, 101.89, 241.195);
+}
+.trend-card .card-body {
+  /* Gradient from Tint -> White */
+  background: linear-gradient(180deg, #f1f6ff 0%, #ffffff 100%);
+}
+
+.skills-card {
+  border-color: #34a853;
+}
+.skills-card .card-header {
+  background-color: #e6f4ea;
+}
+.skills-card .card-header .header-icon {
+  border: 2px solid #e6f4ea;
+}
+.skills-card .card-header .header-info h3 {
+  color: rgb(33.9181818182, 109.5818181818, 54.1386363636);
+}
+.skills-card .card-header .header-info span {
+  color: rgb(39.9454545455, 129.0545454545, 63.7590909091);
+}
+.skills-card .card-body {
+  /* Gradient from Tint -> White */
+  background: linear-gradient(180deg, #f1fdf4 0%, #ffffff 100%);
+}
+
+.retention-card {
+  border-color: #fbbc04;
+}
+.retention-card .card-header {
+  background-color: #fef7e0;
+}
+.retention-card .card-header .header-icon {
+  border: 2px solid #fef7e0;
+}
+.retention-card .card-header .header-info h3 {
+  color: rgb(175.7, 131.6, 2.8);
+}
+.retention-card .card-header .header-info span {
+  color: rgb(200.8, 150.4, 3.2);
+}
+.retention-card .card-body {
+  /* Gradient from Tint -> White */
+  background: linear-gradient(180deg, #fffbe8 0%, #ffffff 100%);
+}
+
+.rca-card {
+  border-color: #ea4335;
+}
+.rca-card .card-header {
+  background-color: #fce8e6;
+}
+.rca-card .card-header .header-icon {
+  border: 2px solid #fce8e6;
+}
+.rca-card .card-header .header-info h3 {
+  color: rgb(190.6771300448, 33.0381165919, 19.8228699552);
+}
+.rca-card .card-header .header-info span {
+  color: rgb(213.7757847534, 37.0403587444, 22.2242152466);
+}
+.rca-card .card-body {
+  /* Gradient from Tint -> White */
+  background: linear-gradient(180deg, #fef2f1 0%, #ffffff 100%);
+}
+
+.topics-card {
+  border-color: #3f51b5;
+}
+.topics-card .card-header {
+  background-color: #e8eaf6;
+}
+.topics-card .card-header .header-icon {
+  border: 2px solid #e8eaf6;
+}
+.topics-card .card-header .header-info h3 {
+  color: rgb(43.2479508197, 55.6045081967, 124.2520491803);
+}
+.topics-card .card-header .header-info span {
+  color: rgb(49.8319672131, 64.0696721311, 143.1680327869);
+}
+.topics-card .card-body {
+  /* Gradient from Tint -> White */
+  background: linear-gradient(180deg, #eff1fa 0%, #ffffff 100%);
+}
+
+/* --- Animations --- */
+.floating-anim {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}/*# sourceMappingURL=my-report-page.component.css.map */

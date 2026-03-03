@@ -1,0 +1,62 @@
+<!-- <div class="rca-container" *ngIf="rca$ | async as rca; else emptyState">
+      
+  <div class="node-wrapper target">
+    <div class="node weak-node">
+      <div class="node-icon">⚠️</div>
+      <div class="node-content">
+        <h4>{{ rca.weakestTopic }}</h4>
+        <span class="stat">Current Accuracy: {{ rca.accuracy }}%</span>
+      </div>
+    </div>
+    <div class="connector-line"></div>
+  </div>
+
+  <div class="dependencies-grid">
+    <div class="node-wrapper dep" *ngFor="let dep of rca.dependencies">
+      <div class="node dep-node">
+        <span class="impact-badge">High Impact</span>
+        <h4>{{ dep.name }}</h4>
+        <p>Prerequisite Strength Req: {{ dep.impact }}%</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="insight-box">
+    <p><strong>Insight:</strong> Improving these prerequisite topics is projected to boost your {{ rca.weakestTopic }} score by 20%.</p>
+  </div>
+</div>
+
+<ng-template #emptyState>
+  <div class="empty-state">Great job! No critical weak areas detected this week.</div>
+</ng-template> -->
+
+
+
+<div class="root-cause-container">
+  
+  <div class="summary-stat">
+    <span class="total-count">{{ totalErrors }}</span>
+    <span class="total-label">Total Errors Detected</span>
+  </div>
+
+  <div class="cause-list">
+    <div class="cause-item" *ngFor="let item of rootCauses">
+      
+      <div class="item-header">
+        <span class="label">{{ item.label }}</span>
+        <span class="value">
+          <span class="count">{{ item.count }}</span>
+          <span class="percentage">({{ item.percentage }}%)</span>
+        </span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" 
+             [style.width]="getBarWidth(item.percentage)"
+             [style.background-color]="item.color">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+
+          <div class="wallet-container" >
+            <div class="wallet-row">
+              <div class="balance-group">
+                <div class="gem-icon">💎</div>
+                <div *ngIf="userGems$ | async as gems">
+                   <span class="balance-text">{{gems.balance}}</span>
+                   <span class="balance-label">GEMS</span>
+                </div>
+              </div>
+            </div>
+            <div class="wallet-actions">
+                
+                <div class="wallet-ad">
+                    <span>▶️</span>
+                    <h4>Watch Ad (+50)</h4>
+                </div>
+                
+                <div class="wallet-buy">
+                    <span>👑</span>
+                   <h4>Buy Bundle</h4>
+                </div>
+               
+           </div>
+            
+          </div>
+

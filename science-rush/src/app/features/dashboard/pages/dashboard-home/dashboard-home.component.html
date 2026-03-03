@@ -1,0 +1,79 @@
+
+
+<div class="dashboard-layout">
+
+  <!-- HEADER -->
+  <section class="header glass" *ngIf="insights$ | async as insight">
+    <div>
+      <h1>Hi, {{ userName }}!</h1>
+      <div class="readiness">
+        <span class="value">{{ insight.readiness_score }}%</span>
+        <span
+          class="trend"
+          [ngClass]="insight.readiness_trend"
+        >
+          {{ insight.readiness_trend === 'up' ? 'Improving' : 'Dropping' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="streak">
+      🔥 {{ insight.streak }}
+    </div>
+  </section>
+
+  <!-- OBJECTIVE -->
+  <section class="objective glass" *ngIf="insights$ | async as insight">
+    <span>TODAY'S OBJECTIVE</span>
+    <h2>{{ insight.daily_objective }}</h2>
+  </section>
+
+  <!-- INTELLIGENCE STRIP -->
+  <section class="insight-strip" *ngIf="insights$ | async as insight">
+    <div class="insight glass">
+      <span>EXAM STATE</span>
+      <strong>{{ insight.readiness_score }}% Ready</strong>
+    </div>
+
+    <div class="insight glass">
+      <span>RETENTION RISK</span>
+      <strong>{{ insight.readiness_trend === 'down' ? 'High' : 'Stable' }}</strong>
+    </div>
+
+    <div class="insight glass">
+      <span>FOCUS MODE</span>
+      <strong>Adaptive</strong>
+    </div>
+  </section>
+
+  <!-- WEAKEST LEVER -->
+  <section class="lever glass" *ngIf="insights$ | async as insight">
+    <span>WEAKEST LEVER</span>
+    <h3>{{ insight.weakest_lever.label }}</h3>
+  </section>
+
+  <!-- SUBJECTS -->
+  <section class="subjects">
+    <h4>YOUR SUBJECTS</h4>
+
+    <ng-container *ngIf="subjects$ | async as subjects">
+      <div
+        class="subject glass"
+        *ngFor="let subject of subjects"
+        (click)="onSelectSubject(subject.id)"
+      >
+        <div class="icon">◎</div>
+
+        <div class="info">
+          <div class="name">{{ subject.name }}</div>
+          <div class="bar">
+            <span [style.width.%]="subject.progress || 0"></span>
+          </div>
+        </div>
+
+        <div class="percent">{{ subject.progress || 0 }}%</div>
+      </div>
+    </ng-container>
+  </section>
+
+</div>

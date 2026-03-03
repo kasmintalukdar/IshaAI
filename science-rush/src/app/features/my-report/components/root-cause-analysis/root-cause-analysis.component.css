@@ -1,0 +1,132 @@
+.rca-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.node {
+  padding: 16px;
+  border-radius: 8px;
+  width: 220px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+.node:hover {
+  transform: translateY(-3px);
+}
+
+.weak-node {
+  background: #fff5f5;
+  border: 2px solid #feb2b2;
+}
+.weak-node h4 {
+  color: #c0392b;
+  margin: 0 0 5px 0;
+}
+.weak-node .stat {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.connector-line {
+  width: 2px;
+  height: 30px;
+  background: #bdc3c7;
+  margin: 5px 0;
+}
+
+.dependencies-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+}
+.dependencies-grid::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #bdc3c7;
+  z-index: 0;
+}
+
+.node-wrapper.dep::before {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 25px;
+  background: #bdc3c7;
+  margin: -25px auto 5px auto;
+}
+
+.dep-node {
+  background: white;
+  border: 1px solid #ecf0f1;
+}
+.dep-node h4 {
+  color: #2c3e50;
+  font-size: 0.95rem;
+  margin: 5px 0;
+}
+.dep-node p {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.impact-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  background: #edf2f7;
+  color: #2c3e50;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.insight-box {
+  margin-top: 30px;
+  background: #e8f8f5;
+  padding: 15px;
+  border-radius: 8px;
+  color: #16a085;
+  width: 100%;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  color: #27ae60;
+  font-weight: 500;
+  padding: 40px;
+}
+
+.node {
+  background: white; /* Keep nodes white! */
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05); /* 3D node */
+  border: 2px solid transparent;
+}
+
+.weak-node {
+  background: white;
+  border-color: #feb2b2; /* Red border */
+}
+
+/* Insight Box - Make it blend nicely */
+.insight-box {
+  background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}/*# sourceMappingURL=root-cause-analysis.component.css.map */

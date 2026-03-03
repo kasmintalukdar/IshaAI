@@ -1,0 +1,67 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+button {
+
+  appearance: none;
+  outline: none;
+}
+
+
+.btn-primary {
+  @include game-button($primary-blue);
+  
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; 
+    width: 60%;
+    height: 100%;
+    
+    // The light beam
+    background: linear-gradient(
+      to right, 
+      rgba(255,255,255,0) 0%, 
+      rgba(255,255,255,0.4) 50%, 
+      rgba(255,255,255,0) 100%
+    );
+    
+    transform: skewX(-25deg);
+    animation: shiny-slide 4s infinite;
+    pointer-events: none; 
+  }
+}
+
+.btn-secondary {
+  @include game-button($primary-green);
+}
+
+.btn-danger {
+  @include game-button($primary-red);
+}
+
+.btn-outline {
+  @include game-button(white, $grey-text);
+  border: 2px solid $grey-border;
+  box-shadow: 0 4px 0 $grey-border !important; 
+  
+  &:hover:not(:disabled) {
+    background: #f7f7f7;
+    filter: none;
+  }
+}
+
+
+.w-100 { width: 100%; }
+
+
+@keyframes shiny-slide {
+  0%, 80% { left: -150%; } 
+  100% { left: 150%; } }

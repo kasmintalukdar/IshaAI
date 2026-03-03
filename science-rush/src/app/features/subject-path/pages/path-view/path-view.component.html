@@ -1,0 +1,167 @@
+<!-- <div class="path-container">
+  
+  <header class="path-header">
+    <button class="back-btn" (click)="goBack()">←</button>
+    <h1>{{ subjectName }} Journey</h1>
+  </header>
+
+  <div class="scroll-area">
+    <div class="nodes-wrapper">
+      <div *ngFor="let chapter of chapters; let i = index" 
+           class="node-row"
+           [ngClass]="getAlignment(chapter.orderIndex)">
+        
+        <app-path-node
+          [title]="chapter.title"
+          [progress]="chapter.progress"
+          [status]="chapter.status"
+          [position]="chapter.position"
+          (click)="onChapterClick(chapter.id)">
+        </app-path-node>
+
+      </div>
+    </div>
+  </div>
+
+</div> -->
+
+
+<!-- 
+
+
+
+
+
+
+
+<div class="game-container" [ngClass]="subjectName | lowercase">
+  
+  <div class="animated-bg">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="stars"></div>
+  </div>
+
+  <header class="game-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="icon">❮</span>
+    </button>
+    <div class="header-title">
+      <h1>{{ subjectName }}</h1>
+      <span class="subtitle">Learning Path</span>
+    </div>
+    <div class="header-spacer"></div> </header>
+
+  <div class="scroll-viewport">
+    <div class="path-layout">
+      
+      <div class="winding-path-bg"></div>
+
+      <div class="nodes-stack">
+        <div *ngFor="let chapter of chapters; let i = index" 
+             class="node-row"
+             [ngClass]="getAlignment(chapter.orderIndex)">
+          
+          <div class="node-host">
+            <app-path-node
+              [title]="chapter.title"
+              [progress]="chapter.progress"
+              [status]="chapter.status"
+              [position]="chapter.position"
+              (click)="onChapterClick(chapter.id)">
+            </app-path-node>
+            
+            <div *ngIf="chapter.status !== 'LOCKED' && chapter.progress < 100" class="start-bubble">
+              START!
+            </div>
+          </div>
+
+        </div>
+        
+        <div class="path-end-marker">
+          <span>More coming soon!</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mascot-container">
+    <img src="assets/images/mascots/happy.svg" alt="Mascot" class="mascot-img">
+  </div>
+
+</div> -->
+
+
+
+
+
+<div class="game-container" [ngClass]="subjectName | lowercase">
+  
+  <div class="animated-bg">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <header class="game-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="icon">❮</span>
+    </button>
+    <div class="header-title">
+      <span class="subtitle">Learning Path</span>
+      <h1>{{ subjectName }}</h1>
+    </div>
+    <div class="header-spacer"></div>
+  </header>
+
+  <div class="scroll-viewport">
+    <div class="path-layout">
+      
+      <div class="winding-path-bg"></div>
+
+      <div class="nodes-stack">
+        <div *ngFor="let chapter of chapters; let i = index" 
+             class="node-row"
+             [ngClass]="getAlignment(chapter.orderIndex)">
+          
+          <div class="node-host">
+            <!-- <pre>
+              {{chapter|json}}
+            </pre> -->
+            <app-path-node
+              [progress]="chapter.progress"
+              [status]="chapter.status"
+              [position]="chapter.position"
+              (click)="onChapterClick(chapter.id)"
+              [icon]="chapter.banner || defaultIcon"
+              >
+            </app-path-node>
+            
+            <div class="status-badge" 
+                 [ngClass]="getChapterStatusLabel(chapter) | lowercase">
+              {{ getChapterStatusLabel(chapter) }}
+            </div>
+
+            <div class="chapter-info-card">
+              <span class="chapter-name">{{ chapter.title }}</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="path-end-marker">
+          <span>More Coming Soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mascot-container">
+    <img src="assets/images/mascots/happy.svg" alt="Mascot" class="mascot-img">
+  </div>
+
+</div>

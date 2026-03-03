@@ -1,0 +1,27 @@
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #576574;
+}
+
+.progress-bg {
+  height: 10px;
+  background: #ecf0f1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.6s ease;
+}/*# sourceMappingURL=cognitive-skills.component.css.map */

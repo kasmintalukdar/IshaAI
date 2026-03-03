@@ -1,0 +1,204 @@
+@charset "UTF-8";
+.game-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+  font-family: "Nunito", sans-serif;
+  color: white;
+}
+
+.animated-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.animated-bg .orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+}
+.animated-bg .orb.orb-1 {
+  width: 300px;
+  height: 300px;
+  top: -50px;
+  left: -50px;
+}
+.animated-bg .orb.orb-2 {
+  width: 200px;
+  height: 200px;
+  bottom: 10%;
+  right: -50px;
+}
+.animated-bg .grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 40px;
+}
+
+.game-header {
+  flex: 0 0 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 100;
+  background: rgba(23, 23, 35, 0.4);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.game-header .back-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.game-header .header-content {
+  text-align: center;
+}
+.game-header .header-content .eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+  display: block;
+}
+.game-header .header-content h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.game-header .header-spacer {
+  width: 40px;
+}
+
+.scroll-viewport {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 10;
+  padding-bottom: 80px;
+}
+
+.path-layout {
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.winding-path-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  /* 🔑 KEY FIX */
+  height: 100%;
+  width: 120px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 640'%3E%3Cpath d='M75 0 Q75 40 50 40 T25 80 T50 120 T75 160 T50 200 T25 240 T50 280 T75 320 T50 360 T25 400 T50 440 T75 480 T50 520 T25 560 T50 600 T75 640' stroke='rgba(255,255,255,0.35)' stroke-width='2' fill='none' stroke-dasharray='4 4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-size: 100% 640px;
+  background-position: center top;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nodes-stack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.node-row {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.node-row.center {
+  justify-content: center;
+}
+.node-row.left {
+  justify-content: flex-start;
+  padding-left: 12%;
+}
+.node-row.right {
+  justify-content: flex-end;
+  padding-right: 12%;
+}
+
+.node-host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+}
+.node-host:hover {
+  transform: scale(1.05);
+}
+.node-host .topic-label-container {
+  margin-top: -15px;
+  z-index: 5;
+  text-align: center;
+}
+.node-host .topic-label {
+  background: white;
+  color: #182848;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  border: 2px solid #e5e7eb;
+}
+.node-host .level-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fbbf24;
+  color: #000;
+  font-weight: bold;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 6;
+}
+
+.path-end-marker {
+  text-align: center;
+  margin-top: 2rem;
+  opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.path-end-marker .flag-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.path-end-marker span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}/*# sourceMappingURL=topic-path-view.component.css.map */

@@ -1,0 +1,61 @@
+// Brand Colors - Bright & Playful
+$primary-green: #58cc02;
+$primary-green-dark: #46a302; // For button shadow/hover
+
+$primary-blue: #1cb0f6;
+$primary-blue-dark: #1480b3;
+
+$primary-red: #ff4b4b;
+$primary-red-dark: #d42a2a;
+
+$primary-yellow: #ffc800;
+$primary-yellow-dark: #e5a500;
+
+// UI Colors
+$bg-color: #f8fafc;
+$text-color: #3c3c3c;
+$grey-light: #f7f7f7;
+$grey-border: #e5e5e5;
+$grey-text: #afafaf;
+$overlay-bg: rgba(0, 0, 0, 0.4);
+// ... existing variables
+$neutral-10: #b14f4f; 
+
+// 🟢 ADD THIS
+$page-bg: #3794bc; // Light cool gray for backgrounds
+
+// Spacing & Layout
+$border-radius: 16px;
+$border-radius-large: 20px;
+$btn-height: 50px;
+
+// Shadows (To give that 3D cartoon button look)
+$shadow-depth: 0 4px 0; 
+$shadow-depth-active: 0 0 0; // Pressed state
+
+// Typography
+$font-stack: 'Nunito', 'Segoe UI', sans-serif; // Ensure you load Nunito from Google Fonts later
+
+
+
+
+
+
+
+
+
+:root {
+  // Futuristic Color Palette
+  --panel-bg: rgba(13, 17, 23, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --neon-blue: #00f2ff;
+  --neon-purple: #bc13fe;
+  --neon-green: #39ff14;
+  --neon-red: #ff3131;
+  --neon-amber: #ffaa00;
+  
+  // Shadows & Glows
+  --glow-blue: 0 0 15px rgba(0, 242, 255, 0.4);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  --glass-blur: blur(12px);
+}

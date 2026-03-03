@@ -1,0 +1,119 @@
+
+<div class="duo-wrapper">
+
+  <!-- ================= HEADER ================= -->
+  <header class="game-header">
+    <button class="icon-btn close" (click)="exit()" aria-label="Exit Game">
+      ✕
+    </button>
+
+    <div class="progress-container">
+      <div
+        class="progress-bar-fill"
+        [style.width.%]="progressPercent">
+      </div>
+    </div>
+
+    <div
+      class="streak-counter"
+      [class.on-fire]="streak >= 3">
+      🔥 {{ streak }}
+    </div>
+  </header>
+
+
+  <!-- ================= MAIN ================= -->
+  <main class="game-board">
+
+    <div
+      class="question-section"
+      @fadeSlide
+      *ngIf="currentQ && status !== 'SUMMARY'">
+
+      <!-- Mascot -->
+      <div
+        class="mascot-avatar"
+        [attr.data-mood]="mascotState">
+        <img
+          [src]="'assets/images/mascots/' + mascotState + '.svg'"
+          alt="Mascot">
+      </div>
+
+      <!-- Question + Feedback wrapper -->
+      <div class="question-content">
+
+        <!-- CHILD COMPONENT -->
+        <app-question-card
+          [question]="currentQ"
+          [disabled]="status === 'FEEDBACK'"
+          [showResult]="status === 'FEEDBACK'"
+          (optionSelected)="handleOptionSelected($event)">
+        </app-question-card>
+
+        <!-- INLINE FEEDBACK (Under Options) -->
+        <div
+          class="feedback-inline"
+          *ngIf="status === 'FEEDBACK'"
+          [class.correct]="isCorrect"
+          [class.wrong]="!isCorrect">
+
+          <div class="feedback-content">
+            <div class="icon-circle">
+              {{ isCorrect ? '✓' : '✕' }}
+            </div>
+
+            <div class="text-group">
+              <h3>
+                {{ isCorrect ? 'Nice job!' : 'Correct Answer:' }}
+              </h3>
+
+              <div
+                *ngIf="!isCorrect"
+                class="correction-text">
+                {{ getCorrectAnswerText() }}
+              </div>
+
+              <div
+                *ngIf="currentQ?.explanation"
+                class="explanation-text">
+                {{ currentQ.explanation }}
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="continue-btn"
+            [class.btn-correct]="isCorrect"
+            [class.btn-wrong]="!isCorrect"
+            (click)="continue()">
+            CONTINUE
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- SUMMARY -->
+    <div
+      class="summary-card"
+      *ngIf="status === 'SUMMARY'"
+      @fadeSlide>
+
+      <h2>Session Complete!</h2>
+
+      <div class="xp-block">
+        <p class="xp-label">Total XP Earned</p>
+        <p class="xp-score">+{{ sessionScore }}</p>
+      </div>
+
+      <button class="primary-btn wide" (click)="exit()">
+        Continue Learning
+      </button>
+
+    </div>
+
+  </main>
+
+</div>

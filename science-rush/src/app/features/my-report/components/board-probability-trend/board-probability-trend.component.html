@@ -1,0 +1,99 @@
+<!-- 
+<div class="chart-container" *ngIf="trendData$ | async as data; else loading">
+  <div class="no-data-state" *ngIf="data.length === 0">
+    <p>No activity recorded in the last 7 weeks. Start practicing to see your trend!</p>
+  </div>
+
+  <div class="chart-wrapper" *ngIf="data.length > 0">
+    <div class="y-axis">
+      <span>100%</span>
+      <span>75%</span>
+      <span>50%</span>
+      <span>25%</span>
+      <span>0%</span>
+    </div>
+
+    <div class="bars-area">
+      <div class="grid-line" style="bottom: 0%"></div>
+      <div class="grid-line" style="bottom: 25%"></div>
+      <div class="grid-line" style="bottom: 50%"></div>
+      <div class="grid-line" style="bottom: 75%"></div>
+      <div class="grid-line" style="bottom: 100%"></div>
+
+      <div *ngFor="let item of data" class="bar-group">
+        <div class="bar-tooltip" [style.bottom.%]="item.probability + 5">
+          {{ item.probability }}%
+        </div>
+        <div class="bar"
+             [style.height.%]="item.probability"
+             [class.high]="item.probability >= 75"
+             [class.med]="item.probability < 75 && item.probability >= 50"
+             [class.low]="item.probability < 50">
+        </div>
+        <div class="x-label">{{ item.weekLabel }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-state">Loading trend data...</div>
+</ng-template> -->
+
+
+
+
+<div class="chart-wrapper" #container>
+
+  <div class="momentum-card">
+  
+  <div class="card-header">
+    <span class="fire-icon">🔥</span>
+    <h3 class="title">BOARD MOMENTUM</h3>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-group left">
+      <div class="big-value">5 weeks</div>
+      <div class="sub-label">Current Streak</div>
+    </div>
+
+    <div class="stat-group right">
+      <div class="big-value colored" [class.positive]="gainValue >= 0" [class.negative]="gainValue < 0">
+        {{ gainValue >= 0 ? '+' : '' }}{{ gainValue }}%
+      </div>
+      <div class="sub-label">This Week's Gain</div>
+    </div>
+  </div>
+
+  <div class="chart-area" #chartContainer>
+    
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="spinner"></div>
+    </div>
+
+    <svg *ngIf="!isLoading" [attr.width]="chartWidth" [attr.height]="chartHeight" class="bar-chart">
+      
+      <line [attr.x1]="0" [attr.y1]="chartHeight - 10" 
+            [attr.x2]="chartWidth" [attr.y2]="chartHeight - 10" 
+            stroke="#334155" stroke-width="2" stroke-dasharray="6 6" />
+
+      <g *ngFor="let bar of bars" class="bar-group">
+        
+        <rect [attr.x]="bar.x" 
+              [attr.y]="bar.y" 
+              [attr.width]="bar.width" 
+              [attr.height]="bar.height" 
+              rx="4" ry="4"
+              [attr.fill]="bar.isCurrent ? '#4ade80' : '#334155'" 
+              class="bar-rect" />
+
+        <title>{{ bar.data.weekLabel }}: {{ bar.data.probability }}%</title>
+      </g>
+
+    </svg>
+  </div>
+</div>
+  
+</div>
+

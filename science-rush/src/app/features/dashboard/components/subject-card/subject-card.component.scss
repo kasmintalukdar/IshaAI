@@ -1,0 +1,100 @@
+@use 'styles/variables' as *;
+
+.subject-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  // Hover Effect
+  &:active { transform: scale(0.98); }
+  &:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    border-color: rgba(var(--theme-color), 0.2);
+    .arrow-btn { 
+      background: var(--theme-color); 
+      color: white; 
+      transform: translateX(4px);
+    }
+  }
+
+  // Icon
+  .icon-wrapper {
+    width: 56px;
+    height: 56px;
+    background: rgba(0,0,0,0.03); // Fallback
+    background: color-mix(in srgb, var(--theme-color) 10%, white);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+  }
+
+  // Text & Progress
+  .info-wrapper {
+    flex: 1;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 0 0 8px 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .track {
+        flex: 1;
+        height: 8px;
+        background: #f1f5f9;
+        border-radius: 10px;
+        overflow: hidden;
+
+        .fill {
+          height: 100%;
+          background: var(--theme-color);
+          border-radius: 10px;
+          transition: width 0.5s ease-out;
+        }
+      }
+
+      .pct {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #94a3b8;
+        width: 32px;
+        text-align: right;
+      }
+    }
+  }
+
+  // Arrow Button
+  .arrow-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+    transition: all 0.2s;
+  }
+}

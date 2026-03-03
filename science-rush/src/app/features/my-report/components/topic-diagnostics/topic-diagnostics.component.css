@@ -1,0 +1,120 @@
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+th {
+  text-align: left;
+  color: #7f8c8d;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 12px;
+  border-bottom: 2px solid #f1f2f6;
+}
+
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f8f9fa;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.topic-name {
+  font-weight: 500;
+}
+
+.time-val {
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: #ecf0f1;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 100px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #3498db;
+  border-radius: 3px;
+}
+
+.val {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #34495e;
+  width: 35px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.badge.mastered {
+  background: #d5f5e3;
+  color: #27ae60;
+}
+.badge.improving {
+  background: #fcf3cf;
+  color: #f39c12;
+}
+.badge.weak {
+  background: #fadbd8;
+  color: #c0392b;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 8px; /* Gap between rows */
+}
+
+th {
+  /* Make header blend with the blue tint */
+  color: #5c6bc0;
+  border-bottom: none;
+  padding: 0 16px;
+}
+
+tbody tr {
+  background: white; /* Rows are white cards */
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.03); /* Tiny shadow */
+  transition: transform 0.1s;
+}
+
+tbody tr:hover {
+  transform: scale(1.01);
+}
+
+td {
+  border-bottom: none;
+  padding: 16px;
+}
+
+/* Add rounded corners to first and last cells */
+td:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+td:last-child {
+  border-radius: 0 12px 12px 0;
+}/*# sourceMappingURL=topic-diagnostics.component.css.map */

@@ -1,0 +1,43 @@
+<div class="modal-overlay fade-in" (click)="close.emit()">
+  <div class="settings-card slide-up" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <h3>Settings</h3>
+      <button class="close-btn" (click)="close.emit()">&times;</button>
+    </div>
+
+    <div class="menu-list">
+      
+      <button class="menu-item" (click)="openEdit.emit()">
+        <span class="icon">✏️</span>
+        <span class="label">Edit Profile</span>
+        <span class="arrow">›</span>
+      </button>
+
+      <button class="menu-item">
+        <span class="icon">💎</span>
+        <span class="label">Manage Subscription</span>
+        <span class="arrow">›</span>
+      </button>
+
+      <button class="menu-item" (click)="navigateToFeedback()">
+        <span class="icon">💬</span>
+        <span class="label">Give Feedback</span>
+        <span class="arrow">›</span>
+      </button>
+
+      <div class="divider"></div>
+
+      <button class="menu-item logout" (click)="logout.emit()">
+        <span class="icon">🚪</span>
+        <span class="label">Log Out</span>
+      </button>
+
+    </div>
+
+    <div class="version-info">
+      Version 1.0.2 (Beta)
+    </div>
+
+  </div>
+</div>

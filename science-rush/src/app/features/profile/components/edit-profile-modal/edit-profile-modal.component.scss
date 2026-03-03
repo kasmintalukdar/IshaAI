@@ -1,0 +1,203 @@
+@import '../../../../../styles/variables';
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); // Dark dimming
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; // Align to bottom for mobile
+  backdrop-filter: blur(4px); // Professional blur effect
+  animation: fadeIn 0.3s ease-out;
+
+  &.closing {
+    animation: fadeOut 0.3s ease-in forwards;
+    .modal-container {
+      animation: slideDown 0.3s ease-in forwards;
+    }
+  }
+}
+
+.modal-container {
+  background: $bg-color; // Use app background (e.g., white or light grey)
+  width: 100%;
+  max-width: 500px; // Desktop constraint
+  border-radius: 24px 24px 0 0; // Top corners rounded
+  padding: 24px;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  
+  // Desktop Tweak: Center it instead of bottom sheet
+  @media (min-width: 768px) {
+    align-self: center;
+    border-radius: 24px;
+    margin: 20px;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: $text-color;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: $grey-text;
+    cursor: pointer;
+    line-height: 1;
+  }
+}
+
+.image-upload-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
+
+  .image-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    background: $grey-light;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .camera-btn {
+    position: absolute;
+    bottom: 0;
+    right: 35%; // Adjust based on circle size
+    transform: translateX(20px);
+    background: $primary-blue;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+
+    &:active {
+      transform: translateX(20px) scale(0.9);
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 30px;
+
+  label {
+    display: block;
+    font-size: 0.9rem;
+    color: $grey-text;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .input-wrapper {
+    position: relative;
+    
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid $grey-border;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: $text-color;
+      background: $grey-light;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: $primary-blue;
+        background: white;
+      }
+    }
+
+    .icon {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $grey-text;
+      pointer-events: none;
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  gap: 16px;
+
+  button {
+    flex: 1;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    
+    &.btn-cancel {
+      background: $grey-light;
+      color: $text-color;
+    }
+
+    &.btn-save {
+      background: $primary-green; // Uses your brand green
+      color: white;
+      box-shadow: 0 4px 0 $primary-green-dark;
+      transition: transform 0.1s, box-shadow 0.1s;
+
+      &:active {
+        transform: translateY(4px);
+        box-shadow: none;
+      }
+
+      &:disabled {
+        background: $grey-border;
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }

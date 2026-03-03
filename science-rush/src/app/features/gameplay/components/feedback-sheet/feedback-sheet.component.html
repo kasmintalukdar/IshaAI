@@ -1,0 +1,27 @@
+<div class="feedback-overlay anim-slide-up" [ngClass]="isCorrect ? 'correct' : 'wrong'">
+  <div class="feedback-content container">
+    
+    <div class="feedback-header">
+      <div class="icon-circle">
+        <span *ngIf="isCorrect">✔</span>
+        <span *ngIf="!isCorrect">✖</span>
+      </div>
+      
+      <div class="text-group">
+        <h2 *ngIf="isCorrect">Awesome!</h2>
+        <h2 *ngIf="!isCorrect">Correct answer:</h2>
+        
+        <p *ngIf="!isCorrect" class="correction">{{ correctAnswerText }}</p>
+        </div>
+    </div>
+
+    <div class="btn-area">
+      <app-button 
+        [type]="isCorrect ? 'primary' : 'danger'" 
+        label="CONTINUE" 
+        (btnClick)="onNext()">
+      </app-button>
+    </div>
+    
+  </div>
+</div>

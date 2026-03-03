@@ -1,0 +1,107 @@
+// Variables
+$bg-dark: #111827;
+$bg-card: #1f2937;
+$primary: #3b82f6;
+$text-main: #f3f4f6;
+$text-muted: #9ca3af;
+
+.ai-tutor-container {
+  padding: 1rem;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  background-color: $bg-dark;
+  color: $text-main;
+}
+
+// --- Header ---
+.page-header {
+  margin-bottom: 1.5rem;
+  .header-top {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
+    h1 { margin: 0; font-size: 1.8rem; font-weight: 800; }
+    .date-badge { background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; }
+  }
+  .view-switcher {
+    display: flex; background: $bg-card; border-radius: 12px; padding: 4px;
+    .switch-btn {
+      flex: 1; background: none; border: none; padding: 10px; color: $text-muted; font-weight: 600; border-radius: 8px; transition: 0.2s; cursor: pointer;
+      &.active { background: $primary; color: white; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3); }
+    }
+  }
+}
+
+// --- Formulas View ---
+.formulas-view {
+  animation: fadeIn 0.3s ease;
+
+  .filters-container {
+    position: sticky; top: 0; background: $bg-dark; z-index: 10; padding-bottom: 1rem;
+    .chips-scroll-row {
+      display: flex; gap: 0.8rem; overflow-x: auto; padding: 0.5rem 0; scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+      .chip {
+        background: $bg-card; border: 1px solid #374151; color: $text-muted; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; cursor: pointer;
+        &.selected { background: rgba(59, 130, 246, 0.2); border-color: $primary; color: $primary; font-weight: 600; }
+      }
+    }
+  }
+
+  .formula-list {
+    display: flex; flex-direction: column; gap: 1rem;
+    
+    .formula-card {
+      background: $bg-card; // Ensure visible background
+      border-radius: 16px; padding: 1.25rem; border: 1px solid #374151;
+      
+      .f-header {
+        display: flex; justify-content: space-between; margin-bottom: 1rem;
+        .f-category { font-size: 0.75rem; text-transform: uppercase; color: $text-muted; }
+        .f-mastery {
+          width: 8px; height: 8px; border-radius: 50%;
+          &.high { background: #10b981; box-shadow: 0 0 8px #10b981; }
+          &.medium { background: #f59e0b; }
+          &.low { background: #ef4444; }
+        }
+      }
+      .f-expression {
+        font-family: 'Courier New', monospace; font-size: 1.2rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 1rem; color: #fff;
+      }
+      .f-footer {
+        display: flex; justify-content: space-between; align-items: center;
+        .f-name { font-weight: 600; color: $text-main; }
+      }
+    }
+
+    .empty-state {
+      text-align: center; padding: 3rem 1rem; border: 1px dashed #374151; border-radius: 16px; margin-top: 1rem;
+    }
+  }
+}
+
+// --- Strategy View (Simplified) ---
+.ai-message-card {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%); padding: 1.5rem; border-radius: 16px; border: 1px solid #374151; display: flex; gap: 1rem; margin-bottom: 2rem;
+  .ai-avatar { width: 50px; height: 50px; img { width: 100%; } }
+}
+.plan-timeline {
+  position: relative; padding-left: 1rem;
+  .timeline-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: #374151; }
+  .plan-card {
+    display: flex; gap: 1rem; margin-bottom: 1.5rem; position: relative;
+    &.locked { opacity: 0.6; filter: grayscale(1); }
+    .time-col {
+      display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0;
+      .time-label { font-size: 0.8rem; color: $text-muted; margin-bottom: 0.5rem; }
+      .status-dot { width: 12px; height: 12px; border-radius: 50%; background: #374151; border: 2px solid $bg-dark; z-index: 2; &.active { background: $primary; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); } }
+    }
+    .content-col {
+      flex: 1; background: $bg-card; padding: 1rem; border-radius: 12px; border: 1px solid #374151;
+      .card-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; .tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 700; &.warmup { background: rgba(16,185,129,0.2); color: #34d399; } &.deep-work { background: rgba(245,158,11,0.2); color: #fbbf24; } } }
+      h2 { font-size: 1.1rem; margin: 0 0 0.25rem 0; }
+      p { font-size: 0.9rem; color: $text-muted; margin: 0 0 1rem 0; }
+      .action-btn { background: $primary; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; &:disabled { background: #374151; cursor: not-allowed; } }
+    }
+  }
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

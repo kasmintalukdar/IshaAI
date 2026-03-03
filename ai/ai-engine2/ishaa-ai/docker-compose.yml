@@ -1,0 +1,123 @@
+# ==============================================================
+# FILE: docker-compose.yml
+#
+# PURPOSE:
+#   Spins up local MongoDB and Redis containers for development.
+#   The FastAPI backend and Streamlit app run directly on your
+#   machine (not in Docker) — only the data stores are containerized.
+#
+# HOW TO USE:
+#   Start:   docker-compose up -d
+#   Stop:    docker-compose down
+#   Logs:    docker-compose logs -f
+#   Reset:   docker-compose down -v   ← deletes all data volumes!
+#
+# SERVICES:
+#   mongodb  — MongoDB 7.0 on port 27017
+#              Credentials: ishaa_user / ishaa_pass
+#              Database:    ishaa_db
+#
+#   redis    — Redis 7.2 on port 6379
+#              No password (development only)
+#              Persistence: AOF (appendonly) so data survives restarts
+#
+#   mongo-express — Web UI for MongoDB on http://localhost:8081
+#                   Useful for inspecting collections during development
+#                   (Remove in production — never expose publicly)
+#
+# AFTER STARTING:
+#   Update your .env:
+#     MONGODB_URI=mongodb://ishaa_user:ishaa_pass@localhost:27017/ishaa_db
+#     REDIS_URL=redis://localhost:6379/0
+# ==============================================================
+
+version: "3.9"
+
+services:
+
+  # ── MongoDB ────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: ishaa_mongodb
+    restart: unless-stopped
+
+    # Root credentials (used only for initial DB setup)
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_DATABASE:      ishaa_db
+
+    ports:
+      - "27017:27017"   # MongoDB default port
+
+    volumes:
+      # Persistent data — survives container restarts
+      - mongodb_data:/data/db
+      # Init script — creates app user with limited permissions
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+    # Tuning for development (production uses Atlas, not local Docker)
+    command: >
+      mongod
+      --wiredTigerCacheSizeGB 0.5
+      --quiet
+
+    healthcheck:
+      test:     ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout:  5s
+      retries:  5
+
+  # ── Redis ──────────────────────────────────────────────────
+  redis:
+    image: redis:7.2-alpine   # Alpine = smaller image (31MB vs 111MB)
+    container_name: ishaa_redis
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"   # Redis default port
+
+    volumes:
+      - redis_data:/data   # Persist AOF log
+
+    # AOF persistence: every write is logged → data survives crashes
+    # maxmemory: cap at 256MB for dev (rate limit counters are tiny)
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+
+    healthcheck:
+      test:     ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout:  3s
+      retries:  5
+
+  # ── Mongo Express (Dev UI) ─────────────────────────────────
+  # Web-based MongoDB browser — access at http://localhost:8081
+  # Remove this service before deploying to staging/production
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: ishaa_mongo_express
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy   # Wait until MongoDB is ready
+
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword
+      ME_CONFIG_MONGODB_URL:           mongodb://root:rootpassword@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME:    admin     # UI login
+      ME_CONFIG_BASICAUTH_PASSWORD:    admin123  # UI password (change this!)
+
+    ports:
+      - "8081:8081"
+
+# ── Named volumes (persist data across container restarts) ───
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local

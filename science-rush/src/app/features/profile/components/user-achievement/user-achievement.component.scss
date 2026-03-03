@@ -1,0 +1,90 @@
+@import '../../../../../styles/variables'; // Import your variables if available
+
+.section-header {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 1rem;
+  padding-left: 4px;
+  letter-spacing: -0.5px;
+}
+
+.stats-grid {
+  display: grid;
+  // 🟢 SMART GRID: 2 columns on mobile, but auto-stacks if screen is tiny
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 12px;
+  margin-bottom: 24px;
+
+  // Tablet/Desktop: 4 columns in one row
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+.stat-card {
+  background: white;
+  border-radius: 20px; // Softer corners
+  padding: 16px;
+  display: flex;
+  flex-direction: column; // Stack icon and text on mobile for better centering
+  align-items: flex-start; // Align left looks more modern
+  gap: 12px;
+  
+  // Premium Border
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Desktop adjustment: Row layout
+  @media (min-width: 480px) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    border-color: #e2e8f0;
+  }
+}
+
+.stat-icon {
+  font-size: 24px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  
+  // 🟢 COLOR CODING: Makes each stat distinct
+  &.fire { background: #fee2e2; color: #ef4444; }
+  &.bolt { background: #fef9c3; color: #eab308; }
+  &.shield { background: #dbeafe; color: #3b82f6; }
+  &.target { background: #dcfce7; color: #22c55e; }
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}

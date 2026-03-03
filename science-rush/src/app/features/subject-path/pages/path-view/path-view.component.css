@@ -1,0 +1,253 @@
+.game-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  font-family: "Nunito", sans-serif;
+  color: white;
+}
+.game-container.physics {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+.game-container.chemistry {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+.game-container.biology {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+.game-container.math {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.animated-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.animated-bg .cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50px;
+  filter: blur(12px);
+  animation: floatCloud linear infinite;
+}
+.animated-bg .cloud.cloud-1 {
+  width: 140px;
+  height: 50px;
+  top: 15%;
+  left: -20%;
+  animation-duration: 35s;
+}
+.animated-bg .cloud.cloud-2 {
+  width: 200px;
+  height: 70px;
+  top: 40%;
+  left: -20%;
+  animation-duration: 45s;
+  animation-delay: 5s;
+}
+
+@keyframes floatCloud {
+  0% {
+    transform: translateX(-150px);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
+.game-header {
+  flex: 0 0 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 100;
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.game-header .back-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+.game-header .header-title {
+  text-align: center;
+}
+.game-header .header-title h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.game-header .header-title .subtitle {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: block;
+}
+.game-header .header-spacer {
+  width: 40px;
+}
+
+.scroll-viewport {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 10;
+  padding-bottom: 120px;
+}
+.scroll-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.path-layout {
+  position: relative;
+  width: 400px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.winding-path-bg {
+  position: absolute;
+  top: -200px;
+  bottom: -200px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 640'%3E%3Cpath d='M75 0 Q75 40 50 40 T25 80 T50 120 T75 160 T50 200 T25 240 T50 280 T75 320 T50 360 T25 400 T50 440 T75 480 T50 520 T25 560 T50 600 T75 640' stroke='rgba(255,255,255,0.4)' stroke-width='3' fill='none' stroke-dasharray='8 8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-position: center 320px;
+  background-size: 100% 640px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.nodes-stack {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.node-row {
+  height: 160px;
+  width: 100%;
+  position: relative;
+}
+.node-row.center .node-host {
+  left: 50%;
+}
+.node-row.left .node-host {
+  left: 20%;
+}
+.node-row.right .node-host {
+  left: 80%;
+}
+
+.node-host {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+  z-index: 5;
+}
+.node-host:hover {
+  transform: translate(-50%, -55%) scale(1.05);
+  z-index: 10;
+}
+
+.status-badge {
+  position: absolute;
+  top: -15px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  animation: bounceBadge 2s infinite;
+  z-index: 6;
+}
+.status-badge.start {
+  background: #58cc02;
+  color: white;
+  border: 2px solid #fff;
+}
+.status-badge.continue {
+  background: #ffc800;
+  color: #333;
+  border: 2px solid #fff;
+}
+.status-badge.completed {
+  background: #fbbf24;
+  color: #333;
+  border: 2px solid #fff;
+}
+.status-badge.locked {
+  background: #e5e7eb;
+  color: #9ca3af;
+  border: 2px solid #fff;
+}
+
+@keyframes bounceBadge {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.chapter-info-card {
+  margin-top: -12px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 16px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+  border: 2px solid #f3f4f6;
+}
+.chapter-info-card .chapter-name {
+  display: block;
+  color: #1f2937;
+  font-weight: 800;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.path-end-marker {
+  text-align: center;
+  margin-top: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  padding-bottom: 3rem;
+}
+
+.mascot-container {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 20;
+  pointer-events: none;
+}
+.mascot-container .mascot-img {
+  width: 100px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+}/*# sourceMappingURL=path-view.component.css.map */

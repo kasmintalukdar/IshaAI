@@ -1,0 +1,12 @@
+@charset "UTF-8";
+.main-content {
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  /* Transition for smooth hiding/showing of navbar space */
+  /* 🟢 THE FIX: Only add padding when nav is visible */
+}
+.main-content.with-nav {
+  /* 70px (Nav Height) + 20px (Breathing Room) + iPhone Safe Area */
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}/*# sourceMappingURL=app.component.css.map */

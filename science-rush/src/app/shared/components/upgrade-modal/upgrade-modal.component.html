@@ -1,0 +1,28 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <button class="close-btn" (click)="close.emit()">×</button>
+    
+    <div class="header-text">
+      <h2>Choose Your Power ⚡</h2>
+      <p>Unlock your full potential with Pro</p>
+    </div>
+
+    <div class="plans-scroll-container">
+      
+      <p *ngIf="!(plans$ | async)" style="color:white">Loading plans...</p>
+
+      <ng-container *ngIf="plans$ | async as plans">
+          
+          <app-premium-promo-card 
+              *ngFor="let plan of plans"
+              [plan]="plan"
+              (onUpgrade)="handleSelect(plan)">
+          </app-premium-promo-card>
+
+      </ng-container>
+
+    </div>
+
+  </div>
+</div>

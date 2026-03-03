@@ -1,0 +1,89 @@
+<!-- 
+
+<app-premium-lock 
+  [title]="'Unlock Retention Health'" 
+  (unlock)="onUnlockClicked()"> 
+  
+  <div class="retention-wrapper" *ngIf="health$ | async as data">
+  
+    <ng-container *ngIf="data.hasData; else noData">
+      <div class="radial-progress" 
+           [style.background]="getGradient(data.overallRetention)">
+        <div class="inner-circle">
+          <span class="score">{{ data.overallRetention }}%</span>
+          <span class="label">Retention</span>
+        </div>
+      </div>
+  
+      <div class="info">
+        <h4 [class]="data.healthStatus.toLowerCase()">Status: {{ data.healthStatus }}</h4>
+        <p>{{ data.insight }}</p>
+      </div>
+    </ng-container>
+  
+    <ng-template #noData>
+      <div class="radial-progress gray">
+        <div class="inner-circle">
+          <span class="score" style="font-size: 1.5rem;">⏳</span>
+        </div>
+      </div>
+      <div class="info">
+        <h4 class="calculating">Status: Calculating...</h4>
+        <p>{{ data.insight }}</p>
+      </div>
+    </ng-template>
+  
+  </div>
+
+</app-premium-lock> -->
+
+
+
+
+
+<div class="retention-card">
+  
+  <div class="chart-area" #chartContainer>
+    
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="spinner"></div>
+    </div>
+
+    <svg *ngIf="!isLoading" [attr.width]="chartWidth" [attr.height]="chartHeight" class="decay-chart">
+      
+      <path [attr.d]="'M ' + startPoint.x + ' ' + startPoint.y + ' V ' + endPoint.y + ' H ' + endPoint.x" 
+            fill="none" stroke="#334155" stroke-width="2" />
+
+      <path [attr.d]="curvePath" 
+            fill="none" 
+            stroke="#F87171" 
+            stroke-width="5" 
+            stroke-linecap="round" 
+            class="curve-line"/>
+
+      <circle [attr.cx]="startPoint.x" [attr.cy]="startPoint.y" r="6" fill="#4ADE80" />
+
+      <circle [attr.cx]="endPoint.x" [attr.cy]="endPoint.y" r="6" fill="#F87171" />
+      <text [attr.x]="endPoint.x" [attr.y]="endPoint.y - 15" text-anchor="middle" fill="#F87171" font-size="12">Danger</text>
+
+      <line [attr.x1]="todayPoint.x" [attr.y1]="todayPoint.y" 
+            [attr.x2]="todayPoint.x" [attr.y2]="endPoint.y" 
+            stroke="#FACC15" stroke-width="2" stroke-dasharray="4 4" />
+      
+      <circle [attr.cx]="todayPoint.x" [attr.cy]="todayPoint.y" r="6" fill="#FACC15" stroke="#0f172a" stroke-width="2" />
+      
+      <text [attr.x]="todayPoint.x + 10" [attr.y]="todayPoint.y - 10" 
+            fill="#FACC15" font-size="14" font-weight="700">
+        Today ({{ retentionPercent }}%)
+      </text>
+
+    </svg>
+  </div>
+
+  <div class="card-footer">
+    <p class="insight-text">
+      {{ data?.insight || 'Review topics to boost retention.' }}
+    </p>
+  </div>
+
+</div>

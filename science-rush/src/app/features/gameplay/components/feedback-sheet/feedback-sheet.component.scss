@@ -1,0 +1,59 @@
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+@use 'styles/animations' as *;
+.feedback-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1rem;
+  z-index: 100;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+
+  &.correct {
+    background-color: lighten($primary-green, 45%);
+    .icon-circle { background: $primary-green; }
+    h2 { color: $primary-green-dark; }
+  }
+
+  &.wrong {
+    background-color: lighten($primary-red, 40%);
+    .icon-circle { background: $primary-red; }
+    h2 { color: $primary-red-dark; }
+    .correction { color: $primary-red-dark; }
+  }
+}
+
+.feedback-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.feedback-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  @include flex-center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.text-group {
+  h2 { margin: 0; font-size: 1.5rem; }
+  .correction { margin: 0.5rem 0 0 0; font-weight: 600; }
+  .explanation { font-size: 0.9rem; color: $text-color; margin-top: 0.5rem; }
+}
+
+.btn-area {
+  width: 100%;
+}

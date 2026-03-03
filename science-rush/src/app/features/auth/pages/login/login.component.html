@@ -1,0 +1,55 @@
+<div class="auth-layout">
+  <div class="auth-card">
+    
+    <div class="mascot-wrapper">
+      <app-mascot emotion="happy" class="auth-mascot"></app-mascot>
+    </div>
+    
+    <h1>Welcome Back!</h1>
+    <p class="subtitle">Ready to continue your streak?</p>
+    
+    <form [formGroup]="loginForm">
+      <div class="input-group">
+        
+        <div class="input-wrapper">
+          <input 
+            type="email" 
+            placeholder="Email Address" 
+            class="game-input" 
+            formControlName="email">
+        </div>
+        
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            placeholder="Password" 
+            class="game-input" 
+            formControlName="password">
+        </div>
+
+      </div>
+    </form>
+
+    <app-button 
+      [label]="isLoading ? 'LOGGING IN...' : 'LOG IN'" 
+      type="primary" 
+      [fullWidth]="true" 
+      [disabled]="isLoading"
+      (btnClick)="onLogin()">
+    </app-button>
+
+    <div class="footer">
+      <span>New here?</span>
+      <a routerLink="/auth/signup">Create an account</a>
+    </div>
+
+  </div>
+</div>
+
+<app-popup 
+  [isVisible]="popup.isVisible"
+  [title]="popup.title"
+  [message]="popup.message"
+  [type]="popup.type"
+  (close)="onPopupClose()">
+</app-popup>
