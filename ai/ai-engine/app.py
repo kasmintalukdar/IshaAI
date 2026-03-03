@@ -640,6 +640,10 @@ from typing import Optional, List
 # 1. CLASS DEFINITIONS (MUST MATCH TRAINING SCRIPTS EXACTLY)
 # ==============================================================================
 
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "ishaa_v2"))
+from ishaa_v2.main import app as ishaa_v2_app
+
 # --- AI #1: Cognitive Profiler Class ---
 class CognitiveProfilerPipeline:
     def __init__(self, model=None):
@@ -835,6 +839,8 @@ load_model(RECOMMENDER_PATH, 'recommender', "AI #5 (Question Recommender)")
 # 4. FASTAPI APP & INPUT SCHEMAS
 # ==============================================================================
 app = FastAPI(title="AI Hub Engine (Penta-Core)")
+
+app.mount("/v2/ishaa", ishaa_v2_app)
 
 # Schema AI #1
 class PersonaInput(BaseModel):
