@@ -216,7 +216,8 @@ export class IshaaAssistantComponent implements OnInit {
     this.messages.push({ role: 'ishaa', text: '', isTyping: true });
     this.scrollToBottom();
 
-    this.ishaaService.askQuestion(query).subscribe({
+    // Pass the all-zeroes ID first, then the user's message!
+this.ishaaService.askQuestion("000000000000000000000000", query).subscribe({
       next: (response) => {
         // Remove typing indicator
         this.messages.pop(); 

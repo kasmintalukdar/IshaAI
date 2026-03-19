@@ -14,17 +14,45 @@ const cookieOptions = {
   sameSite: 'lax',
 };
 
+// const createSendToken = (user, statusCode, res) => {
+//   const token = jwt.sign({ id: user._id, email: user.profile.email }, JWT_SECRET, {
+//     expiresIn: JWT_EXPIRES_IN
+//   });
+
+//   res.cookie('jwt', token, cookieOptions);
+
+//   if (user.profile) user.profile.password = undefined;
+
+//   res.status(statusCode).json({
+//     status: 'success',
+//     data: {
+//       user: {
+//         _id: user._id,
+//         name: user.profile.name,
+//         email: user.profile.email,
+//         stream: user.profile.stream,
+//         avatar: user.profile.avatar,
+//         subscription: user.subscription || 'free'
+//       }
+//     }
+//   });
+// };
+
+
+
 const createSendToken = (user, statusCode, res) => {
   const token = jwt.sign({ id: user._id, email: user.profile.email }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN
   });
 
+  // Keep the cookie! It's good for your normal Node.js routes.
   res.cookie('jwt', token, cookieOptions);
 
   if (user.profile) user.profile.password = undefined;
 
   res.status(statusCode).json({
     status: 'success',
+    token: token, // 👈 THE GOLDEN TICKET! We explicitly send the token to Angular here!
     data: {
       user: {
         _id: user._id,
@@ -37,7 +65,6 @@ const createSendToken = (user, statusCode, res) => {
     }
   });
 };
-
 
 // -------- REGISTER ----------
 exports.register = async (req, res, next) => {

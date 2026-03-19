@@ -181,6 +181,12 @@ export class AiDashboardComponent implements OnInit {
     return 'Low';
   }
 
+  // Make sure Router is injected in your constructor: 
+  // constructor(private router: Router) {}
+
+  openIshaaChat() {
+    this.router.navigate(['/ai-hub/ishaa-v2']);
+  }
   // --- Data Fetching ---
   refreshAllData() {
     this.loading = true;

@@ -186,6 +186,23 @@
       </div>
     </section>
 
+    <div class="ui-card assistant-card" routerLink="/ai-hub/ishaa-v2" style="cursor: pointer; border: 2px solid #00f0ff; box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);">
+        <div class="card-header">
+          <span class="icon-chat">💬</span>
+          <h3>Ask Ishaa AI</h3>
+          <span class="info-icon" title="Chat with your next-generation AI tutor">ⓘ</span>
+        </div>
+        <div class="card-content" style="text-align: center; padding-top: 20px;">
+          <div class="mascot-container" style="margin-bottom: 15px;">
+            <img src="assets/images/mascots/thinking.svg" style="width: 80px;" alt="Ishaa AI">
+          </div>
+          <p style="color: #9ca3af; margin-bottom: 15px;">Stuck on a concept? Chat with Ishaa for Socratic guidance and hints.</p>
+          <button (click)="openIshaaChat()" class="action-btn" style="background: #00f0ff; color: #000; padding: 8px 16px; border-radius: 4px; font-weight: bold; border: none; cursor: pointer;">
+  Open Chat Workspace ➜
+</button>
+        </div>
+      </div>
+
     <footer class="hub-footer">
       <button class="nav-btn" routerLink="/dashboard">
         Return to Mission Control
