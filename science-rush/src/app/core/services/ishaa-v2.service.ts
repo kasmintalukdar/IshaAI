@@ -75,8 +75,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class IshaaV2Service {
-  private baseUrl = `${environment.apiUrl}/ai/v2/ishaa`; 
-
+  // private baseUrl = `${environment.apiUrl}/ai/v2/ishaa`; 
+   private baseUrl = 'http://localhost:8000/v2/ishaa';
   constructor(private http: HttpClient) { }
 
   checkHealth(): Observable<any> {
