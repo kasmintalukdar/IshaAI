@@ -199,8 +199,8 @@ export class IshaaAssistantComponent implements OnInit {
 
   ngOnInit() {
     this.ishaaService.checkHealth().subscribe(
-      res => console.log('Ishaa V2 is Online:', res),
-      err => console.error('Ishaa V2 is Offline:', err)
+      (res: any) => console.log('Ishaa V2 is Online:', res),
+      (err: any) => console.error('Ishaa V2 is Offline:', err)
     );
   }
 

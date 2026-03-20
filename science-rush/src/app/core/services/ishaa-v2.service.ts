@@ -66,38 +66,83 @@
 
 
 
+// import { Injectable } from '@angular/core';
+// import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { environment } from 'src/environments/environment';
+// import { Observable } from 'rxjs';
+
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class IshaaV2Service {
+//   // private baseUrl = `${environment.apiUrl}/ai/v2/ishaa`; 
+//    private baseUrl = 'http://localhost:8000/v2/ishaa';
+//   constructor(private http: HttpClient) { }
+
+//   checkHealth(): Observable<any> {
+//     return this.http.get(`${this.baseUrl}/health`);
+//   }
+
+//   // PRODUCTION READY: Dynamically accepts the specific question ID, the user's message, and past chat history
+//   askQuestion(questionId: string, message: string, history: any[] = []): Observable<any> {
+    
+//     // 1. DYNAMIC TOKEN: Automatically grabs the token of whoever is currently logged into the app
+//     const token = localStorage.getItem('access_token') || localStorage.getItem('token') || '';
+    
+//     const headers = new HttpHeaders({
+//       'Authorization': `Bearer ${token}`
+//     });
+
+//     // 2. DYNAMIC PAYLOAD: Sends the exact question the student is struggling with
+//     return this.http.post(`${this.baseUrl}/ai-help/chat`, {
+//       question_id: questionId, 
+//       message: message,
+//       history: history 
+//     }, { headers: headers });
+//   }
+// }
+
+
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment'; // Or wherever your env is
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class IshaaV2Service {
-  // private baseUrl = `${environment.apiUrl}/ai/v2/ishaa`; 
-   private baseUrl = 'http://localhost:8000/v2/ishaa';
-  constructor(private http: HttpClient) { }
+  // Pointing to your Python AI Engine
+  private baseUrl = 'http://localhost:8000/v2/ishaa'; 
 
+  constructor(private http: HttpClient) {}
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('access_token') || '';
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  }
+  // ================= HEALTH CHECK =================
   checkHealth(): Observable<any> {
+    // Sends a simple GET request to check if the Python server is awake
     return this.http.get(`${this.baseUrl}/health`);
   }
 
-  // PRODUCTION READY: Dynamically accepts the specific question ID, the user's message, and past chat history
+  // 1. CHAT FEATURE
   askQuestion(questionId: string, message: string, history: any[] = []): Observable<any> {
-    
-    // 1. DYNAMIC TOKEN: Automatically grabs the token of whoever is currently logged into the app
-    const token = localStorage.getItem('access_token') || localStorage.getItem('token') || '';
-    
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
+    const payload = { question_id: questionId, message, history };
+    return this.http.post(`${this.baseUrl}/ai-help/chat`, payload, { headers: this.getAuthHeaders() });
+  }
 
-    // 2. DYNAMIC PAYLOAD: Sends the exact question the student is struggling with
-    return this.http.post(`${this.baseUrl}/ai-help/chat`, {
-      question_id: questionId, 
-      message: message,
-      history: history 
-    }, { headers: headers });
+  // 2. HINT FEATURE
+  getHint(questionId: string, layer: number): Observable<any> {
+    const payload = { question_id: questionId, layer };
+    return this.http.post(`${this.baseUrl}/ai-help/hint`, payload, { headers: this.getAuthHeaders() });
+  }
+
+  // 3. VISION FEATURE (Must use FormData, DO NOT set Content-Type header)
+  analyzeHandwrittenWork(questionId: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('question_id', questionId);
+    formData.append('file', file);
+    return this.http.post(`${this.baseUrl}/ai-help/vision`, formData, { headers: this.getAuthHeaders() });
   }
 }

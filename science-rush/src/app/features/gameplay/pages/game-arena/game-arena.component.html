@@ -1,7 +1,7 @@
-
+<!-- 
 <div class="duo-wrapper">
 
-  <!-- ================= HEADER ================= -->
+ 
   <header class="game-header">
     <button class="icon-btn close" (click)="exit()" aria-label="Exit Game">
       ✕
@@ -22,7 +22,7 @@
   </header>
 
 
-  <!-- ================= MAIN ================= -->
+ 
   <main class="game-board">
 
     <div
@@ -30,7 +30,7 @@
       @fadeSlide
       *ngIf="currentQ && status !== 'SUMMARY'">
 
-      <!-- Mascot -->
+     
       <div
         class="mascot-avatar"
         [attr.data-mood]="mascotState">
@@ -39,10 +39,10 @@
           alt="Mascot">
       </div>
 
-      <!-- Question + Feedback wrapper -->
+      
       <div class="question-content">
 
-        <!-- CHILD COMPONENT -->
+    
         <app-question-card
           [question]="currentQ"
           [disabled]="status === 'FEEDBACK'"
@@ -50,7 +50,7 @@
           (optionSelected)="handleOptionSelected($event)">
         </app-question-card>
 
-        <!-- INLINE FEEDBACK (Under Options) -->
+        
         <div
           class="feedback-inline"
           *ngIf="status === 'FEEDBACK'"
@@ -95,7 +95,7 @@
     </div>
 
 
-    <!-- SUMMARY -->
+   
     <div
       class="summary-card"
       *ngIf="status === 'SUMMARY'"
@@ -106,6 +106,152 @@
       <div class="xp-block">
         <p class="xp-label">Total XP Earned</p>
         <p class="xp-score">+{{ sessionScore }}</p>
+      </div>
+
+      <button class="primary-btn wide" (click)="exit()">
+        Continue Learning
+      </button>
+
+    </div>
+
+  </main>
+
+</div> -->
+
+
+
+
+
+<div class="duo-wrapper">
+
+  <header class="game-header">
+    <button class="icon-btn close" (click)="exit()" aria-label="Exit Game">
+      ✕
+    </button>
+
+    <div class="progress-container">
+      <div
+        class="progress-bar-fill"
+        [style.width.%]="progressPercent">
+      </div>
+    </div>
+
+    <div
+      class="streak-counter"
+      [class.on-fire]="streak >= 3">
+      🔥 {{ streak }}
+    </div>
+  </header>
+
+
+  <main class="game-board">
+
+    <div
+      class="question-section"
+      @fadeSlide
+      *ngIf="currentQ && status !== 'SUMMARY'">
+
+      <div
+        class="mascot-avatar"
+        [attr.data-mood]="mascotState">
+        <img
+          [src]="'assets/images/mascots/' + mascotState + '.svg'"
+          alt="Mascot"
+          onerror="this.src='assets/images/mascots/neutral.svg'"> </div>
+
+      <div class="question-content">
+
+        <app-question-card
+          [question]="currentQ"
+          [disabled]="status === 'FEEDBACK'"
+          [showResult]="status === 'FEEDBACK'"
+          (optionSelected)="handleOptionSelected($event)">
+        </app-question-card>
+
+        <div
+          class="feedback-inline"
+          *ngIf="status === 'FEEDBACK'"
+          [class.correct]="isCorrect"
+          [class.wrong]="!isCorrect">
+
+          <div class="feedback-content">
+            <div class="icon-circle">
+              {{ isCorrect ? '✓' : '✕' }}
+            </div>
+
+            <div class="text-group">
+              <h3>
+                {{ isCorrect ? 'Nice job!' : 'Correct Answer:' }}
+              </h3>
+
+              <div
+                *ngIf="!isCorrect"
+                class="correction-text">
+                {{ getCorrectAnswerText() }}
+              </div>
+
+              <div
+                *ngIf="currentQ?.explanation"
+                class="explanation-text">
+                {{ currentQ.explanation }}
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="continue-btn"
+            [class.btn-correct]="isCorrect"
+            [class.btn-wrong]="!isCorrect"
+            (click)="continue()">
+            CONTINUE
+          </button>
+
+        </div>
+
+        <div class="ai-action-bar" *ngIf="status !== 'SUMMARY'">
+          
+          <div class="ai-controls">
+            <button class="ai-btn hint-btn" (click)="requestHint()" [disabled]="isAiLoading">
+              <span class="icon">💡</span> Get Hint ({{ currentHintLayer }}/3)
+            </button>
+
+            <input type="file" #fileInput (change)="onImageUpload($event)" accept="image/*" style="display: none;">
+            <button class="ai-btn vision-btn" (click)="fileInput.click()" [disabled]="isAiLoading">
+              <span class="icon">📸</span> Check My Work
+            </button>
+          </div>
+
+          <div class="chat-input-wrapper">
+            <input type="text" class="chat-input" placeholder="Ask Ishaa a question about this..." 
+                   [(ngModel)]="chatInput" (keyup.enter)="sendChatMessage()" [disabled]="isAiLoading">
+            <button class="send-btn" (click)="sendChatMessage()" [disabled]="isAiLoading || !chatInput">
+              <span *ngIf="!isAiLoading">➤</span>
+              <span *ngIf="isAiLoading" class="loader"></span>
+            </button>
+          </div>
+
+          <div class="ai-response-box" *ngIf="aiResponse || isAiLoading">
+            <div *ngIf="isAiLoading && !aiResponse" class="ai-typing">
+              <i>Ishaa is thinking...</i>
+            </div>
+            <div *ngIf="aiResponse" class="ai-text" [innerHTML]="aiResponse"></div>
+          </div>
+
+        </div>
+        </div>
+    </div>
+
+
+    <div
+      class="summary-card"
+      *ngIf="status === 'SUMMARY'"
+      @fadeSlide>
+
+      <h2>Session Complete!</h2>
+
+      <div class="xp-block">
+        <p class="xp-label">Total XP Earned</p>
+        <p class="xp-value">+{{ sessionScore }}</p>
       </div>
 
       <button class="primary-btn wide" (click)="exit()">
