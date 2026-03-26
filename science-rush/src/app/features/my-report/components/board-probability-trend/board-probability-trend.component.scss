@@ -1,216 +1,9 @@
-// /* 🔴 CRITICAL: Angular components are inline by default. 
-//    We must force block to respect width/height. */
-// :host {
-//   display: block;
-//   width: 100%;
-// }
-
-// .chart-container {
-//   width: 100%;
-//   /* Use padding-bottom to reserve space for X-axis labels 
-//      instead of letting them hang outside with negative margins */
-//   padding-bottom: 30px; 
-//   height: 250px; 
-//   position: relative;
-//   box-sizing: border-box; /* Include padding in height */
-
-//   /* Ensure graph has a clean white canvas even if card changes */
-//   // background: #ffffff; 
-//   // border-radius: 12px;
-
-//   /* CHANGE THIS from #ffffff to transparent */
-//   background: transparent; 
-//   /* Remove border radius since parent has it */
-//   border-radius: 0;
-
-//   @media (max-width: 600px) {
-//     height: 220px; /* Adjust for mobile */
-//     padding-bottom: 25px;
-//   }
-// }
-
-// .chart-wrapper {
-//   display: flex;
-//   height: 100%;
-//   width: 100%;
-//   align-items: flex-end;
-// }
-
-// /* Y-Axis */
-// .y-axis {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   height: 100%;
-//   /* Fixed width prevents bars from jumping */
-//   width: 35px; 
-//   min-width: 35px;
-//   padding-right: 8px;
-//   text-align: right;
-//   border-right: 1px solid transparent; /* Alignment helper */
-
-//   span {
-//     font-size: 0.75rem;
-//     color: #95a5a6;
-//     transform: translateY(50%); /* Center label vertically on line */
-    
-//     @media (max-width: 600px) {
-//       font-size: 0.65rem;
-//     }
-//   }
-  
-//   /* Top label needs to shift down, bottom needs to shift up */
-//   span:first-child { transform: translateY(0); }
-//   span:last-child { transform: translateY(0); }
-// }
-
-// /* Bars Area */
-// .bars-area {
-//   flex: 1; /* Occupy all remaining space */
-//   height: 100%;
-//   display: flex;
-//   align-items: flex-end;
-//   /* Space out bars evenly using space-between or strictly calculating margins */
-//   justify-content: space-between; 
-  
-//   position: relative;
-//   border-left: 2px solid #ecf0f1;
-//   border-bottom: 2px solid #ecf0f1;
-  
-//   /* Add padding to separating bars from Y-axis and Right Edge */
-//   padding: 0 2%; 
-// }
-
-// /* Grid Lines */
-// .grid-line {
-//   position: absolute;
-//   left: 0;
-//   right: 0;
-//   height: 1px;
-//   background: #f4f6f7;
-//   z-index: 0;
-//   pointer-events: none;
-// }
-
-// /* Individual Bar Wrapper */
-// .bar-group {
-//   /* FLUID WIDTH: 7 bars. 
-//      We set width to ~10% leaving ~30% for gaps automatically distributed by space-between */
-//   width: 10%; 
-//   max-width: 40px; /* Cap width on desktops */
-//   height: 100%;
-  
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-end;
-//   align-items: center;
-//   position: relative;
-//   z-index: 1;
-  
-//   /* Prevent blue highlight on tap */
-//   -webkit-tap-highlight-color: transparent; 
-// }
-
-// /* The Bar Itself */
-// .bar {
-//   width: 100%;
-//   border-radius: 4px 4px 0 0;
-//   transition: height 0.6s ease;
-//   min-height: 4px; /* Ensure tiny values are visible */
-
-//   border-radius: 8px 8px 0 0;
-  
-//   &.high { background: #2ecc71; }
-//   &.med { background: #f1c40f; }
-//   &.low { background: #e74c3c; }
-
-//   /* Mobile: Slightly sharper corners */
-//   @media (max-width: 600px) {
-//     border-radius: 2px 2px 0 0;
-//   }
-// }
-
-// /* Interaction */
-// .bar-group:active .bar, 
-// .bar-group:hover .bar {
-//   filter: brightness(0.9);
-//   transform: scaleY(1.02); /* Subtle grow */
-//   transform-origin: bottom;
-// }
-
-// .bar-group:active .bar-tooltip, 
-// .bar-group:hover .bar-tooltip {
-//   opacity: 1;
-//   transform: translateX(-50%) translateY(-5px);
-// }
-
-// /* Tooltip */
-// .bar-tooltip {
-//   position: absolute;
-//   bottom: 100%;
-//   left: 50%;
-//   transform: translateX(-50%);
-//   margin-bottom: 5px;
-  
-//   background: #2c3e50;
-//   color: white;
-//   padding: 4px 8px;
-//   border-radius: 4px;
-//   font-size: 0.7rem;
-//   font-weight: 700;
-//   white-space: nowrap;
-  
-//   opacity: 0;
-//   pointer-events: none;
-//   transition: all 0.2s;
-//   z-index: 10;
-// }
-
-// /* X-Axis Labels (W1, W2...) */
-// .x-label {
-//   position: absolute;
-//   /* Place inside the padding-bottom area we reserved */
-//   bottom: -25px; 
-//   left: 50%;
-//   transform: translateX(-50%);
-  
-//   font-size: 0.75rem;
-//   color: #7f8c8d;
-//   font-weight: 500;
-  
-//   @media (max-width: 600px) {
-//     font-size: 0.65rem;
-//     bottom: -22px;
-//   }
-// }
-
-// /* Empty State */
-// .no-data-state {
-//   height: 200px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background: #fafafa;
-//   border: 2px dashed #e0e0e0;
-//   border-radius: 8px;
-//   color: #bdc3c7;
-//   text-align: center;
-//   padding: 20px;
-//   font-size: 0.9rem;
-// }
-
-
-
-
-
-// Colors extracted from img0001
-$bg-dark: #0F172A;     // Deep Navy Background
-$text-white: #F8FAFC;  // Bright White
-$text-grey: #94A3B8;   // Muted Text
-$accent-green: #4ADE80; // Bright Green (XP color)
-$bar-inactive: #1E293B; // Dark bars
-$bar-active: #4ADE80;   // Active bar
-$bg-card: #020617;      // Very dark card bg
+$bg-dark: #0F172A;
+$text-white: #F8FAFC;
+$text-grey: #94A3B8;
+$accent-green: #4ADE80;
+$bar-inactive: #1E293B;
+$bg-card: #020617;
 
 :host {
   display: block;
@@ -219,7 +12,7 @@ $bg-card: #020617;      // Very dark card bg
 
 .momentum-card {
   background-color: $bg-card;
-  border-radius: 20px; // Very rounded corners like image
+  border-radius: 20px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -230,7 +23,6 @@ $bg-card: #020617;      // Very dark card bg
   border: 1px solid #1e293b;
 }
 
-// --- Header ---
 .card-header {
   display: flex;
   align-items: center;
@@ -239,12 +31,12 @@ $bg-card: #020617;      // Very dark card bg
 
   .fire-icon {
     font-size: 1.2rem;
-    color: #F59E0B; // Orange fire color
+    color: #F59E0B;
   }
 
   .title {
     font-size: 0.85rem;
-    font-weight: 800; // Bold uppercase
+    font-weight: 800;
     text-transform: uppercase;
     color: $text-white;
     letter-spacing: 0.05em;
@@ -252,7 +44,6 @@ $bg-card: #020617;      // Very dark card bg
   }
 }
 
-// --- Stats Row ---
 .stats-row {
   display: flex;
   justify-content: space-between;
@@ -264,18 +55,15 @@ $bg-card: #020617;      // Very dark card bg
     flex-direction: column;
 
     .big-value {
-      font-size: 2rem; // Large numbers like "5 Days"
+      font-size: 2rem;
       font-weight: 800;
       line-height: 1;
       margin-bottom: 0.25rem;
       color: $text-white;
 
       &.colored {
-        color: $accent-green; // Green for "+450 XP" part
-        
-        &.negative {
-          color: #F87171; // Red if negative
-        }
+        color: $accent-green;
+        &.negative { color: #F87171; }
       }
     }
 
@@ -285,13 +73,10 @@ $bg-card: #020617;      // Very dark card bg
       font-weight: 500;
     }
 
-    &.right {
-      text-align: right; // Align right column to right
-    }
+    &.right { text-align: right; }
   }
 }
 
-// --- Chart ---
 .chart-area {
   flex: 1;
   width: 100%;
@@ -300,27 +85,35 @@ $bg-card: #020617;      // Very dark card bg
   align-items: flex-end;
 }
 
-.bar-chart {
-  overflow: visible;
-}
+.bar-chart { overflow: visible; }
 
 .bar-rect {
   transition: height 1s ease-out;
   cursor: pointer;
+  &:hover { opacity: 0.8; }
+}
 
-  &:hover {
-    opacity: 0.8;
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .empty-msg {
+    color: $text-grey;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 2rem;
   }
 }
 
-// --- Loading ---
 .loading-overlay {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   .spinner {
     width: 24px;
     height: 24px;

@@ -828,12 +828,16 @@ def load_model(path, key, name):
         print(f"❌ {name} Load Failed: {e}")
         models[key] = None
 
-print("--- STARTING PENTA-CORE AI ENGINE ---")
-load_model(PROFILER_PATH, 'profiler', "AI #1 (Cognitive Profiler)")
-load_model(MASTERY_PATH, 'mastery', "AI #2 (Student Mastery)")
-load_model(EXAM_PATH, 'exam', "AI #3 (Exam Projector)")
-load_model(BURNOUT_PATH, 'burnout', "AI #4 (Burnout Watchdog)")
-load_model(RECOMMENDER_PATH, 'recommender', "AI #5 (Question Recommender)")
+print("--- STARTING AI ENGINE (Ishaa V2 LLM Only) ---")
+# NOTE: ML predict models disabled — dashboard/mastery/exam/burnout/recommender
+# are now handled by local Node.js formulas. Only Ishaa V2 (LLM) needs Python.
+# To re-enable, uncomment the load_model lines and the endpoints below.
+#
+# load_model(PROFILER_PATH, 'profiler', "AI #1 (Cognitive Profiler)")
+# load_model(MASTERY_PATH, 'mastery', "AI #2 (Student Mastery)")
+# load_model(EXAM_PATH, 'exam', "AI #3 (Exam Projector)")
+# load_model(BURNOUT_PATH, 'burnout', "AI #4 (Burnout Watchdog)")
+# load_model(RECOMMENDER_PATH, 'recommender', "AI #5 (Question Recommender)")
 
 # ==============================================================================
 # 4. FASTAPI APP & INPUT SCHEMAS
@@ -903,92 +907,76 @@ def health_check():
         "models_status": {k: (v is not None) for k, v in models.items()}
     }
 
-# --- AI #1: Persona ---
-@app.post("/predict-persona")
-def predict_persona(stats: PersonaInput):
-    if not models['profiler']: raise HTTPException(503, "Profiler AI not loaded")
-    try:
-        data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
-        df = pd.DataFrame([data])
-        prediction = models['profiler'].predict(df)[0]
-        return {"persona": prediction}
-    except Exception as e:
-        raise HTTPException(500, str(e))
+# ==============================================================================
+# ML PREDICT ENDPOINTS — DISABLED
+# These are no longer called by the Node.js backend. Dashboard metrics (persona,
+# mastery, exam, burnout) are now computed with local formulas in Node.js.
+# Question ordering uses local scoring logic in gameplay.service.js.
+# Only Ishaa V2 (LLM chat/hints) requires this Python server.
+# To re-enable any endpoint, uncomment it and its corresponding load_model line.
+# ==============================================================================
 
-# --- AI #2: Mastery ---
-@app.post("/predict-mastery")
-def predict_mastery(stats: MasteryInput):
-    if not models['mastery']: raise HTTPException(503, "Mastery AI not loaded")
-    try:
-        data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
-        df = pd.DataFrame([data])
-        prediction = models['mastery'].predict(df)[0]
-        return {"mastery_score": float(prediction)}
-    except Exception as e:
-        raise HTTPException(500, str(e))
+# @app.post("/predict-persona")
+# def predict_persona(stats: PersonaInput):
+#     if not models['profiler']: raise HTTPException(503, "Profiler AI not loaded")
+#     try:
+#         data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
+#         df = pd.DataFrame([data])
+#         prediction = models['profiler'].predict(df)[0]
+#         return {"persona": prediction}
+#     except Exception as e:
+#         raise HTTPException(500, str(e))
 
-# --- AI #3: Exam Projector ---
-@app.post("/predict-exam")
-def predict_exam(stats: ExamInput):
-    if not models['exam']: raise HTTPException(503, "Exam AI not loaded")
-    try:
-        data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
-        df = pd.DataFrame([data])
-        prediction = models['exam'].predict(df)[0]
-        return {"predicted_board_score": float(prediction)}
-    except Exception as e:
-        raise HTTPException(500, str(e))
+# @app.post("/predict-mastery")
+# def predict_mastery(stats: MasteryInput):
+#     if not models['mastery']: raise HTTPException(503, "Mastery AI not loaded")
+#     try:
+#         data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
+#         df = pd.DataFrame([data])
+#         prediction = models['mastery'].predict(df)[0]
+#         return {"mastery_score": float(prediction)}
+#     except Exception as e:
+#         raise HTTPException(500, str(e))
 
-# --- AI #4: Burnout Watchdog ---
-@app.post("/predict-burnout")
-def predict_burnout(stats: BurnoutInput):
-    if not models['burnout']: raise HTTPException(503, "Burnout Watchdog not loaded")
-    try:
-        data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
-        df = pd.DataFrame([data])
-        is_burned_out = int(models['burnout'].predict(df)[0])
-        
-        preprocessed_df = models['burnout'].preprocess(df)
-        stress_level = float(models['burnout'].model.predict_proba(preprocessed_df)[:, 1][0])
-        
-        return {
-            "is_burned_out": is_burned_out,
-            "stress_level": stress_level
-        }
-    except Exception as e:
-        raise HTTPException(500, str(e))
+# @app.post("/predict-exam")
+# def predict_exam(stats: ExamInput):
+#     if not models['exam']: raise HTTPException(503, "Exam AI not loaded")
+#     try:
+#         data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
+#         df = pd.DataFrame([data])
+#         prediction = models['exam'].predict(df)[0]
+#         return {"predicted_board_score": float(prediction)}
+#     except Exception as e:
+#         raise HTTPException(500, str(e))
 
-# --- AI #5: Question Recommender (NEW) ---
-@app.post("/recommend-questions")
-def recommend_questions(payload: RecommenderInput):
-    if not models['recommender']: raise HTTPException(503, "Recommender AI not loaded")
-    
-    try:
-        candidates_data = [c.dict() for c in payload.candidates]
-        df = pd.DataFrame(candidates_data)
-        
-        # Broadcast Context Features
-        df['user_mastery'] = payload.user_mastery
-        df['prerequisite_strength'] = payload.prerequisite_strength
-        df.rename(columns={'difficulty': 'question_difficulty'}, inplace=True)
+# @app.post("/predict-burnout")
+# def predict_burnout(stats: BurnoutInput):
+#     if not models['burnout']: raise HTTPException(503, "Burnout Watchdog not loaded")
+#     try:
+#         data = stats.model_dump() if hasattr(stats, 'model_dump') else stats.dict()
+#         df = pd.DataFrame([data])
+#         is_burned_out = int(models['burnout'].predict(df)[0])
+#         preprocessed_df = models['burnout'].preprocess(df)
+#         stress_level = float(models['burnout'].model.predict_proba(preprocessed_df)[:, 1][0])
+#         return {"is_burned_out": is_burned_out, "stress_level": stress_level}
+#     except Exception as e:
+#         raise HTTPException(500, str(e))
 
-        # Ranking
-        scores = models['recommender'].predict(df)
-        
-        results = []
-        for i, score in enumerate(scores):
-            results.append({
-                "question_id": candidates_data[i]['question_id'],
-                "relevance_score": float(score)
-            })
-        
-        # Sort by relevance (Descending)
-        sorted_results = sorted(results, key=lambda x: x['relevance_score'], reverse=True)
-        
-        return {"ranked_questions": sorted_results}
-
-    except Exception as e:
-        raise HTTPException(500, f"Recommendation Failed: {str(e)}")
+# @app.post("/recommend-questions")
+# def recommend_questions(payload: RecommenderInput):
+#     if not models['recommender']: raise HTTPException(503, "Recommender AI not loaded")
+#     try:
+#         candidates_data = [c.dict() for c in payload.candidates]
+#         df = pd.DataFrame(candidates_data)
+#         df['user_mastery'] = payload.user_mastery
+#         df['prerequisite_strength'] = payload.prerequisite_strength
+#         df.rename(columns={'difficulty': 'question_difficulty'}, inplace=True)
+#         scores = models['recommender'].predict(df)
+#         results = [{"question_id": candidates_data[i]['question_id'], "relevance_score": float(s)} for i, s in enumerate(scores)]
+#         sorted_results = sorted(results, key=lambda x: x['relevance_score'], reverse=True)
+#         return {"ranked_questions": sorted_results}
+#     except Exception as e:
+#         raise HTTPException(500, f"Recommendation Failed: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn

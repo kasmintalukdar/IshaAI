@@ -419,9 +419,9 @@ export class GameplayService {
   }
 
   getQuestionsByIds(ids: string[]): Observable<any> {
-    // Passing IDs as a comma-separated string
-    return this.http.get(`${this.apiUrl}/questions`, { 
-      params: { ids: ids.join(',') } 
+    return this.http.get(`${this.apiUrl}/questions`, {
+      params: { ids: ids.join(',') },
+      withCredentials: true
     });
   }
 
@@ -535,9 +535,11 @@ export class GameplayService {
   }
 
   // --- 7. DAILY PLANS (AI Tutor) ---
-  getDailyPlans(): Observable<any> {
+  getDailyPlans(subjectId?: string): Observable<any> {
+    const params: any = {};
+    if (subjectId) params.subjectId = subjectId;
     return this.http
-      .get<{ status: string; data: any }>(`${this.apiUrl}/daily-plans`, { withCredentials: true })
+      .get<{ status: string; data: any }>(`${this.apiUrl}/daily-plans`, { withCredentials: true, params })
       .pipe(map(response => response.data));
   }
 
@@ -583,7 +585,7 @@ export class GameplayService {
   }
 
   getFormulas(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/formulas`);
+    return this.http.get(`${this.apiUrl}/formulas`, { withCredentials: true });
   }
 
   

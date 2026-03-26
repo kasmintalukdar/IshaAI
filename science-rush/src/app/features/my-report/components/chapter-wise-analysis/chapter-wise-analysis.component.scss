@@ -1,9 +1,8 @@
-// Dark Theme Variables from Image
-$bg-dark: #111827;       // Deep Navy/Black background
-$card-bg: #1F2937;       // Lighter Navy for cards
+$bg-dark: #111827;
+$card-bg: #1F2937;
 $text-white: #F9FAFB;
 $text-gray: #9CA3AF;
-$accent-red: #F87171;    // Reddish pink from header
+$accent-red: #F87171;
 $accent-border: #374151;
 $badge-red-bg: #451a1a;
 $badge-red-text: #fecaca;
@@ -18,7 +17,7 @@ $badge-green-text: #a7f3d0;
 }
 
 .dark-analysis-container {
-  background-color: $bg-dark; // Or transparent if parent has the bg
+  background-color: $bg-dark;
   border: 1px solid $accent-border;
   border-radius: 16px;
   padding: 1.5rem;
@@ -28,49 +27,25 @@ $badge-green-text: #a7f3d0;
   min-height: 400px;
 }
 
-// --- Header ---
 .section-header {
   display: flex;
   justify-content: space-between;
-//   align-items: flex-start;
   margin-bottom: 2rem;
   align-items: center;
 
-  .header-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-
-    .icon {
-      color: $accent-red;
-      display: flex;
-    }
-
-    h3 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: $accent-red; // The pinkish color from the image
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin: 0;
-    }
-
-    .controls-group {
+  .controls-group {
     display: flex;
     gap: 1rem;
-    
-    // Mobile responsive: stack them if narrow
+
     @media (max-width: 600px) {
       flex-direction: column;
       gap: 0.5rem;
     }
   }
-  }
 
-  // Styled Dropdown (Looks like "Focus Weakness >" button)
   .dark-select-wrapper {
     position: relative;
-    background-color: #1a1f2e; // Dark button bg
+    background-color: #1a1f2e;
     border: 1px solid #374151;
     border-radius: 8px;
     padding: 0.5rem 1rem;
@@ -80,14 +55,12 @@ $badge-green-text: #a7f3d0;
     cursor: pointer;
     transition: all 0.2s;
 
-    &:hover {
-      border-color: $accent-red;
-    }
+    &:hover { border-color: $accent-red; }
 
     select {
       position: absolute;
       inset: 0;
-      opacity: 0; // Invisible but clickable
+      opacity: 0;
       cursor: pointer;
       width: 100%;
     }
@@ -96,7 +69,7 @@ $badge-green-text: #a7f3d0;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      
+
       .label-text {
         font-size: 0.65rem;
         color: $text-gray;
@@ -110,31 +83,20 @@ $badge-green-text: #a7f3d0;
       }
     }
 
-    .chevron {
-      color: $text-gray;
-    }
+    .chevron { color: $text-gray; }
   }
 }
 
-// --- Grid & Cards ---
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // Responsive Grid
-  gap: 1.5rem;
-  overflow-y: auto;
-  padding-right: 5px;
-  flex: 1;
+.content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 
-  &.custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-  &.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &.custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #374151;
-    border-radius: 4px;
-  }
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
 .topic-card {
@@ -166,13 +128,12 @@ $badge-green-text: #a7f3d0;
 
   .card-desc {
     font-size: 0.9rem;
-    color: #9CA3AF; // Muted gray
+    color: #9CA3AF;
     line-height: 1.5;
     margin: 0 0 1.5rem 0;
-    flex: 1; // Pushes badge to bottom
+    flex: 1;
   }
 
-  // Badge Styling
   .card-badge {
     align-self: flex-start;
     display: inline-flex;
@@ -182,57 +143,15 @@ $badge-green-text: #a7f3d0;
     border-radius: 6px;
     font-size: 0.8rem;
     font-weight: 600;
-    font-family: monospace; // Matches the "Schema" look
+    font-family: monospace;
 
-    // Color Variants
-    &.badge-weak {
-      background-color: $badge-red-bg;
-      color: $badge-red-text;
-    }
-    &.badge-avg {
-      background-color: $badge-yellow-bg;
-      color: $badge-yellow-text;
-    }
-    &.badge-strong {
-      background-color: $badge-green-bg;
-      color: $badge-green-text;
-    }
+    &.badge-weak { background-color: $badge-red-bg; color: $badge-red-text; }
+    &.badge-avg { background-color: $badge-yellow-bg; color: $badge-yellow-text; }
+    &.badge-strong { background-color: $badge-green-bg; color: $badge-green-text; }
   }
 }
 
-// --- Loading ---
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  
-  .spinner {
-    width: 30px;
-    height: 30px;
-    border: 3px solid #374151;
-    border-top-color: $accent-red;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-
-// ... existing dark theme variables
-
-.content-body {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-// ... existing .topics-grid styles
-
-// --- New Insight Section ---
+// Insight Section
 .chapter-insights {
   display: flex;
   flex-direction: column;
@@ -257,14 +176,13 @@ $badge-green-text: #a7f3d0;
     padding: 1.25rem;
   }
 
-  // Time Card Specifics
   .time-card {
     display: flex;
     align-items: center;
     gap: 1rem;
 
     .time-icon {
-      color: #FBBF24; // Amber
+      color: #FBBF24;
       background: rgba(251, 191, 36, 0.1);
       padding: 0.75rem;
       border-radius: 50%;
@@ -274,7 +192,6 @@ $badge-green-text: #a7f3d0;
       display: flex;
       flex-direction: column;
       min-width: 120px;
-      
       .label { font-size: 0.75rem; color: $text-gray; }
       .value { font-size: 1.1rem; font-weight: 700; color: $text-white; }
     }
@@ -287,7 +204,6 @@ $badge-green-text: #a7f3d0;
     }
   }
 
-  // Root Cause Specifics
   .root-card {
     display: flex;
     flex-direction: column;
@@ -300,24 +216,52 @@ $badge-green-text: #a7f3d0;
         font-size: 0.85rem;
         color: $text-white;
         margin-bottom: 0.35rem;
-        
         .rc-count { font-weight: 700; color: $text-gray; }
       }
-      
+
       .rc-track {
         height: 6px;
         background: #374151;
         border-radius: 10px;
         overflow: hidden;
-        
+
         .rc-fill {
           height: 100%;
           border-radius: 10px;
+          transition: width 0.8s ease;
           &.red { background-color: #EF4444; }
           &.orange { background-color: #F59E0B; }
+          &.blue { background-color: #3B82F6; }
           &.green { background-color: #10B981; }
         }
       }
     }
   }
 }
+
+// Loading & Empty
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 200px;
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #374151;
+    border-top-color: $accent-red;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .no-data-msg {
+    color: $text-gray;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

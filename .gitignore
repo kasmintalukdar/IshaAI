@@ -5,6 +5,8 @@
 Thumbs.db
 *.log
 .env
+.env.local
+.env.production
 
 # =========================
 # Node / JavaScript
@@ -31,7 +33,6 @@ env/
 .venv/
 *.egg-info/
 .pytest_cache/
-*.pkl        # ML model files
 *.joblib
 
 # =========================
@@ -48,3 +49,12 @@ dump.rdb
 # =========================
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# =========================
+# OS Files
+# =========================
+desktop.ini
+ehthumbs.db

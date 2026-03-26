@@ -1,42 +1,47 @@
+<div class="diagnostics-container">
+  <ng-container *ngIf="diagnostics$ | async as rows">
 
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="rows.length === 0">
+      <p>No topic data yet. Solve questions to see your topic breakdown.</p>
+    </div>
 
-  <app-premium-lock title="My Locked Chart" 
-  (unlock)="onUnlockClicked()">
-  
-   
-
-
-  <div class="table-responsive">
-    <table *ngIf="diagnostics$ | async as rows">
-      <thead>
-        <tr>
-          <th>Topic</th>
-          <th>Accuracy</th>
-          <th>Time / Q</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of rows">
-          <td class="topic-name">{{ row.topic }}</td>
-          <td>
-            <div class="progress-wrapper">
-              <div class="progress-track">
-                <div class="progress-fill" [style.width.%]="row.accuracy"></div>
+    <!-- Table -->
+    <div class="table-responsive" *ngIf="rows.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Topic</th>
+            <th>Accuracy</th>
+            <th>Time / Q</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows">
+            <td class="topic-name">{{ row.topic }}</td>
+            <td>
+              <div class="progress-wrapper">
+                <div class="progress-track">
+                  <div class="progress-fill" [style.width.%]="row.accuracy"
+                       [class.high]="row.accuracy >= 80"
+                       [class.med]="row.accuracy >= 50 && row.accuracy < 80"
+                       [class.low]="row.accuracy < 50">
+                  </div>
+                </div>
+                <span class="val">{{ row.accuracy | number:'1.0-0' }}%</span>
               </div>
-              <span class="val">{{ row.accuracy | number:'1.0-0' }}%</span>
-            </div>
-          </td>
-          <td class="time-val">{{ row.timeTaken | number:'1.0-0' }}s</td>
-          <td>
-            <span class="badge" [ngClass]="row.status.toLowerCase()">
-              {{ row.status }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+            </td>
+            <td class="time-val">{{ row.timeTaken | number:'1.0-0' }}s</td>
+            <td>
+              <span class="badge" [ngClass]="row.status.toLowerCase()">
+                {{ row.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  </app-premium-lock>
-
+  </ng-container>
+</div>

@@ -1,136 +1,7 @@
-// .rca-container {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   padding: 10px;
-// }
-
-// .node-wrapper {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// }
-
-// .node {
-//   padding: 16px;
-//   border-radius: 8px;
-//   width: 220px;
-//   text-align: center;
-//   position: relative;
-//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-//   transition: transform 0.2s;
-
-//   &:hover {
-//     transform: translateY(-3px);
-//   }
-// }
-
-// .weak-node {
-//   background: #fff5f5;
-//   border: 2px solid #feb2b2;
-
-//   h4 { color: #c0392b; margin: 0 0 5px 0; }
-//   .stat { font-weight: bold; color: #e74c3c; }
-// }
-
-// .connector-line {
-//   width: 2px;
-//   height: 30px;
-//   background: #bdc3c7;
-//   margin: 5px 0;
-// }
-
-// .dependencies-grid {
-//   display: flex;
-//   gap: 20px;
-//   flex-wrap: wrap;
-//   justify-content: center;
-//   position: relative;
-
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: -5px;
-//     left: 20%;
-//     right: 20%;
-//     height: 2px;
-//     background: #bdc3c7;
-//     z-index: 0;
-//   }
-// }
-
-// .node-wrapper.dep::before {
-//   content: '';
-//   display: block;
-//   width: 2px;
-//   height: 25px;
-//   background: #bdc3c7;
-//   margin: -25px auto 5px auto;
-// }
-
-// .dep-node {
-//   background: white;
-//   border: 1px solid #ecf0f1;
-
-//   h4 { color: #2c3e50; font-size: 0.95rem; margin: 5px 0; }
-//   p { font-size: 0.8rem; color: #7f8c8d; margin: 0; }
-// }
-
-// .impact-badge {
-//   font-size: 0.65rem;
-//   text-transform: uppercase;
-//   background: #edf2f7;
-//   color: #2c3e50;
-//   padding: 2px 6px;
-//   border-radius: 4px;
-// }
-
-// .insight-box {
-//   margin-top: 30px;
-//   background: #e8f8f5;
-//   padding: 15px;
-//   border-radius: 8px;
-//   color: #16a085;
-//   width: 100%;
-//   text-align: center;
-// }
-
-// .empty-state {
-//   text-align: center;
-//   color: #27ae60;
-//   font-weight: 500;
-//   padding: 40px;
-// }
-
-
-
-
-// .node {
-//   background: white; /* Keep nodes white! */
-//   box-shadow: 0 4px 0 rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05); /* 3D node */
-//   border: 2px solid transparent;
-// }
-
-// .weak-node {
-//   background: white;
-//   border-color: #feb2b2; /* Red border */
-// }
-
-// /* Insight Box - Make it blend nicely */
-// .insight-box {
-//   background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
-//   border: 1px solid rgba(0,0,0,0.05);
-//   backdrop-filter: blur(5px);
-// }
-
-
-
-
-
-
-$text-dark: #1f2937;
-$text-muted: #6b7280;
-$track-bg: #f3f4f6;
+$bg-dark: #0b0f19;
+$text-white: #f3f4f6;
+$text-muted: #9ca3af;
+$track-bg: #1e2532;
 
 :host {
   display: block;
@@ -147,14 +18,14 @@ $track-bg: #f3f4f6;
   display: flex;
   flex-direction: column;
   margin-bottom: 0.5rem;
-  
+
   .total-count {
     font-size: 2.5rem;
     font-weight: 800;
-    color: $text-dark;
+    color: $text-white;
     line-height: 1;
   }
-  
+
   .total-label {
     font-size: 0.875rem;
     color: $text-muted;
@@ -181,18 +52,18 @@ $track-bg: #f3f4f6;
     .label {
       font-size: 0.95rem;
       font-weight: 600;
-      color: $text-dark;
+      color: $text-white;
     }
 
     .value {
       text-align: right;
-      
+
       .count {
         font-weight: 700;
-        color: $text-dark;
+        color: $text-white;
         margin-right: 4px;
       }
-      
+
       .percentage {
         font-size: 0.85rem;
         color: $text-muted;
@@ -204,13 +75,42 @@ $track-bg: #f3f4f6;
     width: 100%;
     height: 8px;
     background-color: $track-bg;
-    border-radius: 9999px; // Pill shape
+    border-radius: 9999px;
     overflow: hidden;
 
     .progress-fill {
       height: 100%;
       border-radius: 9999px;
-      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); // Smooth animation on load
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 }
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+
+  p {
+    color: $text-muted;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid $track-bg;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -1,31 +1,308 @@
-// Variables
 $bg-dark: #111827;
 $bg-card: #1f2937;
 $primary: #3b82f6;
+$green: #10b981;
+$yellow: #f59e0b;
+$red: #ef4444;
 $text-main: #f3f4f6;
 $text-muted: #9ca3af;
 
 .ai-tutor-container {
   padding: 1rem;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
   min-height: 100vh;
   background-color: $bg-dark;
   color: $text-main;
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+
 // --- Header ---
 .page-header {
   margin-bottom: 1.5rem;
+
   .header-top {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
     h1 { margin: 0; font-size: 1.8rem; font-weight: 800; }
-    .date-badge { background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; }
+    .date-badge {
+      background: rgba(255,255,255,0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
   }
+
   .view-switcher {
-    display: flex; background: $bg-card; border-radius: 12px; padding: 4px;
+    display: flex;
+    background: $bg-card;
+    border-radius: 12px;
+    padding: 4px;
+
     .switch-btn {
-      flex: 1; background: none; border: none; padding: 10px; color: $text-muted; font-weight: 600; border-radius: 8px; transition: 0.2s; cursor: pointer;
-      &.active { background: $primary; color: white; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3); }
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 10px;
+      color: $text-muted;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: 0.2s;
+      cursor: pointer;
+
+      &.active {
+        background: $primary;
+        color: white;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+      }
+    }
+  }
+}
+
+// --- Subject Selector ---
+.subject-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+
+  .selector-label {
+    font-size: 0.8rem;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  .subject-chips {
+    display: flex;
+    gap: 8px;
+  }
+
+  .subject-btn {
+    background: $bg-card;
+    border: 1px solid #374151;
+    color: $text-muted;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+
+    &.active {
+      background: rgba($primary, 0.2);
+      border-color: $primary;
+      color: $primary;
+      font-weight: 600;
+    }
+  }
+}
+
+// --- AI Message Card ---
+.ai-message-card {
+  background: linear-gradient(135deg, #1f2937, #111827);
+  padding: 1.25rem;
+  border-radius: 16px;
+  border: 1px solid #374151;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+
+  .ai-avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    img { width: 100%; }
+  }
+
+  .message-content {
+    .greeting {
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 0 0 6px;
+      color: $text-main;
+    }
+    .analysis {
+      font-size: 0.85rem;
+      color: $text-muted;
+      margin: 0 0 6px;
+      line-height: 1.4;
+    }
+    .strategy-text {
+      font-size: 0.9rem;
+      color: $primary;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+}
+
+// --- Stats Row ---
+.stats-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+
+  .stat-chip {
+    background: $bg-card;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    padding: 10px 14px;
+    text-align: center;
+    min-width: 70px;
+    flex-shrink: 0;
+
+    .stat-value {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: $text-main;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: $text-muted;
+      text-transform: uppercase;
+    }
+
+    &.good {
+      border-color: rgba($green, 0.4);
+      .stat-value { color: $green; }
+    }
+
+    &.bad {
+      border-color: rgba($red, 0.4);
+      .stat-value { color: $red; }
+    }
+  }
+}
+
+// --- Plan Timeline ---
+.plan-timeline {
+  position: relative;
+  padding-left: 1rem;
+
+  .timeline-line {
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #374151;
+  }
+
+  .plan-card {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+
+    &.locked { opacity: 0.5; filter: grayscale(1); }
+    &.done { opacity: 0.7; }
+
+    .time-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 40px;
+      flex-shrink: 0;
+
+      .time-label {
+        font-size: 0.75rem;
+        color: $text-muted;
+        margin-bottom: 0.5rem;
+      }
+
+      .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #374151;
+        border: 2px solid $bg-dark;
+        z-index: 2;
+
+        &.active {
+          background: $primary;
+          box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+        }
+        &.completed {
+          background: $green;
+        }
+      }
+    }
+
+    .content-col {
+      flex: 1;
+      background: $bg-card;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid #374151;
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+
+        .tag {
+          font-size: 0.7rem;
+          padding: 2px 8px;
+          border-radius: 4px;
+          text-transform: uppercase;
+          font-weight: 700;
+
+          &.warmup { background: rgba($green, 0.2); color: #34d399; }
+          &.deep-work { background: rgba($yellow, 0.2); color: #fbbf24; }
+          &.review { background: rgba($primary, 0.2); color: #93c5fd; }
+        }
+
+        .check-icon {
+          font-size: 0.75rem;
+          color: $green;
+        }
+
+        .progress-badge {
+          font-size: 0.75rem;
+          color: $text-muted;
+          background: rgba(255,255,255,0.05);
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+      }
+
+      h2 { font-size: 1.05rem; margin: 0 0 4px; }
+      p { font-size: 0.85rem; color: $text-muted; margin: 0 0 0.75rem; }
+
+      .action-btn {
+        background: $primary;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        width: 100%;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover:not(:disabled) { background: darken($primary, 8%); }
+        &:disabled { background: #374151; cursor: not-allowed; color: $text-muted; }
+      }
     }
   }
 }
@@ -33,75 +310,145 @@ $text-muted: #9ca3af;
 // --- Formulas View ---
 .formulas-view {
   animation: fadeIn 0.3s ease;
+}
 
-  .filters-container {
-    position: sticky; top: 0; background: $bg-dark; z-index: 10; padding-bottom: 1rem;
-    .chips-scroll-row {
-      display: flex; gap: 0.8rem; overflow-x: auto; padding: 0.5rem 0; scrollbar-width: none;
-      &::-webkit-scrollbar { display: none; }
-      .chip {
-        background: $bg-card; border: 1px solid #374151; color: $text-muted; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; cursor: pointer;
-        &.selected { background: rgba(59, 130, 246, 0.2); border-color: $primary; color: $primary; font-weight: 600; }
-      }
-    }
+.formula-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: $text-muted;
+  margin-bottom: 1rem;
+  padding: 10px 14px;
+  background: $bg-card;
+  border-radius: 10px;
+
+  .dot-sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #4b5563;
   }
 
-  .formula-list {
-    display: flex; flex-direction: column; gap: 1rem;
-    
-    .formula-card {
-      background: $bg-card; // Ensure visible background
-      border-radius: 16px; padding: 1.25rem; border: 1px solid #374151;
-      
-      .f-header {
-        display: flex; justify-content: space-between; margin-bottom: 1rem;
-        .f-category { font-size: 0.75rem; text-transform: uppercase; color: $text-muted; }
-        .f-mastery {
-          width: 8px; height: 8px; border-radius: 50%;
-          &.high { background: #10b981; box-shadow: 0 0 8px #10b981; }
-          &.medium { background: #f59e0b; }
-          &.low { background: #ef4444; }
-        }
-      }
-      .f-expression {
-        font-family: 'Courier New', monospace; font-size: 1.2rem; text-align: center; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 1rem; color: #fff;
-      }
-      .f-footer {
-        display: flex; justify-content: space-between; align-items: center;
-        .f-name { font-weight: 600; color: $text-main; }
-      }
-    }
-
-    .empty-state {
-      text-align: center; padding: 3rem 1rem; border: 1px dashed #374151; border-radius: 16px; margin-top: 1rem;
-    }
+  .mastery-stat {
+    &.high { color: $green; }
+    &.low { color: $red; }
   }
 }
 
-// --- Strategy View (Simplified) ---
-.ai-message-card {
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%); padding: 1.5rem; border-radius: 16px; border: 1px solid #374151; display: flex; gap: 1rem; margin-bottom: 2rem;
-  .ai-avatar { width: 50px; height: 50px; img { width: 100%; } }
-}
-.plan-timeline {
-  position: relative; padding-left: 1rem;
-  .timeline-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: #374151; }
-  .plan-card {
-    display: flex; gap: 1rem; margin-bottom: 1.5rem; position: relative;
-    &.locked { opacity: 0.6; filter: grayscale(1); }
-    .time-col {
-      display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0;
-      .time-label { font-size: 0.8rem; color: $text-muted; margin-bottom: 0.5rem; }
-      .status-dot { width: 12px; height: 12px; border-radius: 50%; background: #374151; border: 2px solid $bg-dark; z-index: 2; &.active { background: $primary; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); } }
-    }
-    .content-col {
-      flex: 1; background: $bg-card; padding: 1rem; border-radius: 12px; border: 1px solid #374151;
-      .card-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; .tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 700; &.warmup { background: rgba(16,185,129,0.2); color: #34d399; } &.deep-work { background: rgba(245,158,11,0.2); color: #fbbf24; } } }
-      h2 { font-size: 1.1rem; margin: 0 0 0.25rem 0; }
-      p { font-size: 0.9rem; color: $text-muted; margin: 0 0 1rem 0; }
-      .action-btn { background: $primary; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; &:disabled { background: #374151; cursor: not-allowed; } }
+.filters-container {
+  position: sticky;
+  top: 0;
+  background: $bg-dark;
+  z-index: 10;
+  padding-bottom: 0.75rem;
+
+  .chips-scroll-row {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding: 0.4rem 0;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+
+    .chip {
+      background: $bg-card;
+      border: 1px solid #374151;
+      color: $text-muted;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &.selected {
+        background: rgba($primary, 0.2);
+        border-color: $primary;
+        color: $primary;
+        font-weight: 600;
+      }
     }
   }
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.formula-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .formula-card {
+    background: $bg-card;
+    border-radius: 14px;
+    padding: 1rem;
+    border: 1px solid #374151;
+    transition: border-color 0.2s;
+
+    &.mastery-low { border-left: 3px solid $red; }
+    &.mastery-medium { border-left: 3px solid $yellow; }
+    &.mastery-high { border-left: 3px solid $green; }
+
+    .f-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+
+      .f-category {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        color: $text-muted;
+        letter-spacing: 0.5px;
+      }
+
+      .f-mastery-badge {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-weight: 600;
+
+        &.high { background: rgba($green, 0.2); color: $green; }
+        &.medium { background: rgba($yellow, 0.2); color: $yellow; }
+        &.low { background: rgba($red, 0.2); color: $red; }
+      }
+    }
+
+    .f-expression {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 0.75rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    .f-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .f-name { font-weight: 600; font-size: 0.9rem; }
+      .f-meta { font-size: 0.75rem; color: $text-muted; }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    border: 1px dashed #374151;
+    border-radius: 16px;
+    margin-top: 1rem;
+
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+    h3 { color: white; margin: 0 0 0.5rem; }
+    p { color: $text-muted; margin: 0; }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

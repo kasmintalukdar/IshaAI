@@ -1,3 +1,18 @@
+$bg-dark: #0b0f19;
+$card-bg: #1F2937;
+$text-white: #F9FAFB;
+$text-muted: #9CA3AF;
+$border-color: #374151;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.diagnostics-container {
+  width: 100%;
+}
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -5,24 +20,35 @@
 
 table {
   width: 100%;
-  border-collapse: collapse;
-  min-width: 600px;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  min-width: 500px;
 }
 
 th {
   text-align: left;
-  color: #7f8c8d;
+  color: $text-muted;
   font-weight: 600;
   font-size: 0.85rem;
-  padding: 12px;
-  border-bottom: 2px solid #f1f2f6;
+  padding: 0 16px 8px;
+  border-bottom: none;
+}
+
+tbody tr {
+  background: $card-bg;
+  transition: transform 0.1s;
+
+  &:hover { transform: scale(1.01); }
 }
 
 td {
-  padding: 14px 12px;
-  border-bottom: 1px solid #f8f9fa;
-  color: #2c3e50;
+  padding: 14px 16px;
+  border-bottom: none;
+  color: $text-white;
   font-size: 0.95rem;
+
+  &:first-child { border-radius: 12px 0 0 12px; }
+  &:last-child { border-radius: 0 12px 12px 0; }
 }
 
 .topic-name {
@@ -32,7 +58,7 @@ td {
 .time-val {
   font-family: 'Courier New', monospace;
   font-weight: 600;
-  color: #34495e;
+  color: $text-muted;
 }
 
 .progress-wrapper {
@@ -44,7 +70,7 @@ td {
 .progress-track {
   flex: 1;
   height: 6px;
-  background: #ecf0f1;
+  background: $border-color;
   border-radius: 3px;
   overflow: hidden;
   max-width: 100px;
@@ -52,14 +78,18 @@ td {
 
 .progress-fill {
   height: 100%;
-  background: #3498db;
   border-radius: 3px;
+  transition: width 0.6s ease;
+
+  &.high { background: #34D399; }
+  &.med { background: #FBBF24; }
+  &.low { background: #F87171; }
 }
 
 .val {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #34495e;
+  color: $text-white;
   width: 35px;
 }
 
@@ -70,38 +100,18 @@ td {
   font-weight: 600;
   letter-spacing: 0.5px;
 
-  &.mastered { background: #d5f5e3; color: #27ae60; }
-  &.improving { background: #fcf3cf; color: #f39c12; }
-  &.weak { background: #fadbd8; color: #c0392b; }
+  &.mastered { background: rgba(52, 211, 153, 0.2); color: #34D399; }
+  &.improving { background: rgba(251, 191, 36, 0.2); color: #FBBF24; }
+  &.weak { background: rgba(248, 113, 113, 0.2); color: #F87171; }
 }
 
-table {
-  border-collapse: separate; 
-  border-spacing: 0 8px; /* Gap between rows */
-}
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
 
-th {
-  /* Make header blend with the blue tint */
-  color: #5c6bc0;
-  border-bottom: none;
-  padding: 0 16px;
+  p {
+    color: $text-muted;
+    font-size: 0.9rem;
+    margin: 0;
+  }
 }
-
-tbody tr {
-  background: white; /* Rows are white cards */
-  box-shadow: 0 2px 0 rgba(0,0,0,0.03); /* Tiny shadow */
-  transition: transform 0.1s;
-}
-
-tbody tr:hover {
-  transform: scale(1.01);
-}
-
-td {
-  border-bottom: none;
-  padding: 16px;
-}
-
-/* Add rounded corners to first and last cells */
-td:first-child { border-radius: 12px 0 0 12px; }
-td:last-child { border-radius: 0 12px 12px 0; }

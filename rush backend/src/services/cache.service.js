@@ -5,7 +5,10 @@ class CacheService {
    * Smart Get: Returns parsed JSON or null
    */
   async get(key) {
-    const data = await redisClient.get(key);
+    const data = await Promise.race([
+      redisClient.get(key),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Redis timeout')), 3000))
+    ]);
     return data ? JSON.parse(data) : null;
   }
 
@@ -16,7 +19,10 @@ class CacheService {
    * @param {number} ttlSeconds - Default 1 hour
    */
   async set(key, value, ttlSeconds = 3600) {
-    await redisClient.setex(key, ttlSeconds, JSON.stringify(value));
+    await Promise.race([
+      redisClient.setex(key, ttlSeconds, JSON.stringify(value)),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Redis timeout')), 3000))
+    ]);
   }
 
   /**

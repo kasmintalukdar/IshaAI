@@ -1,43 +1,24 @@
-<!-- <div class="skills-list" *ngIf="skills$ | async as skills">
-  <div class="skill-item" *ngFor="let skill of skills">
-    <div class="skill-header">
-      <span class="skill-name">{{ skill.skill }}</span>
-      <span class="skill-val">{{ skill.percentage | number:'1.0-0' }}%</span>
-    </div>
-    <div class="progress-bg">
-      <div class="progress-bar" 
-           [style.width.%]="skill.percentage"
-           [style.background-color]="getColor(skill.percentage)">
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
-
-
-
 <div class="skills-card">
-  <!-- <h3>Cognitive Depth (Bloom's Taxonomy)</h3> -->
-
   <ng-container *ngIf="skills$ | async as skills">
-    <div *ngFor="let item of skills" class="skill-row">
-      
-      <div class="skill-label" title="{{ item.skill }}">
-        {{ item.skill || 'Unknown' }} 
-      </div>
 
+    <div *ngIf="skills.length === 0" class="empty-state">
+      <p>Solve questions to see your cognitive depth analysis.</p>
+    </div>
+
+    <div *ngFor="let item of skills" class="skill-row">
+      <div class="skill-label" [title]="item.skill">
+        {{ item.skill || 'Unknown' }}
+      </div>
       <div class="skill-track">
         <div class="skill-fill"
              [style.width.%]="item.percentage || 0"
              [style.backgroundColor]="getColor(item.percentage)">
         </div>
       </div>
-
       <div class="skill-value">
         {{ item.percentage | number:'1.0-0' }}%
       </div>
-
     </div>
+
   </ng-container>
 </div>

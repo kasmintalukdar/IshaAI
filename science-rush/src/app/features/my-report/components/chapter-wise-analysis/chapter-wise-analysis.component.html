@@ -1,244 +1,106 @@
-<!-- <div class="dark-analysis-container">
-  
-  <div class="section-header">
-    <div class="header-title">
-      <span class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-      </span>
-      <h3>CHAPTER DIAGNOSTICS</h3>
-    </div>
-
-    <div class="dark-select-wrapper">
-      <select (change)="onChapterChange($event)" [disabled]="isLoading">
-        <option *ngFor="let chap of chapters" [value]="chap._id">
-          {{ chap._id }}
-        </option>
-      </select>
-      <div class="select-label">
-        <span class="label-text">Selected Chapter</span>
-        <span class="selected-value">{{ selectedChapter?._id || 'Loading...' }}</span>
-      </div>
-      <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </div>
-  </div>
-
-  <div class="content-body custom-scrollbar" *ngIf="!isLoading && selectedChapter; else loadingTpl">
-
-    <div class="topics-grid">
-      <div class="topic-card" *ngFor="let topic of selectedChapter.topics; let i = index">
-        <div class="card-meta">Topic #{{ i + 1 }}</div>
-        <h4 class="card-title">{{ topic.name }}</h4>
-        <p class="card-desc">
-          Accuracy is <span [style.color]="getStatusColor(topic.accuracy)">{{ topic.accuracy }}%</span> across {{ topic.count }} questions.
-          <span class="status-text">{{ topic.accuracy < 50 ? 'Critical performance.' : 'Keep improving.' }}</span>
-        </p>
-        <div class="card-badge" [ngClass]="getBadgeClass(topic.accuracy)">
-          <span class="badge-label">Status:</span>
-          <span class="badge-value">
-            {{ topic.accuracy < 50 ? 'Weak Spot' : (topic.accuracy < 80 ? 'Improving' : 'Strong') }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="chapter-insights">
-      
-      <div class="insight-row">
-        <h4 class="insight-title">Time Pressure Analysis ({{ selectedChapter._id }})</h4>
-        <div class="insight-card time-card">
-          <div class="time-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          </div>
-          <div class="time-info">
-            <span class="label">Pacing Status</span>
-            <span class="value" [style.color]="selectedChapter.timePressureStatus === 'Overthinking' ? '#F59E0B' : (selectedChapter.timePressureStatus === 'Rushing' ? '#EF4444' : '#10B981')">
-              {{ selectedChapter.timePressureStatus || 'Normal' }}
-            </span>
-          </div>
-          <div class="time-desc">
-            <span *ngIf="selectedChapter.timePressureStatus === 'Rushing'">
-              You are answering too quickly (< 10s). Slow down to avoid silly mistakes in this chapter.
-            </span>
-            <span *ngIf="selectedChapter.timePressureStatus === 'Overthinking'">
-              You are spending too much time (> 90s) per question. Focus on concept clarity.
-            </span>
-            <span *ngIf="selectedChapter.timePressureStatus !== 'Rushing' && selectedChapter.timePressureStatus !== 'Overthinking'">
-              Your pacing is optimal for this chapter. Keep it up!
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="insight-row">
-        <h4 class="insight-title">Root Cause Analysis ({{ selectedChapter._id }})</h4>
-        <div class="insight-card root-card">
-          
-          <div class="rc-item">
-            <div class="rc-header">
-              <span>Conceptual Error</span>
-              <span class="rc-count">{{ selectedChapter.rootCauses?.Conceptual || 0 }}</span>
-            </div>
-            <div class="rc-track"><div class="rc-fill red" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Conceptual)"></div></div>
-          </div>
-
-          <div class="rc-item">
-            <div class="rc-header">
-              <span>Silly Mistake</span>
-              <span class="rc-count">{{ selectedChapter.rootCauses?.Silly || 0 }}</span>
-            </div>
-            <div class="rc-track"><div class="rc-fill orange" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Silly)"></div></div>
-          </div>
-
-          <div class="rc-item">
-            <div class="rc-header">
-              <span>Time Management</span>
-              <span class="rc-count">{{ selectedChapter.rootCauses?.Time || 0 }}</span>
-            </div>
-            <div class="rc-track"><div class="rc-fill blue" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Time)"></div></div>
-          </div>
-
-          <div class="rc-item">
-            <div class="rc-header">
-              <span>Guessing</span>
-              <span class="rc-count">{{ selectedChapter.rootCauses?.Guessing || 0 }}</span>
-            </div>
-            <div class="rc-track"><div class="rc-fill green" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Guessing)"></div></div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-  <ng-template #loadingTpl>
-    <div class="loading-state"><div class="spinner"></div></div>
-  </ng-template>
-</div> -->
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="analysis-container" #chapterContainer>
-
   <div class="dark-analysis-container">
-  
-  <div class="section-header">
-    <div class="header-title">
-      <!-- <span class="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-      </span> -->
-      <!-- <h3>CHAPTER DIAGNOSTICS</h3> -->
-    </div>
 
-    <div class="controls-group">
-      
-      <div class="dark-select-wrapper">
-        <select (change)="onSubjectChange($event)" [disabled]="isLoading">
-          <option *ngFor="let sub of subjects" [value]="sub" [selected]="sub === selectedSubject">
-            {{ sub }}
-          </option>
-        </select>
-        <div class="select-label">
-          <span class="label-text">Subject</span>
-          <span class="selected-value">{{ selectedSubject || '...' }}</span>
-        </div>
-        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </div>
+    <div class="section-header">
+      <div class="header-title"></div>
 
-      <div class="dark-select-wrapper">
-        <select (change)="onChapterChange($event)" [disabled]="isLoading">
-          <option *ngFor="let chap of filteredChapters" [value]="chap._id" [selected]="chap._id === selectedChapter?._id">
-            {{ chap._id }}
-          </option>
-        </select>
-        <div class="select-label">
-          <span class="label-text">Chapter</span>
-          <span class="selected-value">{{ selectedChapter?._id || '...' }}</span>
-        </div>
-        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="content-body custom-scrollbar" *ngIf="!isLoading && selectedChapter; else loadingTpl">
-    <div class="topics-grid">
-      <div class="topic-card" *ngFor="let topic of selectedChapter.topics; let i = index">
-        <div class="card-meta">Topic #{{ i + 1 }}</div>
-        <h4 class="card-title">{{ topic.name }}</h4>
-        <p class="card-desc">
-          Accuracy is <span [style.color]="getStatusColor(topic.accuracy)">{{ topic.accuracy }}%</span> across {{ topic.count }} questions.
-          <span class="status-text">{{ topic.accuracy < 50 ? 'Critical performance.' : 'Keep improving.' }}</span>
-        </p>
-        <div class="card-badge" [ngClass]="getBadgeClass(topic.accuracy)">
-          <span class="badge-label">Status:</span>
-          <span class="badge-value">
-            {{ topic.accuracy < 50 ? 'Weak Spot' : (topic.accuracy < 80 ? 'Improving' : 'Strong') }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="chapter-insights">
-      <div class="insight-row">
-        <h4 class="insight-title">Time Pressure Analysis ({{ selectedChapter._id }})</h4>
-        <div class="insight-card time-card">
-          <div class="time-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <div class="controls-group">
+        <div class="dark-select-wrapper">
+          <select (change)="onSubjectChange($event)" [disabled]="isLoading">
+            <option *ngFor="let sub of subjects" [value]="sub" [selected]="sub === selectedSubject">
+              {{ sub }}
+            </option>
+          </select>
+          <div class="select-label">
+            <span class="label-text">Subject</span>
+            <span class="selected-value">{{ selectedSubject || '...' }}</span>
           </div>
-          <div class="time-info">
-            <span class="label">Pacing Status</span>
-            <span class="value" [style.color]="selectedChapter.timePressureStatus === 'Overthinking' ? '#F59E0B' : (selectedChapter.timePressureStatus === 'Rushing' ? '#EF4444' : '#10B981')">
-              {{ selectedChapter.timePressureStatus || 'Normal' }}
+          <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+
+        <div class="dark-select-wrapper">
+          <select (change)="onChapterChange($event)" [disabled]="isLoading">
+            <option *ngFor="let chap of filteredChapters" [value]="chap._id" [selected]="chap._id === selectedChapter?._id">
+              {{ chap._id }}
+            </option>
+          </select>
+          <div class="select-label">
+            <span class="label-text">Chapter</span>
+            <span class="selected-value">{{ selectedChapter?._id || '...' }}</span>
+          </div>
+          <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-body" *ngIf="!isLoading && selectedChapter; else loadingTpl">
+      <div class="topics-grid">
+        <div class="topic-card" *ngFor="let topic of selectedChapter.topics; let i = index">
+          <div class="card-meta">Topic #{{ i + 1 }}</div>
+          <h4 class="card-title">{{ topic.name }}</h4>
+          <p class="card-desc">
+            Accuracy is <span [style.color]="getStatusColor(topic.accuracy)">{{ topic.accuracy }}%</span> across {{ topic.count }} questions.
+            <span class="status-text">{{ topic.accuracy < 50 ? 'Critical performance.' : 'Keep improving.' }}</span>
+          </p>
+          <div class="card-badge" [ngClass]="getBadgeClass(topic.accuracy)">
+            <span class="badge-label">Status:</span>
+            <span class="badge-value">
+              {{ topic.accuracy < 50 ? 'Weak Spot' : (topic.accuracy < 80 ? 'Improving' : 'Strong') }}
             </span>
           </div>
-          <div class="time-desc">
-             <span *ngIf="selectedChapter.timePressureStatus === 'Rushing'">Too fast (< 10s). Slow down.</span>
-             <span *ngIf="selectedChapter.timePressureStatus === 'Overthinking'">Too slow (> 90s). Focus concepts.</span>
-             <span *ngIf="selectedChapter.timePressureStatus !== 'Rushing' && selectedChapter.timePressureStatus !== 'Overthinking'">Optimal pacing. Keep it up!</span>
-          </div>
         </div>
       </div>
 
-      <div class="insight-row">
-        <h4 class="insight-title">Root Cause Analysis ({{ selectedChapter._id }})</h4>
-        <div class="insight-card root-card">
-          <div class="rc-item">
-            <div class="rc-header"><span>Conceptual Error</span><span class="rc-count">{{ selectedChapter.rootCauses?.Conceptual || 0 }}</span></div>
-            <div class="rc-track"><div class="rc-fill red" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Conceptual)"></div></div>
+      <div class="chapter-insights">
+        <div class="insight-row">
+          <h4 class="insight-title">Time Pressure Analysis ({{ selectedChapter._id }})</h4>
+          <div class="insight-card time-card">
+            <div class="time-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="time-info">
+              <span class="label">Pacing Status</span>
+              <span class="value" [style.color]="selectedChapter.timePressureStatus === 'Overthinking' ? '#F59E0B' : (selectedChapter.timePressureStatus === 'Rushing' ? '#EF4444' : '#10B981')">
+                {{ selectedChapter.timePressureStatus || 'Normal' }}
+              </span>
+            </div>
+            <div class="time-desc">
+              <span *ngIf="selectedChapter.timePressureStatus === 'Rushing'">Too fast (&lt; 10s). Slow down.</span>
+              <span *ngIf="selectedChapter.timePressureStatus === 'Overthinking'">Too slow (&gt; 90s). Focus concepts.</span>
+              <span *ngIf="selectedChapter.timePressureStatus !== 'Rushing' && selectedChapter.timePressureStatus !== 'Overthinking'">Optimal pacing. Keep it up!</span>
+            </div>
           </div>
-          <div class="rc-item">
-            <div class="rc-header"><span>Silly Mistake</span><span class="rc-count">{{ selectedChapter.rootCauses?.Silly || 0 }}</span></div>
-            <div class="rc-track"><div class="rc-fill orange" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Silly)"></div></div>
-          </div>
-          <div class="rc-item">
-            <div class="rc-header"><span>Time Management</span><span class="rc-count">{{ selectedChapter.rootCauses?.Time || 0 }}</span></div>
-            <div class="rc-track"><div class="rc-fill blue" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Time)"></div></div>
-          </div>
-          <div class="rc-item">
-            <div class="rc-header"><span>Guessing</span><span class="rc-count">{{ selectedChapter.rootCauses?.Guessing || 0 }}</span></div>
-            <div class="rc-track"><div class="rc-fill green" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Guessing)"></div></div>
+        </div>
+
+        <div class="insight-row">
+          <h4 class="insight-title">Root Cause Analysis ({{ selectedChapter._id }})</h4>
+          <div class="insight-card root-card">
+            <div class="rc-item">
+              <div class="rc-header"><span>Conceptual Error</span><span class="rc-count">{{ selectedChapter.rootCauses?.Conceptual || 0 }}</span></div>
+              <div class="rc-track"><div class="rc-fill red" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Conceptual)"></div></div>
+            </div>
+            <div class="rc-item">
+              <div class="rc-header"><span>Silly Mistake</span><span class="rc-count">{{ selectedChapter.rootCauses?.Silly || 0 }}</span></div>
+              <div class="rc-track"><div class="rc-fill orange" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Silly)"></div></div>
+            </div>
+            <div class="rc-item">
+              <div class="rc-header"><span>Time Management</span><span class="rc-count">{{ selectedChapter.rootCauses?.Time || 0 }}</span></div>
+              <div class="rc-track"><div class="rc-fill blue" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Time)"></div></div>
+            </div>
+            <div class="rc-item">
+              <div class="rc-header"><span>Guessing</span><span class="rc-count">{{ selectedChapter.rootCauses?.Guessing || 0 }}</span></div>
+              <div class="rc-track"><div class="rc-fill green" [style.width.%]="getRcPercent(selectedChapter.rootCauses?.Guessing)"></div></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <ng-template #loadingTpl>
+      <div class="loading-state">
+        <div class="spinner" *ngIf="isLoading"></div>
+        <p *ngIf="!isLoading" class="no-data-msg">No chapter data available. Solve questions to see analysis.</p>
+      </div>
+    </ng-template>
   </div>
-
-  <ng-template #loadingTpl>
-    <div class="loading-state">
-      <div class="spinner" *ngIf="isLoading"></div>
-      <p *ngIf="!isLoading" class="no-data-msg">No data available.</p>
-    </div>
-  </ng-template>
-</div>
 </div>

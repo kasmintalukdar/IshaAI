@@ -1,3 +1,10 @@
+# ==============================================================================
+# DEPRECATED: XGBoost Question Recommender Training Script
+# Question ordering is now handled by local scoring logic in Node.js
+# (rush backend/src/services/gameplay.service.js → getQuestionsForTopic)
+# This file is kept for reference only. Do not run.
+# ==============================================================================
+
 import os
 import joblib
 import numpy as np

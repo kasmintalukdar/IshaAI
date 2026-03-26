@@ -1,74 +1,126 @@
 <div class="ai-tutor-container">
-  
+
   <header class="page-header">
     <div class="header-top">
       <h1>AI Tutor</h1>
       <span class="date-badge">{{ currentDate | date:'MMM d' }}</span>
     </div>
-
     <div class="view-switcher">
-      <button class="switch-btn" 
-              [class.active]="activeTab === 'strategy'" 
-              (click)="activeTab = 'strategy'">
+      <button class="switch-btn" [class.active]="activeTab === 'strategy'" (click)="switchTab('strategy')">
         Daily Strategy
       </button>
-      <button class="switch-btn" 
-              [class.active]="activeTab === 'formulas'" 
-              (click)="activeTab = 'formulas'">
+      <button class="switch-btn" [class.active]="activeTab === 'formulas'" (click)="switchTab('formulas')">
         Formula Vault
       </button>
     </div>
   </header>
 
-  <div class="strategy-view" *ngIf="activeTab === 'strategy'">
+  <!-- LOADING -->
+  <div class="loader" *ngIf="loading">
+    <app-loader message="Building your plan..."></app-loader>
+  </div>
+
+  <!-- ==================== DAILY STRATEGY TAB ==================== -->
+  <div class="strategy-view" *ngIf="activeTab === 'strategy' && !loading">
+
+    <!-- Subject Selector -->
+    <div class="subject-selector" *ngIf="availableSubjects.length > 1">
+      <span class="selector-label">Subject:</span>
+      <div class="subject-chips">
+        <button *ngFor="let sub of availableSubjects"
+                class="subject-btn"
+                [class.active]="planSubjectId === (sub._id || sub.name)"
+                (click)="onSubjectChange(sub._id || sub.name)">
+          {{ sub.name }}
+        </button>
+      </div>
+    </div>
+
+    <!-- AI Summary Card -->
     <div class="ai-message-card">
       <div class="ai-avatar">
         <img src="assets/images/mascots/thinking.svg" alt="AI">
       </div>
       <div class="message-content">
-        <h3>{{ llmSummary.greeting }}</h3>
-        <p [innerHTML]="llmSummary.analysis"></p>
-        <p [innerHTML]="llmSummary.strategy" class="highlight-text"></p>
+        <p class="greeting">{{ greeting }}</p>
+        <p class="analysis">{{ analysis }}</p>
+        <p class="strategy-text">{{ strategy }}</p>
       </div>
     </div>
 
+    <!-- Quick Stats Row -->
+    <div class="stats-row" *ngIf="stats.questionsThisWeek > 0">
+      <div class="stat-chip">
+        <span class="stat-value">{{ stats.questionsThisWeek }}</span>
+        <span class="stat-label">This Week</span>
+      </div>
+      <div class="stat-chip" [class.good]="stats.recentAccuracy >= 70" [class.bad]="stats.recentAccuracy < 50">
+        <span class="stat-value">{{ stats.recentAccuracy }}%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+      <div class="stat-chip" *ngIf="stats.mistakesThisWeek > 0" class="stat-chip bad">
+        <span class="stat-value">{{ stats.mistakesThisWeek }}</span>
+        <span class="stat-label">Mistakes</span>
+      </div>
+      <div class="stat-chip" *ngIf="stats.topicsTracked > 0">
+        <span class="stat-value">{{ stats.topicsTracked }}</span>
+        <span class="stat-label">Topics</span>
+      </div>
+    </div>
+
+    <!-- Plan Timeline -->
     <div class="plan-timeline">
       <div class="timeline-line"></div>
-      <div class="plan-card" *ngFor="let task of dailyPlan" [class.locked]="task.status === 'locked'">
+
+      <div class="plan-card" *ngFor="let task of dailyPlan"
+           [class.locked]="task.status === 'locked'"
+           [class.done]="task.status === 'completed'">
         <div class="time-col">
           <span class="time-label">{{ task.time }}</span>
           <div class="status-dot" [ngClass]="task.status"></div>
         </div>
         <div class="content-col">
           <div class="card-header">
-            <span class="tag" [ngClass]="task.type">{{ task.type.replace('-', ' ') | titlecase }}</span>
-            <span *ngIf="task.status === 'completed'" class="check-icon">✓</span>
+            <span class="tag" [ngClass]="task.type">{{ task.type === 'deep-work' ? 'Deep Work' : (task.type | titlecase) }}</span>
+            <span *ngIf="task.status === 'completed'" class="check-icon">All caught up</span>
+            <span *ngIf="task.progress" class="progress-badge">{{ task.progress }}%</span>
           </div>
           <h2>{{ task.title }}</h2>
           <p>{{ task.subtitle }}</p>
-          <button class="action-btn" *ngIf="task.actionLabel" 
-                  [disabled]="task.status === 'locked'" (click)="startTask(task)">
-            {{ task.status === 'locked' ? 'Locked' : task.actionLabel }}
+          <button class="action-btn" *ngIf="task.actionLabel"
+                  [disabled]="task.status === 'locked' || task.status === 'completed'"
+                  (click)="startTask(task)">
+            {{ task.actionLabel }}
           </button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ==================== FORMULA VAULT TAB ==================== -->
   <div class="formulas-view" *ngIf="activeTab === 'formulas'">
-    
-    <div class="filters-container">
+
+    <!-- Formula Stats Bar -->
+    <div class="formula-stats" *ngIf="formulasLoaded && allFormulas.length > 0">
+      <span>{{ formulaStats.total }} formulas</span>
+      <span class="dot-sep"></span>
+      <span class="mastery-stat high">{{ formulaStats.high }} mastered</span>
+      <span class="dot-sep"></span>
+      <span class="mastery-stat low">{{ formulaStats.low }} need practice</span>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-container" *ngIf="allFormulas.length > 0">
       <div class="chips-scroll-row">
-        <button *ngFor="let sub of subjects" 
-                class="chip subject-chip" 
+        <button *ngFor="let sub of subjects"
+                class="chip subject-chip"
                 [class.selected]="selectedSubject === sub"
                 (click)="selectSubject(sub)">
           {{ sub }}
         </button>
       </div>
-
       <div class="chips-scroll-row" *ngIf="selectedSubject !== 'All'">
-        <button *ngFor="let top of topics" 
+        <button *ngFor="let top of topics"
                 class="chip topic-chip"
                 [class.selected]="selectedTopic === top"
                 (click)="selectedTopic = top">
@@ -77,30 +129,34 @@
       </div>
     </div>
 
-    <div class="formula-list">
-      <div class="formula-card" *ngFor="let f of filteredFormulas">
-        <div class="f-header">
-          <span class="f-category">{{ f.subject }} • {{ f.topic }}</span>
-          <span class="f-mastery" [ngClass]="f.masteryLevel"></span>
-        </div>
-        
-        <div class="f-expression">
-          {{ f.expression }}
-        </div>
-        
-        <div class="f-footer">
-          <span class="f-name">{{ f.title }}</span>
-          <span style="font-size: 1.2rem;">🔖</span>
-        </div>
-      </div>
-
-      <div class="empty-state" *ngIf="filteredFormulas.length === 0">
-        <div class="empty-icon" style="font-size: 3rem; margin-bottom: 1rem;">📐</div>
-        <h3 style="color: white; margin-bottom: 0.5rem;">No formulas yet</h3>
-        <p style="color: #9ca3af;">Formulas will appear here as you solve problems.</p>
-      </div>
+    <!-- Loading -->
+    <div class="loader" *ngIf="formulasLoading">
+      <app-loader message="Loading formulas..."></app-loader>
     </div>
 
+    <!-- Formula Cards -->
+    <div class="formula-list" *ngIf="!formulasLoading">
+      <div class="formula-card" *ngFor="let f of filteredFormulas" [class]="'mastery-' + f.masteryLevel">
+        <div class="f-header">
+          <span class="f-category">{{ f.subject }} / {{ f.topic }}</span>
+          <span class="f-mastery-badge" [ngClass]="f.masteryLevel">{{ getMasteryLabel(f.masteryLevel) }}</span>
+        </div>
+
+        <div class="f-expression">{{ f.expression }}</div>
+
+        <div class="f-footer">
+          <span class="f-name">{{ f.title }}</span>
+          <span class="f-meta" *ngIf="f.useCount > 1">Used {{ f.useCount }}x</span>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredFormulas.length === 0 && formulasLoaded">
+        <div class="empty-icon">&#x1f4d0;</div>
+        <h3>No formulas yet</h3>
+        <p>Formulas will appear here as you solve problems.</p>
+      </div>
+    </div>
   </div>
 
 </div>

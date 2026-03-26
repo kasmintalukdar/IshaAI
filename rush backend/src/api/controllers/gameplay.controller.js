@@ -104,14 +104,23 @@ exports.submitAnswer = async (req, res, next) => {
 
 
 
-// UPDATE: Fetch Questions (Switch to Topic ID)
+// Fetch Questions — supports topicId OR specific question ids (for mistake review)
 exports.getQuestions = async (req, res, next) => {
   try {
-    // We now expect topicId, not chapterId
-    const { topicId } = req.query; 
-    if (!topicId) throw new AppError('Topic ID is required', 400);
+    const { topicId, ids } = req.query;
+    const userId = req.user ? req.user.id : null;
 
-    const questions = await gameplayService.getQuestionsForTopic(topicId);
+    // Path 1: Fetch specific questions by IDs (mistake review sessions)
+    if (ids) {
+      const idArray = ids.split(',').map(id => id.trim()).filter(Boolean);
+      if (idArray.length === 0) throw new AppError('No valid question IDs provided', 400);
+      const questions = await gameplayService.getQuestionsByIds(idArray);
+      return res.status(200).json({ status: 'success', data: questions });
+    }
+
+    // Path 2: Fetch all questions for a topic (standard sessions)
+    if (!topicId) throw new AppError('Topic ID or question IDs required', 400);
+    const questions = await gameplayService.getQuestionsForTopic(topicId, userId);
     res.status(200).json({ status: 'success', data: questions });
   } catch (err) {
     next(err);
@@ -187,17 +196,13 @@ exports.triggerStreakUpdate = async (req, res, next) => {
 
 
 exports.getPlans = async (req, res, next) => {
-  
   try {
- 
-    const userId = req.user ? req.user.id : null; 
+    const userId = req.user ? req.user.id : null;
     if (!userId) throw new AppError('User is not found', 401);
-    console.log("user is ", req.user)
-    const questions = await DailyPlans.generateDailyPlan(userId);
-    res.status(200).json({ status: 'success', data: questions });
-    console.log(questions)
+    const subjectId = req.query.subjectId || null;
+    const plan = await DailyPlans.generateDailyPlan(userId, subjectId);
+    res.status(200).json({ status: 'success', data: plan });
   } catch (err) {
-    console.log(err)
     next(err);
   }
 };

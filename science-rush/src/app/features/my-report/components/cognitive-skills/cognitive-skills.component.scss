@@ -1,37 +1,5 @@
-// .skills-list {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 18px;
-// }
-
-// .skill-header {
-//   display: flex;
-//   justify-content: space-between;
-//   margin-bottom: 6px;
-//   font-size: 0.9rem;
-//   font-weight: 600;
-//   color: #576574;
-// }
-
-// .progress-bg {
-//   height: 10px;
-//   background: #ecf0f1;
-//   border-radius: 5px;
-//   overflow: hidden;
-// }
-
-// .progress-bar {
-//   height: 100%;
-//   border-radius: 5px;
-//   transition: width 0.6s ease;
-// }
-
-
-
-
-// Variables for easy tweaking
-$bg-color: #0b0f19;      // Deep dark background
-$track-color: #1e2532;   // Dark grey for the empty bar
+$bg-color: #0b0f19;
+$track-color: #1e2532;
 $text-color: #ffffff;
 $text-muted: #a0a0a0;
 
@@ -41,28 +9,17 @@ $text-muted: #a0a0a0;
   padding: 24px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 600px; // Prevent it from getting too wide on large screens
-
-  h3 {
-    margin: 0 0 20px 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
+  max-width: 600px;
 }
 
 .skill-row {
   display: grid;
-  // Grid Layout: 
-  // 100px (Label) | 1fr (Bar takes remaining space) | 45px (Value)
-  grid-template-columns: 100px 1fr 45px; 
+  grid-template-columns: 100px 1fr 45px;
   align-items: center;
   gap: 15px;
-  margin-bottom: 16px; // Space between rows
+  margin-bottom: 16px;
 
-  &:last-child {
-    margin-bottom: 0;
-  }
+  &:last-child { margin-bottom: 0; }
 }
 
 .skill-label {
@@ -70,7 +27,7 @@ $text-muted: #a0a0a0;
   color: $text-muted;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; // Adds "..." if the label is too long
+  text-overflow: ellipsis;
 }
 
 .skill-track {
@@ -84,8 +41,7 @@ $text-muted: #a0a0a0;
 .skill-fill {
   height: 100%;
   border-radius: 10px;
-  // Smooth animation when data loads
-  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); 
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .skill-value {
@@ -95,9 +51,13 @@ $text-muted: #a0a0a0;
   color: $text-color;
 }
 
-.loading-text {
-  color: $text-muted;
-  font-style: italic;
+.empty-state {
   text-align: center;
-  margin-top: 20px;
+  padding: 2rem 1rem;
+
+  p {
+    color: $text-muted;
+    font-size: 0.9rem;
+    margin: 0;
+  }
 }

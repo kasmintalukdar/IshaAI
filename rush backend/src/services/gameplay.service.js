@@ -472,22 +472,134 @@ async getStudentInsights(userId) {
   }
 
   /**
-   * 4. GET QUESTIONS (Game Arena)
-   * Fetches questions for a specific Topic ID.
+   * 4. GET QUESTIONS (Game Arena) — Smart Ordering
+   * Fetches questions for a topic and ranks them by priority:
+   *   - Questions answered wrong before → retry first
+   *   - Never attempted questions → show early
+   *   - Older attempts → spaced repetition boost
+   *   - Difficulty progression → Easy → Medium → Hard as user improves
+   *   - Cognitive level progression → Remember → Understand → Apply → Analyze
    */
-  async getQuestionsForTopic(topicId) {
-    // Diagnostic Log
-    console.log(`[GameService] Fetching questions for Topic: ${topicId}`);
-    
-    // Check if questions exist for this topic
+  async getQuestionsForTopic(topicId, userId) {
     const questions = await Question.find({ topic_id: topicId })
-      .select('-ai_prediction -created_at -updated_at'); // Exclude heavy AI fields
+      .select('-ai_prediction -created_at -updated_at')
+      .lean();
 
-    if (!questions || questions.length === 0) {
-        console.warn(`[GameService] Warning: No questions found for Topic ${topicId}`);
+    if (!questions || questions.length === 0) return [];
+
+    // If no userId, return questions in default difficulty order
+    if (!userId) {
+      return this._sortByDifficulty(questions);
     }
 
-    return questions;
+    // Fetch user's past activity for these questions (single query)
+    const questionIds = questions.map(q => q._id.toString());
+    const activities = await UserActivity.find({
+      user_id: userId,
+      question_id: { $in: questionIds }
+    }).select('question_id is_correct timestamp').lean();
+
+    // Build activity map: questionId → { attempts, wrong_count, last_attempt }
+    const activityMap = {};
+    activities.forEach(a => {
+      const qId = a.question_id.toString();
+      if (!activityMap[qId]) {
+        activityMap[qId] = { attempts: 0, wrong_count: 0, last_attempt: null };
+      }
+      activityMap[qId].attempts++;
+      if (!a.is_correct) activityMap[qId].wrong_count++;
+      const ts = new Date(a.timestamp);
+      if (!activityMap[qId].last_attempt || ts > activityMap[qId].last_attempt) {
+        activityMap[qId].last_attempt = ts;
+      }
+    });
+
+    // Calculate overall topic accuracy to determine difficulty targeting
+    const totalAttempts = activities.length;
+    const correctCount = activities.filter(a => a.is_correct).length;
+    const topicAccuracy = totalAttempts > 0 ? correctCount / totalAttempts : 0;
+
+    const now = new Date();
+    const DIFFICULTY_ORDER = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+    const COGNITIVE_ORDER = { 'Remember': 1, 'Understand': 2, 'Apply': 3, 'Analyze': 4 };
+
+    // Target difficulty based on topic accuracy
+    // Low accuracy → target Easy(1), Medium accuracy → Medium(2), High → Hard(3)
+    const targetDifficulty = topicAccuracy > 0.75 ? 3 : topicAccuracy > 0.45 ? 2 : 1;
+
+    // Score each question
+    const scored = questions.map(q => {
+      const qId = q._id.toString();
+      const activity = activityMap[qId];
+      let score = 0;
+
+      if (!activity) {
+        // Never attempted → high priority
+        score += 20;
+      } else {
+        // Wrong answers → highest priority (retry)
+        score += activity.wrong_count * 15;
+
+        // Spaced repetition: days since last attempt
+        if (activity.last_attempt) {
+          const daysSince = (now - activity.last_attempt) / (1000 * 60 * 60 * 24);
+          score += Math.min(daysSince * 2, 15); // Cap at 15 pts for 7+ days
+        }
+
+        // Already mastered (attempted many times, all correct) → low priority
+        if (activity.attempts >= 2 && activity.wrong_count === 0) {
+          score -= 10;
+        }
+      }
+
+      // Difficulty match bonus: closer to target = higher score
+      const diff = DIFFICULTY_ORDER[q.difficulty] || 1;
+      const diffGap = Math.abs(diff - targetDifficulty);
+      score += (3 - diffGap) * 3; // 9 pts for exact match, 6 for 1-off, 3 for 2-off
+
+      // Cognitive level progression: lower levels first for weaker students
+      const cogLevel = COGNITIVE_ORDER[q.cognitive_level] || 1;
+      if (topicAccuracy < 0.5) {
+        // Struggling → prioritize Remember/Understand
+        score += (5 - cogLevel) * 2;
+      } else {
+        // Doing well → prioritize Apply/Analyze
+        score += cogLevel * 2;
+      }
+
+      return { ...q, _score: score };
+    });
+
+    // Sort by score descending (highest priority first)
+    scored.sort((a, b) => b._score - a._score);
+
+    // Remove internal score from response
+    return scored.map(({ _score, ...q }) => q);
+  }
+
+  /** Fallback sort: Easy → Medium → Hard, then by cognitive level */
+  _sortByDifficulty(questions) {
+    const DIFF = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+    const COG = { 'Remember': 1, 'Understand': 2, 'Apply': 3, 'Analyze': 4 };
+    return questions.sort((a, b) => {
+      const d = (DIFF[a.difficulty] || 1) - (DIFF[b.difficulty] || 1);
+      return d !== 0 ? d : (COG[a.cognitive_level] || 1) - (COG[b.cognitive_level] || 1);
+    });
+  }
+
+  /** Fetch specific questions by their IDs (used for mistake review sessions) */
+  async getQuestionsByIds(idArray) {
+    const objectIds = idArray
+      .filter(id => mongoose.Types.ObjectId.isValid(id))
+      .map(id => new mongoose.Types.ObjectId(id));
+
+    if (objectIds.length === 0) return [];
+
+    const questions = await Question.find({ _id: { $in: objectIds } })
+      .select('-ai_prediction -created_at -updated_at')
+      .lean();
+
+    return this._sortByDifficulty(questions);
   }
 
   /**
@@ -639,74 +751,97 @@ async getStudentInsights(userId) {
    * Calculates mastery based on topic progress.
    */
 async getUserFormulas(userId) {
-
-  
-  console.log(`[Service] Fetching formulas for user: ${userId}`);
-
-  // A. Get IDs of questions the user has attempted
+  // A. Get activities with timestamps to track last-used and frequency
   const userActivities = await UserActivity.find({ user_id: userId })
     .sort({ timestamp: -1 })
-    .select('question_id');
+    .select('question_id timestamp')
+    .lean();
 
   if (!userActivities.length) return [];
 
-  // Extract unique IDs
-  const questionIds = [...new Set(userActivities.map(a => a.question_id.toString()))];
+  // Build question → latest timestamp + attempt count map
+  const questionStatsMap = {};
+  userActivities.forEach(a => {
+    const qId = a.question_id.toString();
+    if (!questionStatsMap[qId]) {
+      questionStatsMap[qId] = { lastUsed: a.timestamp, count: 0 };
+    }
+    questionStatsMap[qId].count++;
+  });
 
-  // B. Fetch Questions that actually have formulas
+  const questionIds = Object.keys(questionStatsMap);
+
+  // B. Fetch questions with formulas
   const questions = await Question.find({
     _id: { $in: questionIds },
     formulas_used: { $exists: true, $not: { $size: 0 } }
-  }).select('formulas_used subject topic');
+  }).select('formulas_used subject topic').lean();
 
-  // C. Fetch Topic Mastery (to badge the formulas)
-  let topicMasteryMap = {};
-  if (UserProgress) {
-    const progress = await UserProgress.find({ 
-      user_id: userId, 
-      entity_type: 'topic' 
-    }).populate('entity_id', 'name');
+  // C. Fetch topic mastery
+  const topicMasteryMap = {};
+  const progress = await UserProgress.find({
+    user_id: userId,
+    entity_type: 'topic'
+  }).populate('entity_id', 'name');
 
-    progress.forEach(p => {
-      if (p.entity_id && p.entity_id.name) {
-        const score = p.progress.percentage || 0;
-        let level = 'low';
-        if (score >= 80) level = 'high';
-        else if (score >= 50) level = 'medium';
-        topicMasteryMap[p.entity_id.name] = level;
-      }
-    });
-  }
+  progress.forEach(p => {
+    if (p.entity_id && p.entity_id.name) {
+      const score = p.progress.percentage || 0;
+      let level = 'low';
+      if (score >= 80) level = 'high';
+      else if (score >= 50) level = 'medium';
+      topicMasteryMap[p.entity_id.name] = { level, score };
+    }
+  });
 
-  // D. Aggregate & Deduplicate
+  // D. Aggregate, deduplicate, and enrich with real stats
   const formulaMap = new Map();
 
   questions.forEach(q => {
-    // Ensure the question has formula data
     if (!q.formulas_used || !Array.isArray(q.formulas_used)) return;
+
+    const qStats = questionStatsMap[q._id.toString()] || {};
+    const topicName = q.topic ? q.topic.name : 'General';
+    const topicInfo = topicMasteryMap[topicName] || { level: 'low', score: 0 };
 
     q.formulas_used.forEach(formula => {
       const uniqueKey = formula.name || formula.latex;
 
-      if (!formulaMap.has(uniqueKey)) {
-        // Determine mastery level
-        const topicName = q.topic ? q.topic.name : 'General';
-        const mastery = topicMasteryMap[topicName] || 'medium'; // Default if no progress found
-
+      if (formulaMap.has(uniqueKey)) {
+        // Update frequency count for duplicate formula across questions
+        const existing = formulaMap.get(uniqueKey);
+        existing.useCount += (qStats.count || 1);
+        // Keep the most recent lastUsed
+        if (qStats.lastUsed && new Date(qStats.lastUsed) > new Date(existing.lastUsedDate)) {
+          existing.lastUsedDate = qStats.lastUsed;
+        }
+      } else {
         formulaMap.set(uniqueKey, {
-          id: uniqueKey, 
+          id: uniqueKey,
           title: formula.name || 'Unnamed Formula',
           expression: formula.latex,
+          variables: formula.variables || [],
           subject: q.subject ? q.subject.name : 'General',
           topic: topicName,
-          lastUsedDate: new Date(), // Could be refined with activity timestamp
-          masteryLevel: mastery
+          lastUsedDate: qStats.lastUsed || new Date(),
+          masteryLevel: topicInfo.level,
+          masteryScore: topicInfo.score,
+          useCount: qStats.count || 1
         });
       }
     });
   });
 
-  return Array.from(formulaMap.values());
+  // Sort: low mastery first (formulas user needs to practice), then by frequency
+  const formulas = Array.from(formulaMap.values());
+  formulas.sort((a, b) => {
+    const masteryOrder = { low: 0, medium: 1, high: 2 };
+    const diff = masteryOrder[a.masteryLevel] - masteryOrder[b.masteryLevel];
+    if (diff !== 0) return diff;
+    return b.useCount - a.useCount;
+  });
+
+  return formulas;
 }
 }
 

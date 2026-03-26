@@ -1,69 +1,4 @@
-// .retention-wrapper {
-//   display: flex;
-//   align-items: center;
-//   gap: 24px;
-// }
-
-// .radial-progress {
-//   width: 100px;
-//   height: 100px;
-//   border-radius: 50%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-// }
-
-// .inner-circle {
-//   width: 80px;
-//   height: 80px;
-//   background: white;
-//   border-radius: 50%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-// }
-
-// .score {
-//   font-size: 1.4rem;
-//   font-weight: 800;
-//   color: #2c3e50;
-// }
-
-// .label {
-//   font-size: 0.65rem;
-//   text-transform: uppercase;
-//   color: #95a5a6;
-// }
-
-// .info {
-//   flex: 1;
-// }
-
-// h4 {
-//   margin: 0 0 5px 0;
-//   font-size: 1rem;
-
-//   &.good { color: #27ae60; }
-//   &.average { color: #f39c12; }
-//   &.poor { color: #c0392b; }
-// }
-
-// p {
-//   margin: 0;
-//   font-size: 0.85rem;
-//   color: #7f8c8d;
-//   line-height: 1.4;
-// }
-
-
-
-
-
-// Colors from Image
-$bg-card: #020617;      // Very Dark Navy
+$bg-card: #020617;
 $text-white: #F8FAFC;
 $text-muted: #94A3B8;
 $accent-green: #4ADE80;
@@ -89,7 +24,6 @@ $border-color: #334155;
   position: relative;
 }
 
-// --- Chart Area ---
 .chart-area {
   flex: 1;
   width: 100%;
@@ -99,12 +33,10 @@ $border-color: #334155;
   align-items: center;
 }
 
-.decay-chart {
-  overflow: visible;
-}
+.decay-chart { overflow: visible; }
 
 .curve-line {
-  filter: drop-shadow(0 4px 6px rgba(248, 113, 113, 0.3)); // Subtle red glow
+  filter: drop-shadow(0 4px 6px rgba(248, 113, 113, 0.3));
   animation: drawLine 1.5s ease-out forwards;
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
@@ -114,7 +46,6 @@ $border-color: #334155;
   to { stroke-dashoffset: 0; }
 }
 
-// --- Footer ---
 .card-footer {
   margin-top: 1rem;
   border-top: 1px solid #1e293b;
@@ -126,13 +57,23 @@ $border-color: #334155;
   font-size: 0.9rem;
   margin: 0;
   line-height: 1.4;
-
-  // Highlight the "Forgot Zone" part if dynamic HTML was used, 
-  // but standard text color works for now.
-  // Ideally, the backend sends formatted HTML or we highlight keywords.
 }
 
-// --- Loading ---
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .empty-msg {
+    color: $text-muted;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 2rem;
+    line-height: 1.5;
+  }
+}
+
 .loading-overlay {
   position: absolute;
   width: 100%;
@@ -142,7 +83,7 @@ $border-color: #334155;
   align-items: center;
   background: $bg-card;
   z-index: 10;
-  
+
   .spinner {
     width: 24px;
     height: 24px;

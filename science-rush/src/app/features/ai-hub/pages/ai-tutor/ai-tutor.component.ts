@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Router } from '@angular/router';
 import { GameplayService } from '../../../../core/services/gameplay.service';
 import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil, timeout, catchError, of } from 'rxjs';
 
-// --- Interfaces ---
 interface DailyTask {
   time: string;
   type: 'warmup' | 'deep-work' | 'review';
@@ -13,19 +13,34 @@ interface DailyTask {
   subtitle: string;
   status: 'active' | 'locked' | 'completed';
   actionLabel?: string;
-  aiNote?: string;
   topicId?: string;
   questionIds?: string[];
+  progress?: number;
+}
+
+interface PlanStats {
+  totalSolved: number;
+  recentAccuracy: number;
+  questionsThisWeek: number;
+  mistakesThisWeek: number;
+  strongestTopic: string | null;
+  strongestProgress: number;
+  weakestTopic: string | null;
+  weakestProgress: number;
+  topicsTracked: number;
 }
 
 interface Formula {
   id: string;
   title: string;
   expression: string;
+  variables: string[];
   subject: string;
   topic: string;
   lastUsedDate: Date;
   masteryLevel: 'high' | 'medium' | 'low';
+  masteryScore: number;
+  useCount: number;
 }
 
 @Component({
@@ -35,27 +50,36 @@ interface Formula {
   templateUrl: './ai-tutor.component.html',
   styleUrl: './ai-tutor.component.scss'
 })
-export class AiTutorComponent implements OnInit {
-  
+export class AiTutorComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   loading = true;
   currentDate = new Date();
-  
-  // --- View State ---
   activeTab: 'strategy' | 'formulas' = 'strategy';
-  
-  // --- Filter State ---
+
+  // Subject selector for plan
+  availableSubjects: any[] = [];
+  planSubjectId: string = '';
+
+  // Formula filters
   selectedSubject: string = 'All';
   selectedTopic: string = 'All';
-  
-  // --- Data ---
-  llmSummary = {
-    greeting: "Hello Student!",
-    analysis: "I've analyzed your recent performance.",
-    strategy: "Here is your optimized plan for today."
-  };
-  
+
+  // Dynamic AI summary — generated from actual stats
+  greeting = '';
+  analysis = '';
+  strategy = '';
+
   dailyPlan: DailyTask[] = [];
-  allFormulas: Formula[] = []; // Initialize empty to prevent UI errors
+  stats: PlanStats = {
+    totalSolved: 0, recentAccuracy: 0, questionsThisWeek: 0,
+    mistakesThisWeek: 0, strongestTopic: null, strongestProgress: 0,
+    weakestTopic: null, weakestProgress: 0, topicsTracked: 0
+  };
+
+  allFormulas: Formula[] = [];
+  formulasLoaded = false;
+  formulasLoading = false;
 
   constructor(
     private router: Router,
@@ -63,150 +87,224 @@ export class AiTutorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.fetchDailyPlan();
-    this.fetchFormulas();
+    this.loadSubjects();
   }
 
-  // --- 1. Fetch Daily Plan ---
+  loadSubjects() {
+    this.gameplayService.getSubjects().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (subs: any[]) => {
+        this.availableSubjects = subs || [];
+        // Auto-select first subject
+        if (this.availableSubjects.length > 0) {
+          this.planSubjectId = this.availableSubjects[0]._id || this.availableSubjects[0].name;
+        }
+        this.fetchDailyPlan();
+      },
+      error: () => {
+        this.fetchDailyPlan();
+      }
+    });
+  }
+
+  onSubjectChange(subjectId: string) {
+    this.planSubjectId = subjectId;
+    this.fetchDailyPlan();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  switchTab(tab: 'strategy' | 'formulas') {
+    this.activeTab = tab;
+    if (tab === 'formulas' && !this.formulasLoaded) {
+      this.fetchFormulas();
+    }
+  }
+
   fetchDailyPlan() {
     this.loading = true;
-    this.gameplayService.getDailyPlans().subscribe({
+    this.gameplayService.getDailyPlans(this.planSubjectId || undefined).pipe(
+      timeout(12000),
+      catchError(err => {
+        console.error('Plan fetch error:', err);
+        return of(null);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (data) => {
-        
-        // Check if data is valid, otherwise use fallback
         if (!data || !data.warmup) {
-           this.useMockPlan();
+          this.useFallbackPlan();
         } else {
-           // Update LLM Text if available
-           if (data.deepWork && data.deepWork.topic === 'Mistake Review') {
-             this.llmSummary.strategy = `I've created a <span class='highlight bad'>Mistake Repair Session</span> to fix your recent errors.`;
-           }
-
-           this.dailyPlan = [
+          this.stats = data.stats || this.stats;
+          this.buildSummary(data);
+          this.dailyPlan = [
             {
-              time: 'Start',
-              type: 'warmup',
-              title: 'Warm Up: ' + (data.warmup?.topic || 'Basics'),
+              time: 'Start', type: 'warmup',
+              title: data.warmup?.topic || 'Basics',
               subtitle: data.warmup?.note || 'Get ready',
-              status: 'active',
-              actionLabel: 'Start Session ➜',
-              topicId: data.warmup?.topicId
+              status: 'active', actionLabel: 'Start Session',
+              topicId: data.warmup?.topicId,
+              progress: data.warmup?.progress
             },
             {
-              time: 'Focus',
-              type: 'deep-work',
-              title: 'Deep Work: ' + (data.deepWork?.topic || 'Core'),
+              time: 'Focus', type: 'deep-work',
+              title: data.deepWork?.topic || 'Core',
               subtitle: data.deepWork?.note || 'Focus now',
-              status: 'active',
+              status: 'active', actionLabel: 'Start Session',
               topicId: data.deepWork?.topicId,
-              questionIds: data.deepWork?.questionIds 
+              questionIds: data.deepWork?.questionIds,
+              progress: data.deepWork?.progress
             },
             {
-              time: 'Review',
-              type: 'review',
-              title: 'Review: ' + (data.review?.topic || 'Retention'),
+              time: 'Review', type: 'review',
+              title: data.review?.topic || 'Retention',
               subtitle: data.review?.note || 'Keep it fresh',
-              status: 'active', 
-              topicId: data.review?.topicId
+              status: data.review?.topic === 'None' ? 'completed' : 'active',
+              actionLabel: data.review?.topic === 'None' ? undefined : 'Start Session',
+              topicId: data.review?.topicId,
+              progress: data.review?.progress
             }
           ];
         }
         this.loading = false;
-      },
-      error: (err) => {
-        console.error('Plan Fetch Error:', err);
-        this.useMockPlan(); // Fallback on error
-        this.loading = false;
       }
     });
   }
 
-  useMockPlan() {
+  buildSummary(data: any) {
+    const s = this.stats;
+
+    // Greeting
+    if (s.recentAccuracy >= 80) {
+      this.greeting = "You're on fire! Keep this momentum going.";
+    } else if (s.recentAccuracy >= 50) {
+      this.greeting = "Good progress this week. Let's sharpen your weak spots.";
+    } else if (s.questionsThisWeek > 0) {
+      this.greeting = "Every mistake is a lesson. Today's plan is built to help.";
+    } else {
+      this.greeting = "Welcome back! Here's your personalized study plan.";
+    }
+
+    // Analysis
+    const parts: string[] = [];
+    if (s.questionsThisWeek > 0) {
+      parts.push(`${s.questionsThisWeek} questions this week at ${s.recentAccuracy}% accuracy`);
+    }
+    if (s.strongestTopic) {
+      parts.push(`Strongest: ${s.strongestTopic} (${s.strongestProgress}%)`);
+    }
+    if (s.weakestTopic) {
+      parts.push(`Needs work: ${s.weakestTopic} (${s.weakestProgress}%)`);
+    }
+    this.analysis = parts.length > 0 ? parts.join(' · ') : `${s.totalSolved} questions solved so far.`;
+
+    // Strategy
+    if (data.deepWork?.topic === 'Mistake Review') {
+      this.strategy = `Priority: Fix ${s.mistakesThisWeek} recent mistakes before moving forward.`;
+    } else if (s.weakestTopic && s.weakestProgress < 40) {
+      this.strategy = `Focus on ${s.weakestTopic} today — it needs the most attention.`;
+    } else if (s.recentAccuracy >= 80) {
+      this.strategy = `You're doing great. Let's push into harder territory.`;
+    } else {
+      this.strategy = `Follow the plan below: warm up, deep work, then review.`;
+    }
+  }
+
+  useFallbackPlan() {
+    this.greeting = 'Welcome! Start solving questions to unlock your personalized plan.';
+    this.analysis = 'No activity data yet.';
+    this.strategy = 'Begin with any topic to get started.';
     this.dailyPlan = [
-      { time: 'Start', type: 'warmup', title: 'Warm Up', subtitle: 'Basics', status: 'active', actionLabel: 'Start Session ➜' },
-      { time: 'Focus', type: 'deep-work', title: 'Deep Work', subtitle: 'Core Concept', status: 'active' },
-      { time: 'End', type: 'review', title: 'Review', subtitle: 'Retention', status: 'locked' }
+      { time: 'Start', type: 'warmup', title: 'Quick Start', subtitle: 'Pick any topic', status: 'active', actionLabel: 'Start Session' },
+      { time: 'Focus', type: 'deep-work', title: 'Explore', subtitle: 'Try a new chapter', status: 'active', actionLabel: 'Start Session' },
+      { time: 'Review', type: 'review', title: 'Review', subtitle: 'Nothing yet', status: 'locked' }
     ];
   }
 
-  // --- 2. Fetch Formulas ---
   fetchFormulas() {
-    this.gameplayService.getFormulas().subscribe({
+    this.formulasLoading = true;
+    this.gameplayService.getFormulas().pipe(
+      timeout(10000),
+      catchError(err => {
+        console.error('Formula fetch error:', err);
+        return of({ data: [] });
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
       next: (res: any) => {
-        // Handle response wrapping { status: 'success', data: [...] }
-        const data = res.data || res; 
-        
+        const data = res.data || res;
         if (Array.isArray(data)) {
           this.allFormulas = data.map((f: any) => ({
-            id: f._id || f.id,
-            title: f.title || 'Formula', 
-            expression: f.expression || 'x = ?',
+            id: f.id || f._id,
+            title: f.title || 'Formula',
+            expression: f.expression || '',
+            variables: f.variables || [],
             subject: f.subject || 'General',
             topic: f.topic || 'General',
-            lastUsedDate: f.last_used ? new Date(f.last_used) : new Date(),
-            masteryLevel: f.mastery_level || 'medium'
+            lastUsedDate: f.lastUsedDate ? new Date(f.lastUsedDate) : new Date(),
+            masteryLevel: f.masteryLevel || 'medium',
+            masteryScore: f.masteryScore || 0,
+            useCount: f.useCount || 0
           }));
-        } else {
-          this.allFormulas = [];
         }
-      },
-      error: (err) => {
-        console.error('Formula Fetch Error:', err);
-        // Fallback: If no backend, show empty state or mock data
-        this.allFormulas = []; 
+        this.formulasLoaded = true;
+        this.formulasLoading = false;
       }
     });
   }
 
-  // --- 3. Actions ---
   startTask(task: DailyTask) {
-    if (task.status !== 'locked') {
-      const queryParams: any = { mode: task.type };
-      
-      // Handle Mistake Review (List of IDs)
-      if (task.questionIds && task.questionIds.length > 0) {
-        queryParams.questionIds = task.questionIds.join(',');
-      } 
-      // Handle Standard Topic
-      else if (task.topicId) {
-        queryParams.topicId = task.topicId;
-      }
-
-      this.router.navigate(['/game/play'], { queryParams });
+    if (task.status === 'locked' || task.status === 'completed') return;
+    const queryParams: any = { mode: task.type };
+    if (task.questionIds && task.questionIds.length > 0) {
+      queryParams.questionIds = task.questionIds.join(',');
+    } else if (task.topicId) {
+      queryParams.topicId = task.topicId;
     }
+    this.router.navigate(['/game/play'], { queryParams });
   }
 
   selectSubject(sub: string) {
     this.selectedSubject = sub;
-    this.selectedTopic = 'All'; // Reset topic when subject changes
+    this.selectedTopic = 'All';
   }
 
-  // --- 4. Getters (Filter Logic) ---
-  
-  // Get unique subjects from the formula list
   get subjects(): string[] {
-    if (!this.allFormulas || this.allFormulas.length === 0) return ['All'];
+    if (!this.allFormulas.length) return ['All'];
     const subs = new Set(this.allFormulas.map(f => f.subject));
     return ['All', ...Array.from(subs)];
   }
 
-  // Get unique topics for the selected subject
   get topics(): string[] {
-    if (this.selectedSubject === 'All' || !this.allFormulas) return [];
-    
-    const relevantFormulas = this.allFormulas.filter(f => f.subject === this.selectedSubject);
-    const tops = new Set(relevantFormulas.map(f => f.topic));
+    if (this.selectedSubject === 'All') return [];
+    const tops = new Set(
+      this.allFormulas.filter(f => f.subject === this.selectedSubject).map(f => f.topic)
+    );
     return ['All', ...Array.from(tops)];
   }
 
-  // Apply filters to the list
   get filteredFormulas(): Formula[] {
-    if (!this.allFormulas) return [];
-    
     return this.allFormulas.filter(f => {
       const matchSubject = this.selectedSubject === 'All' || f.subject === this.selectedSubject;
       const matchTopic = this.selectedTopic === 'All' || f.topic === this.selectedTopic;
       return matchSubject && matchTopic;
     });
+  }
+
+  get formulaStats() {
+    const total = this.allFormulas.length;
+    const low = this.allFormulas.filter(f => f.masteryLevel === 'low').length;
+    const high = this.allFormulas.filter(f => f.masteryLevel === 'high').length;
+    return { total, low, high };
+  }
+
+  getMasteryLabel(level: string): string {
+    if (level === 'high') return 'Mastered';
+    if (level === 'medium') return 'Learning';
+    return 'Weak';
   }
 }

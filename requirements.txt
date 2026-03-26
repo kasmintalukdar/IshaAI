@@ -1,0 +1,58 @@
+# ============================================================
+# IshaAI — Combined Python Dependencies
+# ============================================================
+# Install: pip install -r requirements.txt
+#
+# Sub-project specific requirements are also available at:
+#   ai/ai-engine/requirements.txt      (ML prediction engine)
+#   ai/ai-engine2/ishaa-ai/requirements.txt (Ishaa AI v2)
+# ============================================================
+
+# --- Web Framework ---
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+gunicorn>=22.0.0
+
+# --- ML / Data Science ---
+scikit-learn
+pandas
+numpy
+joblib
+xgboost
+
+# --- Database ---
+motor>=3.4.0
+pymongo>=4.7.2
+
+# --- Caching ---
+redis>=5.0.4
+hiredis>=2.3.2
+
+# --- AI Providers ---
+google-generativeai>=0.7.0
+anthropic>=0.30.0
+groq>=0.9.0
+
+# --- Auth & Encryption ---
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+cryptography>=42.0.8
+
+# --- Validation & Config ---
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+python-dotenv>=1.0.1
+
+# --- File Handling ---
+python-multipart>=0.0.9
+Pillow>=10.3.0
+aiofiles>=23.2.1
+
+# --- Monitoring & Logging ---
+structlog>=24.1.0
+prometheus-fastapi-instrumentator>=6.1.0
+
+# --- Utilities ---
+tenacity>=8.3.0
+ujson>=5.10.0
+httpx>=0.27.0
